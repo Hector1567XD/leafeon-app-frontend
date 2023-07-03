@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import customizationReducer from './customizationSlice';
+import authReducer from './authSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 // ==============================|| REDUX - MAIN STORE ||============================== //
 
 const rootReducer = combineReducers({
-  customization: customizationReducer
+  customization: customizationReducer,
+  auth: authReducer,
 });
 
 const store = configureStore({ reducer: rootReducer });

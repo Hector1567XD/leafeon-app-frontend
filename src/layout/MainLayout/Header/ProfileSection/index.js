@@ -38,12 +38,17 @@ import User1 from 'assets/images/users/user-round.svg';
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import { useAppDispatch } from 'store';
+import { logout } from 'store/authSlice';
+//import { useHistory } rom 'react-router-dom';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
+  const dispatch = useAppDispatch();
+  //const history = useHistory();
   const navigate = useNavigate();
 
   const [sdm, setSdm] = useState(true);
@@ -57,6 +62,8 @@ const ProfileSection = () => {
   const anchorRef = useRef(null);
   const handleLogout = async () => {
     console.log('Logout');
+    dispatch(logout());
+    //history.push('/free/pages/login');
   };
 
   const handleClose = (event) => {

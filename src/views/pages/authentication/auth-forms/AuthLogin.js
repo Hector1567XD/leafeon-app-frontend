@@ -21,20 +21,23 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import login from 'services/auth/login';
+import { authUser } from 'store/authSlice';
+import { useAppDispatch } from 'store';
+
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const showForgotPassword = false;
 
 const FirebaseLogin = ({ ...others }) => {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +51,6 @@ const FirebaseLogin = ({ ...others }) => {
 
   return (
     <>
-
       <Formik
         initialValues={{
           email: 'info@codedthemes.com',
@@ -61,17 +63,18 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            await login({
+              email: values.email,
+              password: values.password
+            });
+            dispatch(authUser());
+            setErrors({ submit: null });
+            setSubmitting(true);
+          } catch (error) {
+            console.log('error', error);
+            setErrors({ submit: error.getMessage() });
+            setStatus({ success: false });
+            setSubmitting(false);
           }
         }}
       >
