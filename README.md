@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" height="300" src="https://github.com/Hector1567XD/leafeon-app-frontend/assets/22270579/ba34a6f1-390f-4027-b105-6cc1498c49df">
+  <img width="250" height="250" src="https://github.com/Hector1567XD/leafeon-app-frontend/assets/22270579/ba34a6f1-390f-4027-b105-6cc1498c49df">
 </p>
 <h1 align="center">Leafeon App</h1>
 <p align="center">The ecological application for furrys car dealerships</p>
