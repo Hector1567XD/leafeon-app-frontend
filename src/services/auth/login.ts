@@ -8,8 +8,10 @@ const URL = `${API_BASE_URL}/login`;
 export default async function login(body: LoginBody): Promise<LoginResponse> {
   try {
     const response = await axios.post<LoginResponse>(URL, body);
+    console.log('lo chido', response);
     return response.data;
   } catch (error: unknown) {
+    console.log('lo chido error', error);
     throw new BackendError(error);
   }
 }

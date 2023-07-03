@@ -30,6 +30,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import login from 'services/auth/login';
 import { authUser } from 'store/authSlice';
 import { useAppDispatch } from 'store';
+import { useNavigate } from 'react-router-dom';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -39,6 +40,7 @@ const FirebaseLogin = ({ ...others }) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const [checked, setChecked] = useState(true);
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -63,15 +65,15 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await login({
+            const user = await login({
               email: values.email,
               password: values.password
             });
-            dispatch(authUser());
+            dispatch(authUser(user));
             setErrors({ submit: null });
             setSubmitting(true);
+            navigate('/dashboard/default');
           } catch (error) {
-            console.log('error', error);
             setErrors({ submit: error.getMessage() });
             setStatus({ success: false });
             setSubmitting(false);
