@@ -1,0 +1,26 @@
+{
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "eslint.enable": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": false
+  },
+  "[javascript]": {
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[typescript]": {
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}
