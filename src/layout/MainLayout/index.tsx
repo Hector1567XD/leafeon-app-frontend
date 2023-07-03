@@ -31,6 +31,12 @@ const MainLayout = () => {
     dispatch(setMenu(!leftDrawerOpened));
   };
 
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuth);
+  if (!isAuthenticated) {
+    window.location.href = window.location.origin + '/pages/login';
+    return null;
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
