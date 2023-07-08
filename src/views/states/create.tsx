@@ -1,15 +1,14 @@
 import { FunctionComponent, useCallback } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
 // material-ui
 import MainCard from 'components/cards/MainCard';
-import { Button, FormControl, FormHelperText, TextField, Typography } from '@mui/material';
+import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import createState from 'services/states/create-state';
 import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
+import Form from './form';
 
 const CreateState: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -44,47 +43,14 @@ const CreateState: FunctionComponent<Props> = ({className}) => {
         </Typography>
       </MainCard>
 
-      <Formik
+      <Form
         initialValues={{
           name: '',
           submit: null
         }}
-        validationSchema={
-          Yup.object().shape({
-            name: Yup.string().max(30).required('El nombre es requerido'),
-          })
-        }
+        title={'Crear estado'}
         onSubmit={onSubmit}
-      >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} >
-            <MainCard className={'form-data'} title="Crear estado">
-              <FormControl fullWidth>
-                <TextField
-                  id="name"
-                  label="Nombre de estado"
-                  variant="outlined"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.name}
-                  helperText={errors.name}
-                  error={!!errors.name}
-                  name="name"
-                />
-              </FormControl>
-            </MainCard>
-            <MainCard className={'form-data flex-column'}>
-              {errors.submit && (
-                  <FormHelperText error>{errors.submit}</FormHelperText>
-              )}
-              <Button variant="outlined" type="submit" color="primary">
-                Crear estado
-              </Button>
-            </MainCard>
-
-          </form>
-        )}
-      </Formik>
+      />
     </div>
   );
 };

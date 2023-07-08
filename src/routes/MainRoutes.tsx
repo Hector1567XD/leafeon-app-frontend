@@ -10,6 +10,7 @@ import States from 'views/states';
 import Logout from 'views/logout';
 import Cities from 'views/cities';
 import CreateState from 'views/states/create';
+import EditState from 'views/states/edit';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -50,6 +51,10 @@ const MainRoutes: RouteObject = {
     {
       path: 'states/create',
       element: <CreateState />
+    },
+    {
+      path: 'states/edit/:id',
+      element: <EditState />
     },
     {
       path: 'logout',

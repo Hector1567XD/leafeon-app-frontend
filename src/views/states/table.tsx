@@ -9,8 +9,11 @@ import { State } from 'core/states/types';
 import { FunctionComponent } from 'react';
 import { StatePaginatedResponse } from 'services/states/get-paginate';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router';
 
 const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange }) => {
+    const navigate = useNavigate();
+
     return (
         <div className={className}>
             <DynamicTable
@@ -21,7 +24,11 @@ const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange 
                 ]}
                 rows={items} components={[
                     (row: State) =>
-                    <Button color="primary" startIcon={<IconEdit />}>
+                    <Button
+                        color="primary"
+                        onClick={() => { navigate('/states/edit/'+row.stateId) }}
+                        startIcon={<IconEdit />}
+                    >
                         Editar
                     </Button>,
                     (row: State) =>
