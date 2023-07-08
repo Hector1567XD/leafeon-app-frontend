@@ -15,7 +15,9 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
     <div className={className}>
       <Formik
         initialValues={initialValues}
-        validateOnChange={false}
+        validateOnChange={true}
+        validateOnBlur={false}
+        validateOnMount={false}
         validationSchema={
           Yup.object().shape({
             name: Yup.string().max(30).required('El nombre es requerido'),
@@ -35,8 +37,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.name}
-                  helperText={errors.name}
-                  error={!!errors.name}
+                  helperText={touched.name ? errors.name : ''}
+                  error={touched.name && !!errors.name}
                   name="name"
                 />
               </FormControl>
@@ -47,8 +49,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 onBlur={handleBlur}
                 label="Estado"
                 options={stateOptions}
-                helperText={errors.stateId}
-                error={!!errors.stateId}
+                helperText={touched.stateId ? errors.stateId : ''}
+                error={touched.stateId && !!errors.stateId}
                 isAutocomplete={true}
                 value={values.stateId}
               />

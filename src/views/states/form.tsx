@@ -5,13 +5,15 @@ import { Formik, FormikHelpers } from 'formik';
 import MainCard from 'components/cards/MainCard';
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
 import styled from 'styled-components';
-import { State } from 'core/states/types';
 
 const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues }) => {
 
   return (
     <div className={className}>
       <Formik
+        validateOnChange={true}
+        validateOnBlur={false}
+        validateOnMount={false}
         initialValues={initialValues}
         validationSchema={
           Yup.object().shape({
@@ -31,8 +33,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.name}
-                  helperText={errors.name}
-                  error={!!errors.name}
+                  helperText={touched.name ? errors.name : ''}
+                  error={touched.name && !!errors.name}
                   name="name"
                 />
               </FormControl>
