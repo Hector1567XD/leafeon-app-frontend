@@ -1,29 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import {
   Avatar,
   Box,
-  Card,
-  CardContent,
   Chip,
   ClickAwayListener,
   Divider,
-  Grid,
-  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  OutlinedInput,
   Paper,
   Popper,
   Stack,
-  Switch,
   Typography
 } from '@mui/material';
 
@@ -37,8 +27,8 @@ import User1 from 'assets/images/users/user-round.svg';
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons';
-import { useAppDispatch, useAppSelector } from 'store';
-import { logout } from 'store/authSlice';
+import { useAppSelector } from 'store';
+import useLogout from 'hooks/use-logout';
 //import { useHistory } rom 'react-router-dom';
 
 // ==============================|| PROFILE MENU ||============================== //
@@ -47,9 +37,9 @@ const ProfileSection = () => {
   const theme = useTheme();
   const customization = useAppSelector((state) => state.customization);
   const user = useAppSelector((state) => state.auth.user);
-  const dispatch = useAppDispatch();
   //const history = useHistory();
   const navigate = useNavigate();
+  const logout = useLogout();
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
@@ -57,11 +47,6 @@ const ProfileSection = () => {
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
   const anchorRef = useRef(null);
-  const handleLogout = async () => {
-    console.log('Logout');
-    dispatch(logout());
-    navigate('/pages/login');
-  };
 
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -201,7 +186,7 @@ const ProfileSection = () => {
                         <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 4}
-                          onClick={handleLogout}
+                          onClick={logout}
                         >
                           <ListItemIcon>
                             <IconLogout stroke={1.5} size="1.3rem" />

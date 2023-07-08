@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { FunctionComponent, ReactNode } from 'react';
 
-const DynamicTable: FunctionComponent<Props> =({ headers, rows, settings, components }) => {
+const DynamicTable: FunctionComponent<Props<any>> =({ headers, rows, settings, components }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="dynamic table">
@@ -49,13 +49,13 @@ const DynamicTable: FunctionComponent<Props> =({ headers, rows, settings, compon
 }
 
 type RowItem = Record<string, any>;
-type SettingComponent = (rowItem: RowItem) => ReactNode;
+type SettingComponent<T> = (rowItem: T) => ReactNode;
 
-interface Props {
+interface Props<T> {
   headers: Header[];
   rows: RowItem[];
   settings?: Settings;
-  components?: SettingComponent[];
+  components?: SettingComponent<T>[];
 }
 
 export interface Settings {

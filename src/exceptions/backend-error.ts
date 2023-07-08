@@ -15,6 +15,11 @@ export default class BackendError extends Error implements IBackendError {
         if (error.response.data.details) {
           this.details = error.response.data.details;
         }
+
+        if (error.response.data.message === "Error de Token") {
+          console.log('Error de token');
+          window.location.href = window.location.origin + '/logout';
+        }
       } else {
         if (error.message === 'Network Error') {
           this.message = 'Error de conexión perdida';
