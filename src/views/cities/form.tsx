@@ -5,17 +5,21 @@ import { Formik, FormikHelpers } from 'formik';
 import MainCard from 'components/cards/MainCard';
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
 import styled from 'styled-components';
-import { State } from 'core/states/types';
+import SelectField from 'components/SelectField';
+import useStateOptions from './use-state-options';
 
 const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues }) => {
+  const stateOptions = useStateOptions();
 
   return (
     <div className={className}>
       <Formik
         initialValues={initialValues}
+        validateOnChange={false}
         validationSchema={
           Yup.object().shape({
             name: Yup.string().max(30).required('El nombre es requerido'),
+            stateId: Yup.number().typeError('El estado es invalido').required('El estado es requerido'),
           })
         }
         onSubmit={onSubmit as any}
@@ -23,10 +27,10 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} >
             <MainCard className={'form-data'} title={title}>
-              <FormControl fullWidth>
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="name"
-                  label="Nombre de estado"
+                  label="Nombre de ciudad"
                   variant="outlined"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -36,6 +40,18 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="name"
                 />
               </FormControl>
+              <SelectField
+                className="field-form"
+                name="stateId"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Estado"
+                options={stateOptions}
+                helperText={errors.stateId}
+                error={!!errors.stateId}
+                isAutocomplete={true}
+                value={values.stateId}
+              />
             </MainCard>
             <MainCard className={'form-data flex-column'}>
               {errors.submit && (
@@ -45,7 +61,6 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 Guardar
               </Button>
             </MainCard>
-
           </form>
         )}
       </Formik>
@@ -62,6 +77,7 @@ interface Props {
 
 type FormValues = {
   name: string;
+  stateId: number | null;
   submit: string | null;
 };
 
@@ -70,7 +86,6 @@ export type OnSubmit = (
   helpers: FormikHelpers<FormValues>
 ) => void | Promise<any>;
 
-
 export default styled(Form)`
   display: flex;
   flex-direction: column;
@@ -78,6 +93,10 @@ export default styled(Form)`
   .flex-column {
     display: flex;
     flex-direction: column;
+  }
+
+  .field-form {
+    margin: 6px 0px;
   }
 
   .form-data {

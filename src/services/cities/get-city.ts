@@ -3,17 +3,14 @@ import axios from 'axios';
 import { API_BASE_URL } from 'config/constants';
 import { City } from 'core/cities/types';
 import BackendError from 'exceptions/backend-error';
-import addQueryParams from 'services/add-query-params';
-import { PaginateBody, PaginatedResponse } from 'services/types';
 import store from 'store';
 
 const URL = `${API_BASE_URL}/cities`;
 
-export default async function getPaginate(body: PaginateBody): Promise<CitiesPaginated> {
+export default async function getCity(idCity: number): Promise<City> {
   try {
-    const urlPaginated = addQueryParams(URL, body);
-    const response = await axios.get<CitiesPaginated>(
-      urlPaginated, {
+    const response = await axios.get<City>(
+        `${URL}/${idCity}`, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -25,5 +22,3 @@ export default async function getPaginate(body: PaginateBody): Promise<CitiesPag
     throw new BackendError(error);
   }
 }
-
-type CitiesPaginated = PaginatedResponse<City>;

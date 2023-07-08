@@ -6,15 +6,11 @@ import Loadable from 'components/Loadable';
 import { RouteObject } from 'react-router';
 
 // pages
-import States from 'views/states';
 import Logout from 'views/logout';
-import Cities from 'views/cities';
-import CreateState from 'views/states/create';
-import EditState from 'views/states/edit';
+import GeneralRoutes from './GeneralRoutes';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-// sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -40,22 +36,7 @@ const MainRoutes: RouteObject = {
       path: 'sample-page',
       element: <SamplePage />
     },
-    {
-      path: 'states',
-      element: <States />
-    },
-    {
-      path: 'cities',
-      element: <Cities />
-    },
-    {
-      path: 'states/create',
-      element: <CreateState />
-    },
-    {
-      path: 'states/edit/:id',
-      element: <EditState />
-    },
+    ...GeneralRoutes,
     {
       path: 'logout',
       element: <Logout />

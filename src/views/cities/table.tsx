@@ -1,26 +1,39 @@
-import {
-    Button, Pagination,
-} from '@mui/material';
-import { IconTrash, IconEdit } from '@tabler/icons';
+import { Button, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
 import { City } from 'core/cities/types';
 import styled from 'styled-components';
 // Own
-import { State } from 'core/states/types';
 import { FunctionComponent } from 'react';
 import { PaginateData } from 'services/types';
+import { IconEdit, IconTrash } from '@tabler/icons';
+import { useNavigate } from 'react-router';
 
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
+    const navigate = useNavigate();
+
     return (
         <div className={className}>
             <DynamicTable
-                headers={[
-                  { columnLabel: 'Id', fieldName: 'cityId', cellAlignment: 'left' },
-                  { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
-                  { columnLabel: 'Estado', fieldName: 'stateId', cellAlignment: 'left' },
-                  { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
-                ]}
-                rows={items}
+            headers={[
+                { columnLabel: 'Id', fieldName: 'cityId', cellAlignment: 'left' },
+                { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
+                { columnLabel: 'Estado', fieldName: 'stateId', cellAlignment: 'left' },
+                { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
+            ]}
+            rows={items} components={[
+                (row: City) =>
+                <Button
+                    color="primary"
+                    onClick={() => { navigate('/cities/edit/'+row.cityId) }}
+                    startIcon={<IconEdit />}
+                >
+                    Editar
+                </Button>,
+                (row: City) =>
+                <Button color="secondary" startIcon={<IconTrash />}>
+                    Eliminar
+                </Button>
+            ]}
         />
             <div className={'paginator-container'}>
               <Pagination

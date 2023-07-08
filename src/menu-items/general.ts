@@ -16,14 +16,14 @@ const other: MenuItem = {
       breadcrumbs: false,
       children: [
         {
-          id: 'states',
+          id: 'list-states',
           title: 'Lista de estados',
           type: MenuItemType.Item,
           url: '/states',
           breadcrumbs: false,
         },
         {
-          id: 'states',
+          id: 'create-states',
           title: 'Crear estado',
           type: MenuItemType.Item,
           url: '/states/create',
@@ -34,10 +34,25 @@ const other: MenuItem = {
     {
       id: 'cities',
       title: 'Ciudad',
-      type: MenuItemType.Item,
-      url: '/cities',
+      type: MenuItemType.Collapse,
       icon: IconBuildingEstate,
-      breadcrumbs: false
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-cities',
+          title: 'Lista de ciudades',
+          type: MenuItemType.Item,
+          url: '/cities',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-cities',
+          title: 'Crear ciudad',
+          type: MenuItemType.Item,
+          url: '/cities/create',
+          breadcrumbs: false,
+        }
+      ]
     }
   ]
 };
