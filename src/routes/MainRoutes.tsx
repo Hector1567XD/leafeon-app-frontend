@@ -2,8 +2,11 @@ import { lazy } from 'react';
 
 // project imports
 import MainLayout from 'layout/MainLayout';
-import Loadable from 'ui-component/Loadable';
+import Loadable from 'components/Loadable';
 import { RouteObject } from 'react-router';
+
+// pages
+import States from 'views/states';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -32,6 +35,10 @@ const MainRoutes: RouteObject = {
     {
       path: 'sample-page',
       element: <SamplePage />
+    },
+    {
+      path: 'states',
+      element: <States />
     }
   ]
 };

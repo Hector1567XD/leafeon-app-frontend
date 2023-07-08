@@ -1,7 +1,7 @@
 // material-ui
 import { Typography } from '@mui/material';
 
-import MainCard from 'ui-component/cards/MainCard';
+import MainCard from 'components/cards/MainCard';
 import Table from './table';
 
 const SamplePage = () => {
