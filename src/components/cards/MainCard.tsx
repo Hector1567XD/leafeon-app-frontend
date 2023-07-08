@@ -23,7 +23,9 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
       darkTitle,
       secondary,
       shadow,
+      className,
       sx = {},
+      headerClass,
       title,
       ...others
     },
@@ -33,6 +35,7 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
 
     return (
       <Card
+        className={className}
         ref={ref}
         {...others}
         sx={{
@@ -50,6 +53,7 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
             sx={headerSX as any}
             title={(darkTitle ? <Typography variant="h3">{title as any}</Typography> : title) as any}
             action={secondary as any} 
+            headerClass={headerClass}
           />
         }
 
@@ -70,9 +74,11 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
 
 interface MainCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'content'> {
   border?: boolean;
+  className?: string;
   boxShadow?: boolean;
   content?: boolean;
   contentClass?: string;
+  headerClass?: string;
   contentSX?: object;
   sx?: Record<string, any>;
   darkTitle?: boolean;

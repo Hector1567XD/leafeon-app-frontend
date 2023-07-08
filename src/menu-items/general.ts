@@ -11,10 +11,25 @@ const other: MenuItem = {
     {
       id: 'states',
       title: 'Estado',
-      type: MenuItemType.Item,
-      url: '/states',
+      type: MenuItemType.Collapse,
       icon: IconCurrentLocation,
-      breadcrumbs: false
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'states',
+          title: 'Lista de estados',
+          type: MenuItemType.Item,
+          url: '/states',
+          breadcrumbs: false,
+        },
+        {
+          id: 'states',
+          title: 'Crear estado',
+          type: MenuItemType.Item,
+          url: '/states/create',
+          breadcrumbs: false,
+        }
+      ]
     },
     {
       id: 'cities',

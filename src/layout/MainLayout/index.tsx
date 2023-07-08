@@ -10,7 +10,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Customization from '../Customization';
 import navigation from 'menu-items';
-import { setErrorMessage, setMenu } from 'store/customizationSlice';
+import { setErrorMessage, setSuccessMessage, setMenu } from 'store/customizationSlice';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
@@ -33,9 +33,10 @@ const MainLayout = () => {
   };
 
   const isAuthenticated = useAppSelector((state) => state.auth.isAuth);
-  const { isLoading, errorMessage } = useAppSelector((state) => ({
+  const { isLoading, errorMessage, successMessage } = useAppSelector((state) => ({
     isLoading: state.customization.isLoading,
     errorMessage: state.customization.errorMessage,
+    successMessage: state.customization.successMessage,
   }));
 
   if (!isAuthenticated) {
@@ -51,6 +52,11 @@ const MainLayout = () => {
         message={errorMessage}
         severity={Severity.Error}
         onClose={() => dispatch(setErrorMessage(null))}
+      />
+      <SmallToast
+        message={successMessage}
+        severity={Severity.Success}
+        onClose={() => dispatch(setSuccessMessage(null))}
       />
       {/* header */}
       <AppBar

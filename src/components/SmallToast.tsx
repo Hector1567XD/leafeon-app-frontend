@@ -13,8 +13,15 @@ export enum Severity {
 
 const SmallToast: FunctionComponent<Props> =({ message, autoHideDuration, severity, onClose,  }) => {
   return (
-    <Snackbar open={!!message} autoHideDuration={autoHideDuration || 6000} onClose={onClose}>
-      <Alert onClose={onClose} severity={severity || Severity.Success} sx={{ width: '100%' }}>
+    <Snackbar open={!!message} autoHideDuration={autoHideDuration || 6000}
+      onClose={onClose}
+      anchorOrigin={{ vertical:'top', horizontal:'center' }}
+    >
+      <Alert
+        onClose={onClose}
+        severity={severity || Severity.Success}
+        sx={{ width: '100%' }}
+      >
         { message }
       </Alert>
     </Snackbar>

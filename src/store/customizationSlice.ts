@@ -12,6 +12,7 @@ export interface CustomizationState {
   navType: string | undefined; // When is not undefined, it fails :s
   isLoading: boolean;
   errorMessage: string | null;
+  successMessage: string | null;
 }
 
 const initialState: CustomizationState = {
@@ -23,6 +24,7 @@ const initialState: CustomizationState = {
   navType: undefined,
   isLoading: false,
   errorMessage: null,
+  successMessage: null,
 };
 
 const customizationSlice = createSlice({
@@ -48,9 +50,20 @@ const customizationSlice = createSlice({
     setErrorMessage(state, action: PayloadAction<string | null>) {
       state.errorMessage = action.payload;
     },
+    setSuccessMessage(state, action: PayloadAction<string | null>) {
+      state.successMessage = action.payload;
+    },
   },
 });
 
-export const { openMenu, setMenu, setFontFamily, setBorderRadius, setIsLoading, setErrorMessage } = customizationSlice.actions;
+export const {
+  openMenu,
+  setMenu,
+  setFontFamily,
+  setBorderRadius,
+  setIsLoading,
+  setErrorMessage,
+  setSuccessMessage,
+} = customizationSlice.actions;
 
 export default customizationSlice.reducer;

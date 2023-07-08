@@ -36,6 +36,16 @@ export default class BackendError extends Error implements IBackendError {
     Object.setPrototypeOf(this, BackendError.prototype);
   }
 
+  public getFieldErrorsMessages(): Record<string, string> {
+    const fieldErrorsMessages: Record<string, string> = {};
+    this.details?.map((fieldError: BackendErrorItem) => {
+      fieldErrorsMessages[fieldError.field] = fieldError.message;
+      return {};
+    });
+
+    return fieldErrorsMessages;
+  }
+
   public getMessage(): string {
     return this.message;
   }
