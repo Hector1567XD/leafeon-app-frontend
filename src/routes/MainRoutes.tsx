@@ -8,6 +8,7 @@ import { RouteObject } from 'react-router';
 // pages
 import States from 'views/states';
 import Logout from 'views/logout';
+import Cities from 'views/cities';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -40,6 +41,10 @@ const MainRoutes: RouteObject = {
     {
       path: 'states',
       element: <States />
+    },
+    {
+      path: 'cities',
+      element: <Cities />
     },
     {
       path: 'logout',

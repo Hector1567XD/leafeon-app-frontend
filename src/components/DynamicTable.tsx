@@ -20,7 +20,7 @@ const DynamicTable: FunctionComponent<Props<any>> =({ headers, rows, settings, c
                 {columnLabel}
               </TableCell>
             ))}
-            <TableCell align="right"></TableCell>
+            {components && <TableCell align="right"></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 // material-ui
@@ -11,13 +10,15 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Customization from '../Customization';
 import navigation from 'menu-items';
-import { setMenu } from 'store/customizationSlice';
+import { setErrorMessage, setMenu } from 'store/customizationSlice';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
-import { useAppSelector } from 'store';
+import { useAppDispatch, useAppSelector } from 'store';
 import { CustomedTheme } from 'themes';
 import MainComponent from './MainComponent';
+import Loader from 'components/Loader';
+import SmallToast, { Severity } from 'components/SmallToast';
 
 const showCustomization = false;
 
@@ -26,12 +27,17 @@ const MainLayout = () => {
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   // Handle left drawer
   const leftDrawerOpened = useAppSelector((state) => state.customization.opened);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleLeftDrawerToggle = () => {
     dispatch(setMenu(!leftDrawerOpened));
   };
 
   const isAuthenticated = useAppSelector((state) => state.auth.isAuth);
+  const { isLoading, errorMessage } = useAppSelector((state) => ({
+    isLoading: state.customization.isLoading,
+    errorMessage: state.customization.errorMessage,
+  }));
+
   if (!isAuthenticated) {
     window.location.href = window.location.origin + '/pages/login';
     return null;
@@ -40,6 +46,12 @@ const MainLayout = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
+      {isLoading && <Loader />}
+      <SmallToast
+        message={errorMessage}
+        severity={Severity.Error}
+        onClose={() => dispatch(setErrorMessage(null))}
+      />
       {/* header */}
       <AppBar
         enableColorOnDark

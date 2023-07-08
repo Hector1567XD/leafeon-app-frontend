@@ -13,20 +13,23 @@ import styled from 'styled-components';
 const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange }) => {
     return (
         <div className={className}>
-            <DynamicTable headers={[
+            <DynamicTable
+                headers={[
                 { columnLabel: 'Id', fieldName: 'stateId', cellAlignment: 'left' },
                 { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
                 { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
-            ]} rows={items} components={[
-                (row: State) =>
-                <Button color="primary" startIcon={<IconEdit />}>
-                    Editar
-                </Button>,
-                (row: State) =>
-                <Button color="secondary" startIcon={<IconTrash />}>
-                    Eliminar
-                </Button>
-                ]} />
+                ]}
+                rows={items} components={[
+                    (row: State) =>
+                    <Button color="primary" startIcon={<IconEdit />}>
+                        Editar
+                    </Button>,
+                    (row: State) =>
+                    <Button color="secondary" startIcon={<IconTrash />}>
+                        Eliminar
+                    </Button>
+                ]}
+            />
             <div className={'paginator-container'}>
                 <Pagination
                     count={paginate.pages}
