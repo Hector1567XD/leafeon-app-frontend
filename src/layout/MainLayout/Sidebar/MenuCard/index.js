@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -6,7 +5,6 @@ import {
   Avatar,
   Card,
   CardContent,
-  Grid,
   List,
   ListItem,
   ListItemAvatar,
@@ -16,6 +14,7 @@ import {
 
 // assets
 import { IconChristmasTree } from '@tabler/icons';
+import EcoMessage from './EcoMessage';
 
 const CardStyle = styled(Card)(({ theme }) => ({
   background: theme.palette.secondary.light,
@@ -67,7 +66,7 @@ const MenuCard = () => {
                   Leafeon
                 </Typography>
               }
-              secondary={<Typography variant="caption"> "Cuida la naturaleza y ella cuidará de ti."</Typography>}
+              secondary={<EcoMessage />}
             />
           </ListItem>
         </List>
