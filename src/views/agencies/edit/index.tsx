@@ -28,7 +28,7 @@ const EditState: FunctionComponent<Props> = ({className}) => {
       setSubmitting(true);
       await editAgency(agencyRif!, values);
       navigate('/agencies');
-      dispatch(setSuccessMessage(`Agencia ${values.name} editada correctamente`));
+      dispatch(setSuccessMessage(`Agencia ${values.businessName} editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({

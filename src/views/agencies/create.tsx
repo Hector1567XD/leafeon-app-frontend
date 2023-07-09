@@ -22,7 +22,7 @@ const CreateAgency: FunctionComponent<Props> = ({className}) => {
       setSubmitting(true);
       await createAgency(values);
       navigate('/agencies');
-      dispatch(setSuccessMessage(`Agencia ${values.name} creada correctamente`));
+      dispatch(setSuccessMessage(`Agencia ${values.businessName} creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
