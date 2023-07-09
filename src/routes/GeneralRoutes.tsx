@@ -55,6 +55,19 @@ const GeneralRoutes: RouteObject[] = [
     path: 'agencies/edit/:id',
     element: <EditAgency />
   },
+  //Cargos
+  {
+    path: 'jobs',
+    element: <Agencies />
+  },
+  {
+    path: 'jobs/create',
+    element: <CreateAgency />
+  },
+  {
+    path: 'jobs/edit/:id',
+    element: <EditAgency />
+  },
 ];
 
 export default GeneralRoutes;
