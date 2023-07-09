@@ -8,24 +8,27 @@ import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
 import Form from '../form';
-import editCity from 'services/cities/edit-city';
-import useCityById from '../../../core/cities/use-city-by-id';
-import useCityId from './use-city-id';
+import editAgency from 'services/agencies/edit-agency';
+import useAgencyByRif from './use-agency-by-rif';
+import useAgencyRif from './use-agency-rif';
+import useCityById from 'core/cities/use-city-by-id';
 
 const EditState: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const cityId = useCityId();
-  const city = useCityById(cityId);
+  const agencyRif = useAgencyRif();
+  const agency = useAgencyByRif(agencyRif);
+  const city = useCityById(agency?.cityId || null);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+    console.log(values)
     try {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await editCity(cityId!, values);
-      navigate('/cities');
-      dispatch(setSuccessMessage(`Ciudad ${values.name} editada correctamente`));
+      await editAgency(agencyRif!, values);
+      navigate('/agencies');
+      dispatch(setSuccessMessage(`Agencia ${values.name} editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -37,24 +40,28 @@ const EditState: FunctionComponent<Props> = ({className}) => {
     } finally {
       setSubmitting(false);
     }
-  }, [dispatch, navigate, cityId]);
+  }, [dispatch, navigate, agencyRif]);
 
   return (
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Ciudades
+          Agencias
         </Typography>
       </MainCard>
       {
-        city && (
+        agency && city && (
           <Form
             initialValues={{
-              name: city.name,
+              businessName: agency.businessName,
+              agencyRif: agency.agencyRif,
+              cityId: agency.cityId,
               stateId: city.stateId,
+              managerDni: agency.managerDni,
               submit: null
             }}
-            title={'Editar ciudad'}
+            isUpdate={true}
+            title={'Editar agencia'}
             onSubmit={onSubmit}
           />
         )

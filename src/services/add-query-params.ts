@@ -1,4 +1,4 @@
-type QueryParams = Record<string, string | number | boolean>;
+type QueryParams = Record<string, string | number | boolean | null>;
 
 export default function addQueryParams(url: string, queryParams: QueryParams): string {
   const urlObj = new URL(url);

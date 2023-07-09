@@ -6,6 +6,8 @@ import MainCard from 'components/cards/MainCard';
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
 import styled from 'styled-components';
 
+const USE_AUTOCOMPLETES = false;
+
 const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues }) => {
 
   return (

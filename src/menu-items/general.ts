@@ -1,5 +1,5 @@
 // assets
-import { IconCurrentLocation, IconBuildingEstate } from '@tabler/icons';
+import { IconCurrentLocation, IconBuildingEstate, IconBuildingStore } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -10,7 +10,7 @@ const other: MenuItem = {
   children: [
     {
       id: 'states',
-      title: 'Estado',
+      title: 'Estados',
       type: MenuItemType.Collapse,
       icon: IconCurrentLocation,
       breadcrumbs: false,
@@ -33,7 +33,7 @@ const other: MenuItem = {
     },
     {
       id: 'cities',
-      title: 'Ciudad',
+      title: 'Ciudades',
       type: MenuItemType.Collapse,
       icon: IconBuildingEstate,
       breadcrumbs: false,
@@ -50,6 +50,29 @@ const other: MenuItem = {
           title: 'Crear ciudad',
           type: MenuItemType.Item,
           url: '/cities/create',
+          breadcrumbs: false,
+        }
+      ]
+    },
+    {
+      id: 'agencies',
+      title: 'Agencias',
+      type: MenuItemType.Collapse,
+      icon: IconBuildingStore,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-cities',
+          title: 'Lista de agencias',
+          type: MenuItemType.Item,
+          url: '/agencies',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-cities',
+          title: 'Crear agencia',
+          type: MenuItemType.Item,
+          url: '/agencies/create',
           breadcrumbs: false,
         }
       ]

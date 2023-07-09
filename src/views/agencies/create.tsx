@@ -4,28 +4,25 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
+import createAgency from 'services/agencies/create-agency';
 import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
-import Form from '../form';
-import editCity from 'services/cities/edit-city';
-import useCityById from '../../../core/cities/use-city-by-id';
-import useCityId from './use-city-id';
+import { useAppDispatch } from '../../store/index';
+import Form from './form';
 
-const EditState: FunctionComponent<Props> = ({className}) => {
+const CreateAgency: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const cityId = useCityId();
-  const city = useCityById(cityId);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+    console.log(values)
     try {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await editCity(cityId!, values);
-      navigate('/cities');
-      dispatch(setSuccessMessage(`Ciudad ${values.name} editada correctamente`));
+      await createAgency(values);
+      navigate('/agencies');
+      dispatch(setSuccessMessage(`Agencia ${values.name} creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -37,28 +34,28 @@ const EditState: FunctionComponent<Props> = ({className}) => {
     } finally {
       setSubmitting(false);
     }
-  }, [dispatch, navigate, cityId]);
+  }, [dispatch, navigate]);
 
   return (
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Ciudades
+          Agencias
         </Typography>
       </MainCard>
-      {
-        city && (
-          <Form
-            initialValues={{
-              name: city.name,
-              stateId: city.stateId,
-              submit: null
-            }}
-            title={'Editar ciudad'}
-            onSubmit={onSubmit}
-          />
-        )
-      }
+
+      <Form
+        initialValues={{
+          businessName: '',
+          agencyRif: '',
+          cityId: null,
+          stateId: null,
+          managerDni: null,
+          submit: null
+        }}
+        title={'Crear agencia'}
+        onSubmit={onSubmit}
+      />
     </div>
   );
 };
@@ -67,7 +64,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(EditState)`
+export default styled(CreateAgency)`
   display: flex;
   flex-direction: column;
 
@@ -90,4 +87,3 @@ export default styled(EditState)`
     flex-direction: row;
   }
 `;
-

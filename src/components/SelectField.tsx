@@ -18,6 +18,7 @@ const CustomSelect: FunctionComponent<Props> = ({
   error,
   label,
   name,
+  fullWidth,
   disabled,
   className,
   isAutocomplete,
@@ -36,6 +37,7 @@ const CustomSelect: FunctionComponent<Props> = ({
   if (isAutocomplete && (options.length || !value)) return (
     <div className={className}>
       <Autocomplete
+        disabled={disabled}
         id={name}
         options={options}
         getOptionLabel={(option: SelectOption) => option.label}
@@ -59,11 +61,12 @@ const CustomSelect: FunctionComponent<Props> = ({
           />
         }
       />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </div>
   );
 
   return (
-    <FormControl className={className} fullWidth error={error} disabled={disabled}>
+    <FormControl className={className} fullWidth={fullWidth} error={error} disabled={disabled}>
       <InputLabel>{label}</InputLabel>
       <Select
         id={name}
@@ -85,7 +88,7 @@ const CustomSelect: FunctionComponent<Props> = ({
           <em>Selecciona una opcion...</em>
         </MenuItem>
         {options.map((option: SelectOption) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem key={option.value + '-' + name} value={option.value}>
             {option.label}
           </MenuItem>
         ))}
@@ -107,6 +110,7 @@ export interface Props {
   name: string;
   className?: string;
   isAutocomplete?: boolean;
+  fullWidth?: boolean;
 }
 
 export interface SelectOption {

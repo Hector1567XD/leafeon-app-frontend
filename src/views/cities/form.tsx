@@ -6,7 +6,9 @@ import MainCard from 'components/cards/MainCard';
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
 import styled from 'styled-components';
 import SelectField from 'components/SelectField';
-import useStateOptions from './use-state-options';
+import useStateOptions from 'core/states/use-state-options';
+
+const USE_AUTOCOMPLETES = false;
 
 const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues }) => {
   const stateOptions = useStateOptions();
@@ -43,6 +45,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 />
               </FormControl>
               <SelectField
+                fullWidth={true}
                 className="field-form"
                 name="stateId"
                 onChange={handleChange}
@@ -51,7 +54,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 options={stateOptions}
                 helperText={touched.stateId ? errors.stateId : ''}
                 error={touched.stateId && !!errors.stateId}
-                isAutocomplete={true}
+                isAutocomplete={USE_AUTOCOMPLETES}
                 value={values.stateId}
               />
             </MainCard>
