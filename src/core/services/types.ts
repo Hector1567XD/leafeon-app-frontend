@@ -9,3 +9,5 @@ export interface Service {
   activities: Activity[]
   bookings: Booking[]
 }
+
+export interface PaginatedService extends Omit<Service, 'bookings' | 'activities'> {}

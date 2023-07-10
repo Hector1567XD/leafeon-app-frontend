@@ -12,7 +12,7 @@ import { FunctionComponent, ReactNode } from 'react';
 const DynamicTable: FunctionComponent<Props<any>> =({ headers, rows, settings, components }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="dynamic table">
+      <Table aria-label="dynamic table">
         <TableHead>
           <TableRow>
             {headers.map(({columnLabel, cellAlignment}, index) => (
@@ -35,7 +35,7 @@ const DynamicTable: FunctionComponent<Props<any>> =({ headers, rows, settings, c
                 components && (
                   <TableCell align={settings?.cellAlignment || 'right'}>
                     {
-                      components.map((renderComponent) => renderComponent(row))
+                      components.map((renderComponent, index) => renderComponent(row, index))
                     }
                   </TableCell>
                 )
@@ -49,7 +49,7 @@ const DynamicTable: FunctionComponent<Props<any>> =({ headers, rows, settings, c
 }
 
 type RowItem = Record<string, any>;
-type SettingComponent<T> = (rowItem: T) => ReactNode;
+type SettingComponent<T> = (rowItem: T, index: number) => ReactNode;
 
 interface Props<T> {
   headers: Header[];
