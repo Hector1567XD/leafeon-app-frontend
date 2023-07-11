@@ -15,22 +15,14 @@ import deleteJob from 'services/jobs/delete-job';
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    //onClick={() => { navigate('/jobs/edit/'+row.jobId) }}
 
-    const [errors, setErrors] = useState()
-    const [status, setStatus] = useState()
-    const [submitting, setSubmitting] = useState()
-
-
-    const onDelete = useCallback(async (jobId: number, { setErrors, setStatus, setSubmitting }: any) => {
+    const onDelete = useCallback(async (jobId: number) => {
         try {
-            console.log(jobId)
-            console.log('intentando borrar')
-            setErrors({});
-            setStatus({});
+            dispatch(setIsLoading(true));
             setSubmitting(true);
             await deleteJob(jobId!);
             navigate('/jobs');
+            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
