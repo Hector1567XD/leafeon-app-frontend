@@ -1,5 +1,5 @@
 // assets
-import { IconCurrentLocation, IconBuildingEstate, IconBuildingStore } from '@tabler/icons';
+import { IconBriefcase } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -12,7 +12,7 @@ const other: MenuItem = {
       id: 'jobs',
       title: 'Cargos',
       type: MenuItemType.Collapse,
-      icon: IconCurrentLocation,
+      icon: IconBriefcase,
       breadcrumbs: false,
       children: [
         {

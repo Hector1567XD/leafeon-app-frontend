@@ -3,13 +3,47 @@ import DynamicTable from 'components/DynamicTable';
 import { Job } from 'core/jobs/types';
 import styled from 'styled-components';
 // Own
-import { FunctionComponent } from 'react';
+import { useAppDispatch } from '../../store/index';
+import { setSuccessMessage } from 'store/customizationSlice';
+import BackendError from 'exceptions/backend-error';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
+import deleteJob from 'services/jobs/delete-job';
 
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    //onClick={() => { navigate('/jobs/edit/'+row.jobId) }}
+
+    const [errors, setErrors] = useState()
+    const [status, setStatus] = useState()
+    const [submitting, setSubmitting] = useState()
+
+
+    const onDelete = useCallback(async (jobId: number, { setErrors, setStatus, setSubmitting }: any) => {
+        try {
+            console.log(jobId)
+            console.log('intentando borrar')
+            setErrors({});
+            setStatus({});
+            setSubmitting(true);
+            await deleteJob(jobId!);
+            navigate('/jobs');
+            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
+        } catch (error) {
+            if (error instanceof BackendError) {
+                setErrors({
+                ...error.getFieldErrorsMessages(),
+                submit: error.getMessage()
+                });
+            }
+            setStatus({ success: false });
+        } finally {
+          setSubmitting(false);
+        }
+      }, []);
 
     return (
         <div className={className}>
@@ -28,7 +62,11 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                     Editar
                 </Button>,
                 (row: Job) =>
-                <Button color="secondary" startIcon={<IconTrash />}>
+                <Button 
+                    color="secondary" 
+                    onClick={ () => onDelete(row.jobId,{setErrors, setStatus, setSubmitting}) }
+                    startIcon={<IconTrash />}
+                >
                     Eliminar
                 </Button>
             ]}

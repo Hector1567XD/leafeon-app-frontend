@@ -9,6 +9,7 @@ const URL = `${API_BASE_URL}/jobs`;
 
 export default async function deleteJob(idJob: number): Promise<Job> {
   try {
+    console.log(idJob)
     const response = await axios.delete<Job>(
       `${URL}/${idJob}`, {
       headers: {
