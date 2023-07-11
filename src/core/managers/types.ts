@@ -6,3 +6,5 @@ export interface Manager {
   address: string;
   email: string;
 }
+
+//secondary es opcional?????????

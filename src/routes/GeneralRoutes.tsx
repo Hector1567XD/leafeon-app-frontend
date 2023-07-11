@@ -18,6 +18,10 @@ import EditAgency from 'views/agencies/edit';
 import Jobs from 'views/jobs';
 import CreateJob from 'views/jobs/create';
 import EditJob from 'views/jobs/edit';
+//Managers
+import Managers from 'views/managers';
+import CreateManager from 'views/managers';
+import EditManager from 'views/managers';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -71,6 +75,19 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'jobs/edit/:id',
     element: <EditJob />
+  },
+  //Encargados
+  {
+    path: 'managers',
+    element: <Managers />
+  },
+  {
+    path: 'managers/create',
+    element: <CreateManager />
+  },
+  {
+    path: 'managers/edit/:id',
+    element: <EditManager />
   },
 ];
 
