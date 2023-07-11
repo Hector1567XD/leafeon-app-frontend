@@ -4,9 +4,9 @@ import { Job } from 'core/jobs/types';
 import styled from 'styled-components';
 // Own
 import { useAppDispatch } from '../../store/index';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
-import { FunctionComponent, useCallback, useState } from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
@@ -19,23 +19,17 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
     const onDelete = useCallback(async (jobId: number) => {
         try {
             dispatch(setIsLoading(true));
-            setSubmitting(true);
             await deleteJob(jobId!);
             navigate('/jobs');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
-            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
-                setErrors({
-                ...error.getFieldErrorsMessages(),
-                submit: error.getMessage()
-                });
+                dispatch(setErrorMessage(error.getMessage()));
             }
-            setStatus({ success: false });
         } finally {
-          setSubmitting(false);
+            dispatch(setIsLoading(false));
         }
-      }, []);
+      }, [dispatch, navigate]);
 
     return (
         <div className={className}>
@@ -56,7 +50,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                 (row: Job) =>
                 <Button 
                     color="secondary" 
-                    onClick={ () => onDelete(row.jobId,{setErrors, setStatus, setSubmitting}) }
+                    onClick={ () => onDelete(row.jobId) }
                     startIcon={<IconTrash />}
                 >
                     Eliminar
