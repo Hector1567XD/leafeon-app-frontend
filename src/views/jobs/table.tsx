@@ -16,13 +16,13 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
             <DynamicTable
             headers={[
                 { columnLabel: 'Id', fieldName: 'jobId', cellAlignment: 'left' },
-                { columnLabel: 'Nombre', fieldName: 'Description', cellAlignment: 'left' }
+                { columnLabel: 'Nombre', fieldName: 'description', cellAlignment: 'left' }
             ]}
             rows={items} components={[
                 (row: Job) =>
                 <Button
                     color="primary"
-                    onClick={() => { navigate('/cities/edit/'+row.jobId) }}
+                    onClick={() => { navigate('/jobs/edit/'+row.jobId) }}
                     startIcon={<IconEdit />}
                 >
                     Editar

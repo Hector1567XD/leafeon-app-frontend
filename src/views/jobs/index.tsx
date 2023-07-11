@@ -10,35 +10,6 @@ import { IconCirclePlus } from '@tabler/icons';
 const JobsPage: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate();
   const { jobs, paginate, setPage } = usePaginate();
-  const jobss = [
-    {
-      jobId: 1,
-      description: 'Analista',
-      createdAt: '2023'
-    },
-    {
-      jobId: 2,
-      description: 'Obrero',
-      createdAt: '2023'
-    },
-    {
-      jobId: 3,
-      description: 'Programador',
-      createdAt: '2023'
-    },
-    {
-      jobId: 4,
-      description: 'Cambiador',
-      createdAt: '2023'
-    }
-  ]
-
-  const paginates = {
-    total: 10,
-    page: 1,
-    perPage: 5,
-    pages: 2
-  }
 
   const goToCreate = useCallback(() => {
     navigate('/jobs/create');
@@ -58,7 +29,7 @@ const JobsPage: FunctionComponent<Props> = ({ className }) => {
         </Button>
       </div>
     }>
-      <Table items={jobss} paginate={paginates} onChange={setPage} />
+      <Table items={jobs} paginate={paginate} onChange={setPage} />
     </MainCard>
   );
 };

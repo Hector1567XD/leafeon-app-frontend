@@ -14,6 +14,10 @@ import EditCity from 'views/cities/edit';
 import Agencies from 'views/agencies';
 import CreateAgency from 'views/agencies/create';
 import EditAgency from 'views/agencies/edit';
+//Job
+import Jobs from 'views/jobs';
+import CreateJob from 'views/jobs/create';
+import EditJob from 'views/jobs/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -58,15 +62,15 @@ const GeneralRoutes: RouteObject[] = [
   //Cargos
   {
     path: 'jobs',
-    element: <Agencies />
+    element: <Jobs />
   },
   {
     path: 'jobs/create',
-    element: <CreateAgency />
+    element: <CreateJob />
   },
   {
     path: 'jobs/edit/:id',
-    element: <EditAgency />
+    element: <EditJob />
   },
 ];
 

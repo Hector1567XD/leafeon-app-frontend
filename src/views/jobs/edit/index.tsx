@@ -4,24 +4,28 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
-import createJob from 'services/jobs/create-job';
 import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../store/index';
-import Form from './form';
+import { useAppDispatch } from '../../../store/index';
+import Form from '../form';
+import editJob from 'services/jobs/edit-job';
+import useJobById from './use-job-by-id';
+import useJobId from './use-job-id';
 
-const CreateJob: FunctionComponent<Props> = ({className}) => {
+const EditJob: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const jobId = useJobId();
+  const job = useJobById(jobId);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     try {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createJob(values);
+      await editJob(jobId!, values);
       navigate('/jobs');
-      dispatch(setSuccessMessage(`Cargo ${values.description} creado correctamente`));
+      dispatch(setSuccessMessage(`Cargo ${values.description} editado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -33,7 +37,7 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
     } finally {
       setSubmitting(false);
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, jobId]);
 
   return (
     <div className={className}>
@@ -42,15 +46,18 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
           Cargos
         </Typography>
       </MainCard>
-
-      <Form
-        initialValues={{
-          description: '',
-          submit: null
-        }}
-        title={'Crear cargo'}
-        onSubmit={onSubmit}
-      />
+      {
+        job && (
+          <Form
+            initialValues={{
+              description: job.description,
+              submit: null
+            }}
+            title={'Editar cargo'}
+            onSubmit={onSubmit}
+          />
+        )
+      }
     </div>
   );
 };
@@ -59,7 +66,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(CreateJob)`
+export default styled(EditJob)`
   display: flex;
   flex-direction: column;
 
@@ -82,3 +89,4 @@ export default styled(CreateJob)`
     flex-direction: row;
   }
 `;
+

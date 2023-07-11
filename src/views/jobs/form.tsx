@@ -19,7 +19,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         initialValues={initialValues}
         validationSchema={
           Yup.object().shape({
-            name: Yup.string().max(30).required('La descripcion del cargo es requerido'),
+            description: Yup.string().max(30).required('La descripcion del cargo es requerido'),
           })
         }
         onSubmit={onSubmit as any}
@@ -29,15 +29,15 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
             <MainCard className={'form-data'} title={title}>
               <FormControl fullWidth>
                 <TextField
-                  id="name"
+                  id="description"
                   label="Descripcion de cargo"
                   variant="outlined"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.name}
-                  helperText={touched.name ? errors.name : ''}
-                  error={touched.name && !!errors.name}
-                  name="name"
+                  value={values.description}
+                  helperText={touched.description ? errors.description : ''}
+                  error={touched.description && !!errors.description}
+                  name="description"
                 />
               </FormControl>
             </MainCard>
@@ -65,7 +65,7 @@ interface Props {
 }
 
 type FormValues = {
-  name: string;
+  description: string;
   submit: string | null;
 };
 
