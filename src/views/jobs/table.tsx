@@ -36,13 +36,13 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
             navigate('/jobs');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
-            if (error instanceof BackendError)
-              dispatch(setErrorMessage(error.getMessage()));
-          } finally {
-           dispatch(setIsLoading(false));
-           setOpen(false);
-          }
-      }, []);
+            if (error instanceof BackendError) {
+                dispatch(setErrorMessage(error.getMessage()));
+            }
+        } finally {
+            dispatch(setIsLoading(false));
+        }
+      }, [dispatch, navigate]);
 
     return (
         <div className={className}>
