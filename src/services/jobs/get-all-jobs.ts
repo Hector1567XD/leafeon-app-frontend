@@ -11,6 +11,7 @@ const URL = `${API_BASE_URL}/jobs`;
 export default async function getAllJobs(body?: Body): Promise<Job[]> {
   try {
     const urlPaginated = addQueryParams(URL, body || {});
+    console.log('hola '+urlPaginated)
     const response = await axios.get<Job[]>(
       urlPaginated, {
         headers: {

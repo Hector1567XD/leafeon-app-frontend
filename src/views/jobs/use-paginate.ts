@@ -36,5 +36,5 @@ export default function usePaginate() {
     fetchJobs();
   }, [fetchJobs]);
 
-  return { jobs, paginate, setPage };
+  return { jobs, paginate, setPage, fetchJobs };
 }

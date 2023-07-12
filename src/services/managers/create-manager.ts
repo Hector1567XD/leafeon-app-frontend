@@ -9,6 +9,8 @@ const URL = `${API_BASE_URL}/managers`;
 
 export default async function createManager(body: ManagerPayload): Promise<Manager> {
   try {
+    console.log('hola bb'+JSON.stringify(body))
+    
     const response = await axios.post<Manager>(
         URL, body, {
         headers: {

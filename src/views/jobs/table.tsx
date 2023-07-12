@@ -3,7 +3,7 @@ import DynamicTable from 'components/DynamicTable';
 import { Job } from 'core/jobs/types';
 import styled from 'styled-components';
 // Own
-import { useAppDispatch } from '../../store/index';
+import { useAppDispatch } from 'store/index';
 import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
 import { FunctionComponent, useCallback, useState } from 'react';
@@ -11,9 +11,9 @@ import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 import deleteJob from 'services/jobs/delete-job';
-import DialogDelete from './dialogDelete';
+import DialogDelete from 'components/dialogDelete';
 
-const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
+const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
@@ -42,8 +42,9 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
         } finally {
             dispatch(setIsLoading(false));
             handleClose();
+            fetchItems();
         }
-      }, [dispatch, navigate]);
+      }, [dispatch, fetchItems, navigate]);
 
     return (
         <div className={className}>
@@ -71,7 +72,9 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                 </Button>
             ]}
         />
-        <DialogDelete handleClose={handleClose} id={jobId} onDelete={onDelete} open={open}/>
+        <DialogDelete handleClose={handleClose} onDelete={() => {
+            onDelete(jobId)
+        } } open={open}/>
 
             <div className={'paginator-container'}>
               <Pagination
@@ -92,6 +95,7 @@ interface Prop {
   paginate: PaginateData;
   className?: string;
   onChange: (page: number) => void;
+  fetchItems: () => void;
 }
 
 export default styled(Table)`

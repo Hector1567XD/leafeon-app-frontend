@@ -3,7 +3,7 @@ import styled from 'styled-components';
 // Own
 import { FunctionComponent} from 'react';
 
-const DialogDelete: FunctionComponent<Prop> = ({  open, id, handleClose, className, onDelete }) => {
+const DialogDelete: FunctionComponent<Prop> = ({  open, handleClose, className, onDelete }) => {
   return (
     <div className={className}>
       <Dialog
@@ -12,15 +12,15 @@ const DialogDelete: FunctionComponent<Prop> = ({  open, id, handleClose, classNa
         aria-labelledby="alert-delete-title"
         aria-describedby="alert-delete-description"
       >
-        <DialogTitle id="alert-delete-title">{"Confirmación"}</DialogTitle>
+        <DialogTitle id="alert-delete-title" fontSize={"16px"}>{"Confirmación"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-delete-description">
             ¿Está seguro de querer borrar este elemento?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">Cancelar</Button>
-          <Button onClick={() => onDelete(id)} color="primary" variant='contained'>Aceptar</Button>
+          <Button onClick={handleClose} color="secondary" size='small'>Cancelar</Button>
+          <Button onClick={() => onDelete()} color="primary" variant='contained' size='small'>Borrar</Button>
         </DialogActions>
       </Dialog>
     </div>
@@ -29,20 +29,13 @@ const DialogDelete: FunctionComponent<Prop> = ({  open, id, handleClose, classNa
 
 interface Prop {
   open: boolean;
-  id: number;
   handleClose: () => void;
   className?: string;
-  onDelete: (id: number) => void;
+  onDelete: () => void;
 }
 
 export default styled(DialogDelete)`
     display: flex;
     flex-direction: column;
-
-    .paginator-container {
-        margin-top: 12px;
-        display: flex;
-        justify-content: center;
-        flex-direction: row;
-    }
+    margin:
 `;
