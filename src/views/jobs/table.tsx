@@ -11,6 +11,7 @@ import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 import deleteJob from 'services/jobs/delete-job';
+import DialogDelete from './dialogDelete';
 
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
     const navigate = useNavigate();
@@ -19,7 +20,6 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
     const [jobId, setJobId] = useState<number>(0)
 
     const handleOpen = (jobId: number) => {
-        console.log("abriendo")
         setOpen(true);
         setJobId(jobId); 
     }
@@ -41,6 +41,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
             }
         } finally {
             dispatch(setIsLoading(false));
+            handleClose();
         }
       }, [dispatch, navigate]);
 
@@ -70,25 +71,8 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                 </Button>
             ]}
         />
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-delete-title"
-            aria-describedby="alert-delete-description"
+        <DialogDelete handleClose={handleClose} id={jobId} onDelete={onDelete} open={open}/>
 
-        >
-            <DialogTitle id="alert-delete-title">{"Confirmación"}</DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-delete-description">
-                    ¿Está seguro de querer borrar este elemento?
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="secondary">Cancelar</Button>
-                <Button onClick={() => onDelete(jobId)} color="primary">Aceptar</Button>
-            </DialogActions>
-
-        </Dialog>
             <div className={'paginator-container'}>
               <Pagination
                   count={paginate.pages}

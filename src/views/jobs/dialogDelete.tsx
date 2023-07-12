@@ -4,27 +4,27 @@ import styled from 'styled-components';
 import { FunctionComponent} from 'react';
 
 const DialogDelete: FunctionComponent<Prop> = ({  open, id, handleClose, className, onDelete }) => {
-    return (
-      <div className={className}>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-delete-title"
-          aria-describedby="alert-delete-description"
-        >
-          <DialogTitle id="alert-delete-title">{"Confirmación"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-delete-description">
-              ¿Está seguro de querer borrar este elemento?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="secondary">Cancelar</Button>
-            <Button onClick={() => onDelete(id)} color="primary">Aceptar</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
+  return (
+    <div className={className}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-delete-title"
+        aria-describedby="alert-delete-description"
+      >
+        <DialogTitle id="alert-delete-title">{"Confirmación"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-delete-description">
+            ¿Está seguro de querer borrar este elemento?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">Cancelar</Button>
+          <Button onClick={() => onDelete(id)} color="primary" variant='contained'>Aceptar</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 }
 
 interface Prop {

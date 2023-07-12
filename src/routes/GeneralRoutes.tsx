@@ -20,8 +20,8 @@ import CreateJob from 'views/jobs/create';
 import EditJob from 'views/jobs/edit';
 //Managers
 import Managers from 'views/managers';
-import CreateManager from 'views/managers';
-import EditManager from 'views/managers';
+import CreateManager from 'views/managers/create';
+import EditManager from 'views/managers/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados

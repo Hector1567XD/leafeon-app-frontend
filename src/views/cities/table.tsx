@@ -3,13 +3,47 @@ import DynamicTable from 'components/DynamicTable';
 import { City } from 'core/cities/types';
 import styled from 'styled-components';
 // Own
-import { FunctionComponent } from 'react';
+import { useAppDispatch } from '../../store/index';
+import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
+import BackendError from 'exceptions/backend-error';
+import deleteCity from 'services/cities/delete-city';
+import DialogDelete from './dialogDelete';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [open, setOpen] = useState<boolean>(false)
+    const [currentCityId, setCurrentCityId] = useState<number>(0)
+
+    const handleOpen = (currentCityId: number) => {
+        setOpen(true);
+        setCurrentCityId(currentCityId); 
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+        setCurrentCityId(0); 
+    }
+
+    const onDelete = useCallback(async (jobId: number) => {
+        try {
+            dispatch(setIsLoading(true));
+            await deleteCity(jobId!);
+            navigate('/jobs');
+            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
+        } catch (error) {
+            if (error instanceof BackendError) {
+                dispatch(setErrorMessage(error.getMessage()));
+            }
+        } finally {
+            dispatch(setIsLoading(false));
+            handleClose();
+        }
+      }, [dispatch, navigate]);
 
     return (
         <div className={className}>
@@ -35,6 +69,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                 </Button>
             ]}
         />
+        <DialogDelete handleClose={handleClose} id={currentCityId} onDelete={onDelete} open={open}/>
             <div className={'paginator-container'}>
               <Pagination
                   count={paginate.pages}
