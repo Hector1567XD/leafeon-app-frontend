@@ -1,10 +1,10 @@
-import { Button, Pagination } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
 import { Job } from 'core/jobs/types';
 import styled from 'styled-components';
 // Own
 import { useAppDispatch } from '../../store/index';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
 import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
@@ -15,26 +15,33 @@ import deleteJob from 'services/jobs/delete-job';
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [open, setOpen] = useState<boolean>(false)
+    const [jobId, setJobId] = useState<number>(0)
+
+    const handleOpen = (jobId: number) => {
+        console.log("abriendo")
+        setOpen(true);
+        setJobId(jobId); 
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+        setJobId(0); 
+    }
 
     const onDelete = useCallback(async (jobId: number) => {
         try {
             dispatch(setIsLoading(true));
-            setSubmitting(true);
             await deleteJob(jobId!);
             navigate('/jobs');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
-            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
-            if (error instanceof BackendError) {
-                setErrors({
-                ...error.getFieldErrorsMessages(),
-                submit: error.getMessage()
-                });
-            }
-            setStatus({ success: false });
-        } finally {
-          setSubmitting(false);
-        }
+            if (error instanceof BackendError)
+              dispatch(setErrorMessage(error.getMessage()));
+          } finally {
+           dispatch(setIsLoading(false));
+           setOpen(false);
+          }
       }, []);
 
     return (
@@ -56,13 +63,32 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                 (row: Job) =>
                 <Button 
                     color="secondary" 
-                    onClick={ () => onDelete(row.jobId,{setErrors, setStatus, setSubmitting}) }
+                    onClick={ () => handleOpen(row.jobId) }
                     startIcon={<IconTrash />}
                 >
                     Eliminar
                 </Button>
             ]}
         />
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-delete-title"
+            aria-describedby="alert-delete-description"
+
+        >
+            <DialogTitle id="alert-delete-title">{"Confirmación"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-delete-description">
+                    ¿Está seguro de querer borrar este elemento?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} color="secondary">Cancelar</Button>
+                <Button onClick={() => onDelete(jobId)} color="primary">Aceptar</Button>
+            </DialogActions>
+
+        </Dialog>
             <div className={'paginator-container'}>
               <Pagination
                   count={paginate.pages}
