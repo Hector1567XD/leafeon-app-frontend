@@ -21,29 +21,6 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
     const [submitting, setSubmitting] = useState()
 
 
-    // const onDelete = useCallback(async (managerDni: string, { setErrors, setStatus, setSubmitting }: any) => {
-    //     try {
-    //         console.log(managerDni)
-    //         console.log('intentando borrar')
-    //         setErrors({});
-    //         setStatus({});
-    //         setSubmitting(true);
-    //         await deleteJob(managerDni!);
-    //         navigate('/managers');
-    //         dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
-    //     } catch (error) {
-    //         if (error instanceof BackendError) {
-    //             setErrors({
-    //             ...error.getFieldErrorsMessages(),
-    //             submit: error.getMessage()
-    //             });
-    //         }
-    //         setStatus({ success: false });
-    //     } finally {
-    //       setSubmitting(false);
-    //     }
-    //   }, []);
-
     return (
         <div className={className}>
             <DynamicTable
