@@ -7,7 +7,7 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/clients`;
 
-export default async function deleteClient(clientDni: number): Promise<Client> {
+export default async function deleteClient(clientDni: string): Promise<Client> {
   try {
     const response = await axios.delete<Client>(
       `${URL}/${clientDni}`, {
