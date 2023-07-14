@@ -124,7 +124,7 @@ interface Props {
   initialValues: FormValues;
 }
 
-type FormValues = {
+export type FormValues = {
   managerDni: string;
   name: string;
   mainPhone: string;

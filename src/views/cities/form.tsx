@@ -80,7 +80,7 @@ interface Props {
   initialValues: FormValues;
 }
 
-type FormValues = {
+export type FormValues = {
   name: string;
   stateId: number | null;
   submit: string | null;
