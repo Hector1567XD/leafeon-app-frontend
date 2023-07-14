@@ -5,13 +5,14 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
-import Form from '../form';
+import Form, { FormValues } from '../form';
 import editAgency from 'services/agencies/edit-agency';
 import useAgencyByRif from './use-agency-by-rif';
 import useAgencyRif from './use-agency-rif';
 import useCityById from 'core/cities/use-city-by-id';
+import { FormikHelpers } from 'formik';
 
 const EditState: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -20,9 +21,10 @@ const EditState: FunctionComponent<Props> = ({className}) => {
   const agency = useAgencyByRif(agencyRif);
   const city = useCityById(agency?.cityId || null);
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     console.log(values)
     try {
+      dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
@@ -35,9 +37,11 @@ const EditState: FunctionComponent<Props> = ({className}) => {
           ...error.getFieldErrorsMessages(),
           submit: error.getMessage()
         });
+        dispatch(setErrorMessage(error.getMessage()));
       }
       setStatus({ success: false });
     } finally {
+      dispatch(setIsLoading(false));
       setSubmitting(false);
     }
   }, [dispatch, navigate, agencyRif]);

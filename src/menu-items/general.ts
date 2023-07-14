@@ -4,7 +4,7 @@ import { MenuItem, MenuItemType } from './types';
 // constant
 
 const other: MenuItem = {
-  id: 'agencies-crud-category',
+  id: 'agencies-crud-category-general',
   type: MenuItemType.Group,
   title: 'General',
   children: [

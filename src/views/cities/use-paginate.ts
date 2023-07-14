@@ -36,5 +36,5 @@ export default function usePaginate() {
     fetchCities();
   }, [fetchCities]);
 
-  return { cities, paginate, setPage };
+  return { cities, paginate, setPage, fetchCities };
 }

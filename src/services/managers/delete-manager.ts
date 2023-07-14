@@ -1,16 +1,16 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Client } from 'core/clients/types';
+import { Manager } from 'core/managers/types';
 import BackendError from 'exceptions/backend-error';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/clients`;
+const URL = `${API_BASE_URL}/managers`;
 
-export default async function deleteClient(clientDni: string): Promise<Client> {
+export default async function deleteManager(managerDni: string): Promise<Manager> {
   try {
-    const response = await axios.delete<Client>(
-      `${URL}/${clientDni}`, {
+    const response = await axios.delete<Manager>(
+      `${URL}/${managerDni}`, {
       headers: {
         Authorization: `Bearer ${store.getState().auth.token}`,
       }
@@ -23,4 +23,4 @@ export default async function deleteClient(clientDni: string): Promise<Client> {
   }
 }
 
-export type ClientPayload = Omit<Client, 'clientDni' | 'createdAt'>;
+export type ManagerPayload = Omit<Manager, 'ManagerId' | 'createdAt'>;

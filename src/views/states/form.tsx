@@ -64,7 +64,7 @@ interface Props {
   initialValues: FormValues;
 }
 
-type FormValues = {
+export type FormValues = {
   name: string;
   submit: string | null;
 };

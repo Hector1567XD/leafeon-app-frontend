@@ -4,14 +4,14 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
-import createManager from 'services/managers/create-manager';
+import createClient from 'services/clients/create-client';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from 'store';
+import { useAppDispatch } from '../../store/index';
 import Form, { FormValues } from './form';
 import { FormikHelpers } from 'formik';
 
-const CreateJob: FunctionComponent<Props> = ({className}) => {
+const CreateClient: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -21,9 +21,9 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createManager(values);
-      navigate('/managers');
-      dispatch(setSuccessMessage(`Encargado ${values.name} creado correctamente`));
+      await createClient(values);
+      navigate('/clients');
+      dispatch(setSuccessMessage(`Cliente ${values.name} creado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -32,7 +32,7 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
         });
         dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
+      setStatus({ success: 'false'});
     } finally {
       dispatch(setIsLoading(false));
       setSubmitting(false);
@@ -43,21 +43,20 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Encargados
+          Clientes
         </Typography>
       </MainCard>
 
       <Form
         initialValues={{
-          managerDni: "",
-          name: "",
-          mainPhone: "",
-          secondaryPhone: "",
-          address: "",
-          email: "",
+          clientDni: '',
+          name: '',
+          email: '',
+          mainPhone: '',
+          secondaryPhone: '',
           submit: null
         }}
-        title={'Crear encargado'}
+        title={'Crear cliente'}
         onSubmit={onSubmit}
       />
     </div>
@@ -68,7 +67,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(CreateJob)`
+export default styled(CreateClient)`
   display: flex;
   flex-direction: column;
 
