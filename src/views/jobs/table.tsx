@@ -1,38 +1,38 @@
-import { Button, Pagination } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
-import { City } from 'core/cities/types';
+import { Job } from 'core/jobs/types';
 import styled from 'styled-components';
 // Own
-import { useAppDispatch } from '../../store/index';
+import { useAppDispatch } from 'store/index';
 import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
-import deleteCity from 'services/cities/delete-city';
-import DialogDelete from './dialogDelete';
 import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
+import deleteJob from 'services/jobs/delete-job';
+import DialogDelete from 'components/dialogDelete';
 
-const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
+const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
-    const [currentCityId, setCurrentCityId] = useState<number>(0)
+    const [jobId, setJobId] = useState<number>(0)
 
-    const handleOpen = (currentCityId: number) => {
+    const handleOpen = (jobId: number) => {
         setOpen(true);
-        setCurrentCityId(currentCityId); 
+        setJobId(jobId); 
     }
 
     const handleClose = () => {
         setOpen(false);
-        setCurrentCityId(0); 
+        setJobId(0); 
     }
 
     const onDelete = useCallback(async (jobId: number) => {
         try {
             dispatch(setIsLoading(true));
-            await deleteCity(jobId!);
+            await deleteJob(jobId!);
             navigate('/jobs');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
@@ -42,34 +42,40 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
         } finally {
             dispatch(setIsLoading(false));
             handleClose();
+            fetchItems();
         }
-      }, [dispatch, navigate]);
+      }, [dispatch, fetchItems, navigate]);
 
     return (
         <div className={className}>
             <DynamicTable
             headers={[
-                { columnLabel: 'Id', fieldName: 'cityId', cellAlignment: 'left' },
-                { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
-                { columnLabel: 'Estado', fieldName: 'stateId', cellAlignment: 'left' },
-                { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
+                { columnLabel: 'Id', fieldName: 'jobId', cellAlignment: 'left' },
+                { columnLabel: 'Nombre', fieldName: 'description', cellAlignment: 'left' }
             ]}
             rows={items} components={[
-                (row: City) =>
+                (row: Job) =>
                 <Button
                     color="primary"
-                    onClick={() => { navigate('/cities/edit/'+row.cityId) }}
+                    onClick={() => { navigate('/jobs/edit/'+row.jobId) }}
                     startIcon={<IconEdit />}
                 >
                     Editar
                 </Button>,
-                (row: City) =>
-                <Button color="secondary" startIcon={<IconTrash />}>
+                (row: Job) =>
+                <Button 
+                    color="secondary" 
+                    onClick={ () => handleOpen(row.jobId) }
+                    startIcon={<IconTrash />}
+                >
                     Eliminar
                 </Button>
             ]}
         />
-        <DialogDelete handleClose={handleClose} id={currentCityId} onDelete={onDelete} open={open}/>
+        <DialogDelete handleClose={handleClose} onDelete={() => {
+            onDelete(jobId)
+        } } open={open}/>
+
             <div className={'paginator-container'}>
               <Pagination
                   count={paginate.pages}
@@ -85,10 +91,11 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
 }
 
 interface Prop {
-  items: City[];
+  items: Job[];
   paginate: PaginateData;
   className?: string;
   onChange: (page: number) => void;
+  fetchItems: () => void;
 }
 
 export default styled(Table)`

@@ -1,18 +1,19 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Manager } from 'core/managers/types';
+import { Job } from 'core/jobs/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/managers/all`;
+const URL = `${API_BASE_URL}/jobs`;
 
-export default async function getAllManagers(body?: Body): Promise<Manager[]> {
+export default async function getAllJobs(body?: Body): Promise<Job[]> {
   try {
-    const urlParametrized = addQueryParams(URL, body || {});
-    const response = await axios.get<Manager[]>(
-      urlParametrized, {
+    const urlPaginated = addQueryParams(URL, body || {});
+    console.log('hola '+urlPaginated)
+    const response = await axios.get<Job[]>(
+      urlPaginated, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -25,7 +26,4 @@ export default async function getAllManagers(body?: Body): Promise<Manager[]> {
   }
 }
 
-export type Body = {
-  onlyAvailable: true,
-  includeManager: string | null,
-}
+export type Body = { jobId?: number; };

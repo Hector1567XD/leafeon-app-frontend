@@ -4,15 +4,16 @@ import { API_BASE_URL } from 'config/constants';
 import { Manager } from 'core/managers/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
+import { PaginateBody, PaginatedResponse } from 'services/types';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/managers/all`;
+const URL = `${API_BASE_URL}/managers`;
 
-export default async function getAllManagers(body?: Body): Promise<Manager[]> {
+export default async function getPaginate(body: PaginateBody): Promise<ManagersPaginated> {
   try {
-    const urlParametrized = addQueryParams(URL, body || {});
-    const response = await axios.get<Manager[]>(
-      urlParametrized, {
+    const urlPaginated = addQueryParams(URL, body);
+    const response = await axios.get<ManagersPaginated>(
+      urlPaginated, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -25,7 +26,4 @@ export default async function getAllManagers(body?: Body): Promise<Manager[]> {
   }
 }
 
-export type Body = {
-  onlyAvailable: true,
-  includeManager: string | null,
-}
+type ManagersPaginated = PaginatedResponse<Manager>;

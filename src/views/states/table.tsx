@@ -6,13 +6,47 @@ import { IconTrash, IconEdit } from '@tabler/icons';
 import DynamicTable from 'components/DynamicTable';
 // Own
 import { State } from 'core/states/types';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { StatePaginatedResponse } from 'services/states/get-paginate';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
+import { useAppDispatch } from '../../store/index';
+import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
+import BackendError from 'exceptions/backend-error';
+import deleteState from 'services/states/delete-state';
+import DialogDelete from './dialogDelete';
 
 const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange }) => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [open, setOpen] = useState<boolean>(false)
+    const [currentStateId, setCurrentStateId] = useState<number>(0)
+
+    const handleOpen = (currentStateId: number) => {
+        setOpen(true);
+        setCurrentStateId(currentStateId); 
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+        setCurrentStateId(0); 
+    }
+
+    const onDelete = useCallback(async (currentStateId: number) => {
+        try {
+            dispatch(setIsLoading(true));
+            await deleteState(currentStateId!);
+            navigate('/states');
+            dispatch(setSuccessMessage(`Estado eliminado correctamente`));
+        } catch (error) {
+            if (error instanceof BackendError) {
+                dispatch(setErrorMessage(error.getMessage()));
+            }
+        } finally {
+            dispatch(setIsLoading(false));
+            handleClose();
+        }
+      }, [dispatch, navigate]);
 
     return (
         <div className={className}>
@@ -32,11 +66,16 @@ const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange 
                         Editar
                     </Button>,
                     (row: State) =>
-                    <Button color="secondary" startIcon={<IconTrash />}>
+                    <Button 
+                        color="secondary" 
+                        onClick={ () => handleOpen(row.stateId) }
+                        startIcon={<IconTrash />}
+                    >
                         Eliminar
                     </Button>
                 ]}
             />
+            <DialogDelete handleClose={handleClose} id={currentStateId} onDelete={onDelete} open={open}/>
             <div className={'paginator-container'}>
                 <Pagination
                     count={paginate.pages}
