@@ -13,7 +13,6 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography,
 } from '@mui/material';
 
 // third party
@@ -21,21 +20,25 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import login from 'services/auth/login';
+import { authUser } from 'store/authSlice';
+import { useAppDispatch, useAppSelector } from 'store';
+import { useNavigate } from 'react-router-dom';
+
 // ============================|| FIREBASE - LOGIN ||============================ //
 
-const showForgotPassword = false;
-
 const FirebaseLogin = ({ ...others }) => {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
-  const [checked, setChecked] = useState(true);
+  const [rememberCheck, setRememberCheck] = useState(true);
+  const navigate = useNavigate();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuth);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -46,13 +49,17 @@ const FirebaseLogin = ({ ...others }) => {
     event.preventDefault();
   };
 
+  if (isAuthenticated) {
+    window.location.href = window.location.origin + '/dashboard/default';
+    return null;
+  }
+
   return (
     <>
-
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
+          email: 'a@a.ve',
+          password: 'a',
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -61,17 +68,18 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            const user = await login({
+              email: values.email,
+              password: values.password
+            });
+            dispatch(authUser({ ...user, remember: rememberCheck }));
+            setErrors({ submit: null });
+            setSubmitting(true);
+            navigate('/dashboard/default');
+          } catch (error) {
+            setErrors({ submit: error.getMessage() });
+            setStatus({ success: false });
+            setSubmitting(false);
           }
         }}
       >
@@ -130,16 +138,15 @@ const FirebaseLogin = ({ ...others }) => {
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
               <FormControlLabel
                 control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
+                  <Checkbox 
+                  checked={rememberCheck} 
+                  onChange={(event) => setRememberCheck(event.target.checked)} 
+                  name="remember" 
+                  color="primary" />
                 }
+                name="remember"
                 label="Recordar contraseña"
               />
-              {
-                showForgotPassword &&
-                <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                  ¿Olvidaste tu contraseña?
-                </Typography>
-              }
             </Stack>
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
