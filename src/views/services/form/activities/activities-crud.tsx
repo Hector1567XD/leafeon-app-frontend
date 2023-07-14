@@ -6,7 +6,8 @@ import { IconCirclePlus } from '@tabler/icons';
 import ActivitiesList from './activities-list';
 import MainCard from 'components/cards/MainCard';
 import Form, { ActivityFormValues } from './form';
-import { Activity } from 'core/activities/types';
+import { FormikHelpers } from 'formik';
+import { ActivityLocal } from '../types';
 
 const style = {
   position: 'absolute',
@@ -24,53 +25,59 @@ const DEFAULT_INITIAL_VALUE: ActivityFormValues = {
   submit: null,
 };
 
-const ActivitiesCrud: FunctionComponent<Props> = ({ className, isUpdate, onDelete, items }) => {
+const ActivitiesCrud: FunctionComponent<Props> = ({ className, isUpdate, items, onDelete, onUpdate, onCreate, onRevertDelete }) => {
   //const isCreated = !isUpdate;
   const [open, setOpen] = useState(false);
-  const [isChildUpdate, setIsChildUpdate] = useState(false);
   const [initialValue, setInitialValue] = useState<ActivityFormValues | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const isChildUpdate = selectedIndex !== null;
 
   const closeModal = useCallback(() => {
     setOpen(false);
     setInitialValue(null);
+    setSelectedIndex(null);
   }, []);
 
   const openCreateModal = useCallback(() => {
     setOpen(true);
     setInitialValue({ ...DEFAULT_INITIAL_VALUE });
+    setSelectedIndex(null);
   }, []);
 
-  const openEditModal = useCallback((activity: Activity, index: number) => {
+  const openEditModal = useCallback((activity: ActivityLocal, index: number) => {
+    console.log('-----', activity, index);
     setOpen(true);
     setInitialValue({
       description: activity.description,
       costHour: activity.costHour,
       submit: null,
     });
+    setSelectedIndex(index);
   }, []);
 
   return (
     <>
       <MainCard className={className} headerClass={'page-header-container'}
         title={
-        <div className={'page-header'}>
-          <span>
-              Actividades
-          </span>
-          <Button
-            color="primary"
-            size="small"
-            variant={'outlined'}
-            onClick={openCreateModal}
-            startIcon={<IconCirclePlus />}
-          >
-            Crear
-          </Button>
-        </div>
-      }
+          <div className={'page-header'}>
+            <span>
+                Actividades
+            </span>
+            <Button
+              color="primary"
+              size="small"
+              variant={'outlined'}
+              onClick={openCreateModal}
+              startIcon={<IconCirclePlus />}
+            >
+              Crear
+            </Button>
+          </div>
+        }
       >
         <ActivitiesList
           items={items}
+          onRevertDelete={onRevertDelete}
           onEdit={openEditModal}
           onDelete={onDelete}
         />
@@ -88,7 +95,18 @@ const ActivitiesCrud: FunctionComponent<Props> = ({ className, isUpdate, onDelet
             >
               {open && initialValue &&
                 <Form
-                  onSubmit={() => {}}
+                onSubmit={
+                    (
+                      values: ActivityFormValues, helpers: FormikHelpers<ActivityFormValues>
+                    ) => {
+                      if (isChildUpdate && selectedIndex !== null) {
+                        onUpdate(items[selectedIndex], values, selectedIndex);
+                      } else {
+                        onCreate(values);
+                      }
+                      closeModal();
+                    }
+                  }
                   initialValues={initialValue}
                   isUpdate={isChildUpdate}
                 />
@@ -104,10 +122,11 @@ const ActivitiesCrud: FunctionComponent<Props> = ({ className, isUpdate, onDelet
 interface Props {
   className?: string;
   isUpdate?: boolean;
-  items: Activity[];
-  onDelete: (activity: Activity, index: number) => void;
-  onUpdate: (activity: Activity, formValues: ActivityFormValues, index: number) => void;
-  onCreate: (formValues: ActivityFormValues, index: number) => void;
+  items: ActivityLocal[];
+  onDelete: (activity: ActivityLocal, index: number) => void;
+  onRevertDelete: (activity: ActivityLocal, index: number) => void;
+  onUpdate: (activity: ActivityLocal, formValues: ActivityFormValues, index: number) => void;
+  onCreate: (formValues: ActivityFormValues) => void;
 }
 
 export default styled(ActivitiesCrud)`

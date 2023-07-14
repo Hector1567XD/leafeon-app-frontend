@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 // material-ui
 import BackendError from 'exceptions/backend-error';
 import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
+import { useAppDispatch } from 'store';
 import { Service } from 'core/services/types';
 import getService from 'services/services/get-service';
 

@@ -4,11 +4,11 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
-import createAgency from 'services/agencies/create-agency';
 import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
 import Form from './form';
+import createService from 'services/services/create-service';
 
 const CreateService: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate();
@@ -20,7 +20,10 @@ const CreateService: FunctionComponent<Props> = ({ className }) => {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createAgency(values);
+      await createService({
+        description: values.description,
+        activities: values.activities
+      });
       navigate('/services');
       dispatch(setSuccessMessage(`Servicio ${values.description} creada correctamente`));
     } catch (error) {
@@ -45,8 +48,11 @@ const CreateService: FunctionComponent<Props> = ({ className }) => {
       </MainCard>
 
       <Form
+        serviceId={null}
+        initialActivities={[]}
         initialValues={{
           description: '',
+          activities: [],
           submit: null
         }}
         title={'Crear servicio'}

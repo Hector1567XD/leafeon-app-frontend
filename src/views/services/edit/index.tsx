@@ -8,9 +8,10 @@ import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
 import Form from '../form';
-//import editService from 'services/services/edit-service';
+import editService from 'services/services/edit-service';
 import useServiceId from './use-service-id';
 import useServiceById from './use-service-by-id';
+import convertActivitiesToActivityInput from '../form/convert-activities-to-input-activities';
 
 const EditService: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -18,12 +19,19 @@ const EditService: FunctionComponent<Props> = ({className}) => {
   const serviceId = useServiceId();
   const service = useServiceById(serviceId);
 
+  console.log('input service', service)
+
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     try {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      //await editService(serviceId!, values);
+      await editService(
+        +serviceId!!,
+        {
+        description: values.description,
+        activities: values.activities
+      });
       navigate('/services');
       dispatch(setSuccessMessage(`Servicio ${values.description} editado correctamente`));
     } catch (error) {
@@ -49,9 +57,12 @@ const EditService: FunctionComponent<Props> = ({className}) => {
       {
         service && (
           <Form
+            serviceId={service.serviceId}
+            initialActivities={service?.activities || []}
             initialValues={{
               description: service.description,
-              submit: null
+              submit: null,
+              activities: convertActivitiesToActivityInput(service.serviceId, service?.activities || [])
             }}
             isUpdate={true}
             title={'Editar servicio'}
