@@ -8,7 +8,12 @@ import styled from 'styled-components';
 
 const USE_AUTOCOMPLETES = false;
 
-const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues }) => {
+const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues, isUpdate }) => {
+  const isCreated = !isUpdate;
+
+  const extraValidations: any = isCreated ? {
+    clientDni: Yup.string().max(8).required('La cedula del cliente es requerida'),
+  } : {};
 
   return (
     <div className={className}>
@@ -19,7 +24,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         initialValues={initialValues}
         validationSchema={
           Yup.object().shape({
-            clientDni: Yup.string().max(8).required('La cedula del cliente es requerida'),
+            ...extraValidations,
             name: Yup.string().max(30).required('El nombre del cliente es requerido'),
             email: Yup.string().max(30).required('El correo electrónico del cliente es requerido'),
             mainPhone: Yup.string().max(11).required('El teléfono principal del cliente es requerido'),
@@ -31,20 +36,22 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} >
             <MainCard className={'form-data'} title={title}>
-              <FormControl className="field-form" fullWidth>
-                 <TextField
-                  id="clientDni"
-                  label="Cedula"
-                  variant="outlined"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.clientDni}
-                  helperText={touched.clientDni ? errors.clientDni : ''}
-                  error={touched.clientDni && !!errors.clientDni}
-                  name="clientDni"
-                />
-              </FormControl>
-
+              {
+                isCreated &&
+                <FormControl className="field-form" fullWidth>
+                  <TextField
+                    id="clientDni"
+                    label="Cedula"
+                    variant="outlined"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.clientDni}
+                    helperText={touched.clientDni ? errors.clientDni : ''}
+                    error={touched.clientDni && !!errors.clientDni}
+                    name="clientDni"
+                  />
+                </FormControl>
+              }
               <FormControl className="field-form" fullWidth>
                 <TextField
                   id="name"
@@ -115,6 +122,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
 };
 
 interface Props {
+  isUpdate?: boolean;
   className?: string;
   onSubmit: OnSubmit;
   title: string;

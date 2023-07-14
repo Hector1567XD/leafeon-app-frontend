@@ -54,6 +54,7 @@ const EditClient: FunctionComponent<Props> = ({className}) => {
       {
         client && (
           <Form
+            isUpdate={true}
             initialValues={{
               clientDni: client.clientDni,
               name: client.name,

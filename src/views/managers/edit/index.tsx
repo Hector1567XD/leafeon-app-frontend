@@ -53,6 +53,7 @@ const EditManager: FunctionComponent<Props> = ({className}) => {
       {
         manager && (
           <Form
+            isUpdate={true}
             initialValues={{
               managerDni: manager.managerDni,
               name: manager.name,
