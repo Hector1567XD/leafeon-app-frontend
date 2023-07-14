@@ -19,7 +19,7 @@ export default function usePaginate() {
     pages: 0,
   });
 
-  const fetchItems = useCallback(async (page?: number) => {
+  const fetchManagers = useCallback(async (page?: number) => {
     try {
       dispatch(setIsLoading(true));
       const response = await getPaginate({
@@ -37,8 +37,8 @@ export default function usePaginate() {
   }, [dispatch, paginate.perPage]);
 
   useEffect(() => {
-    fetchItems(page);
-  }, [fetchItems, page]);
+    fetchManagers(page);
+  }, [fetchManagers, page]);
 
-  return { items, page, paginate, setPage } as const;
+  return { items, page, paginate, setPage, fetchManagers } as const;
 }

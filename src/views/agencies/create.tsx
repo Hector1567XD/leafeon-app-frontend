@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import createAgency from 'services/agencies/create-agency';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
 import Form from './form';
 
@@ -14,25 +14,19 @@ const CreateAgency: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any) => {
     console.log(values)
     try {
-      setErrors({});
-      setStatus({});
-      setSubmitting(true);
+      dispatch(setIsLoading(true));
       await createAgency(values);
       navigate('/agencies');
       dispatch(setSuccessMessage(`Agencia ${values.businessName} creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
-        setErrors({
-          ...error.getFieldErrorsMessages(),
-          submit: error.getMessage()
-        });
+        dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
     } finally {
-      setSubmitting(false);
+      dispatch(setIsLoading(false));
     }
   }, [dispatch, navigate]);
 

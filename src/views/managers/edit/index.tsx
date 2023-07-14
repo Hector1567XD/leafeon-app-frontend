@@ -5,7 +5,7 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
 import Form from '../form';
 import editManager from 'services/managers/edit-manager';
@@ -20,22 +20,16 @@ const EditManager: FunctionComponent<Props> = ({className}) => {
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     try {
-      setErrors({});
-      setStatus({});
-      setSubmitting(true);
+      dispatch(setIsLoading(true));
       await editManager(managerDni!, values);
-      navigate('/manager');
-      dispatch(setSuccessMessage(`Encargado ${values.description} editado correctamente`));
+      navigate('/managers');
+      dispatch(setSuccessMessage(`Encargado ${values.name} editado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
-        setErrors({
-          ...error.getFieldErrorsMessages(),
-          submit: error.getMessage()
-        });
+        dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
     } finally {
-      setSubmitting(false);
+      dispatch(setIsLoading(false));
     }
   }, [dispatch, navigate, managerDni]);
 

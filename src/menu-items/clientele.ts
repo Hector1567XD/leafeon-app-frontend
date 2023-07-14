@@ -6,7 +6,7 @@ import { MenuItem, MenuItemType } from './types';
 const other: MenuItem = {
   id: 'agencies-crud-category-clientele',
   type: MenuItemType.Group,
-  title: 'Personal',
+  title: 'Clientela',
   children: [
     {
       id: 'clients',

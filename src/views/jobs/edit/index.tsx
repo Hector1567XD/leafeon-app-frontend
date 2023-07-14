@@ -5,7 +5,7 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
 import Form from '../form';
 import editJob from 'services/jobs/edit-job';
@@ -18,24 +18,18 @@ const EditJob: FunctionComponent<Props> = ({className}) => {
   const jobId = useJobId();
   const job = useJobById(jobId);
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any) => {
     try {
-      setErrors({});
-      setStatus({});
-      setSubmitting(true);
+      dispatch(setIsLoading(true));
       await editJob(jobId!, values);
       navigate('/jobs');
       dispatch(setSuccessMessage(`Cargo ${values.description} editado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
-        setErrors({
-          ...error.getFieldErrorsMessages(),
-          submit: error.getMessage()
-        });
+        dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
     } finally {
-      setSubmitting(false);
+      dispatch(setIsLoading(false));
     }
   }, [dispatch, navigate, jobId]);
 

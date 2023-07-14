@@ -49,35 +49,37 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     return (
         <div className={className}>
             <DynamicTable
-            headers={[
-                { columnLabel: 'Cedula', fieldName: 'clientDni', cellAlignment: 'left' },
-                { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
-                { columnLabel: 'Correo electrónico', fieldName: 'email', cellAlignment: 'left' },
-                { columnLabel: 'Teléfono principal', fieldName: 'mainPhone', cellAlignment: 'left' },
-                { columnLabel: 'Teléfono secundario', fieldName: 'secondaryPhone', cellAlignment: 'left' }
-            ]}
-            rows={items} components={[
-                (row: Client) =>
-                <Button
-                    color="primary"
-                    onClick={() => { navigate('/clients/edit/'+row.clientDni) }}
-                    startIcon={<IconEdit />}
-                >
-                    Editar
-                </Button>,
-                (row: Client) =>
-                <Button 
-                    color="secondary" 
-                    onClick={ () => handleOpen(row.clientDni) }
-                    startIcon={<IconTrash />}
-                >
-                    Eliminar
-                </Button>
-            ]}
-        />
-        <DialogDelete handleClose={handleClose} onDelete={() => {
-            onDelete(clientDni)
-        } } open={open}/>
+                headers={[
+                    { columnLabel: 'Cedula', fieldName: 'clientDni', cellAlignment: 'left' },
+                    { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
+                    { columnLabel: 'Correo electrónico', fieldName: 'email', cellAlignment: 'left' },
+                    { columnLabel: 'Teléfono principal', fieldName: 'mainPhone', cellAlignment: 'left' },
+                    { columnLabel: 'Teléfono secundario', fieldName: 'secondaryPhone', cellAlignment: 'left' }
+                ]}
+                rows={items} components={[
+                    (row: Client) =>
+                        <Button
+                            color="primary"
+                            onClick={() => { navigate('/clients/edit/'+row.clientDni) }}
+                            startIcon={<IconEdit />}
+                        >
+                            Editar
+                        </Button>,
+                    (row: Client) =>
+                        <Button 
+                            color="secondary" 
+                            onClick={ () => handleOpen(row.clientDni) }
+                            startIcon={<IconTrash />}
+                        >
+                            Eliminar
+                        </Button>
+                ]}
+            />
+            <DialogDelete 
+                handleClose={handleClose} 
+                onDelete={() => { onDelete(clientDni) }} 
+                open={open}
+            />
 
             <div className={'paginator-container'}>
               <Pagination

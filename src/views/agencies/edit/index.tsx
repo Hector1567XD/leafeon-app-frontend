@@ -5,7 +5,7 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
 import Form from '../form';
 import editAgency from 'services/agencies/edit-agency';
@@ -20,25 +20,19 @@ const EditState: FunctionComponent<Props> = ({className}) => {
   const agency = useAgencyByRif(agencyRif);
   const city = useCityById(agency?.cityId || null);
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any) => {
     console.log(values)
     try {
-      setErrors({});
-      setStatus({});
-      setSubmitting(true);
+      dispatch(setIsLoading(true));
       await editAgency(agencyRif!, values);
       navigate('/agencies');
       dispatch(setSuccessMessage(`Agencia ${values.businessName} editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
-        setErrors({
-          ...error.getFieldErrorsMessages(),
-          submit: error.getMessage()
-        });
+        dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
     } finally {
-      setSubmitting(false);
+      dispatch(setIsLoading(false));
     }
   }, [dispatch, navigate, agencyRif]);
 
