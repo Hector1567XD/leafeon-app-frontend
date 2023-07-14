@@ -19,15 +19,15 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [clientDni, setClientDni] = useState<string>('')
 
-    const handleOpen = (clientDni: string) => {
+    const handleOpen = useCallback((clientDni: string) => {
         setOpen(true);
-        setClientDni(clientDni); 
-    }
+        setClientDni(clientDni);
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setClientDni(''); 
-    }
+        setClientDni('');
+    }, []);
 
     const onDelete = useCallback(async (clientDni: string) => {
         try {

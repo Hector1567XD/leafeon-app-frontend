@@ -19,10 +19,10 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [currentAgencyRif, setCurrentAgencyRif] = useState<string>('')
 
-    const handleOpen = (currentAgencyRif: string) => {
+    const handleOpen = useCallback((currentAgencyRif: string) => {
         setOpen(true);
-        setCurrentAgencyRif(currentAgencyRif); 
-    }
+        setCurrentAgencyRif(currentAgencyRif);
+    }, []);
 
     const handleClose = useCallback(() => {
         setOpen(false);

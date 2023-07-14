@@ -19,10 +19,10 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [jobId, setJobId] = useState<number>(0)
 
-    const handleOpen = (jobId: number) => {
+    const handleOpen = useCallback((jobId: number) => {
         setOpen(true);
-        setJobId(jobId); 
-    }
+        setJobId(jobId);
+    }, []);
 
     const handleClose = useCallback(() => {
         setOpen(false);
