@@ -32,7 +32,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} >
             <MainCard className={'form-data'} title={title}>
-              <FormControl fullWidth>
+              <FormControl className="field-form"  fullWidth>
                 <TextField
                   id="managerDni"
                   label="Cédula"
@@ -44,6 +44,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   error={touched.managerDni && !!errors.managerDni}
                   name="managerDni"
                 />
+              </FormControl>
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="name"
                   label="Nombre"
@@ -55,6 +57,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   error={touched.name && !!errors.name}
                   name="name"
                 />
+              </FormControl>
+              <FormControl className="field-form"  fullWidth>
                 <TextField
                   id="mainPhone"
                   label="Teléfono principal"
@@ -66,6 +70,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   error={touched.mainPhone && !!errors.mainPhone}
                   name="mainPhone"
                 />
+              </FormControl>
+              <FormControl className="field-form"  fullWidth>
                 <TextField
                   id="secondaryPhone"
                   label="Teléfono secundario"
@@ -77,6 +83,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   error={touched.secondaryPhone && !!errors.secondaryPhone}
                   name="secondaryPhone"
                 />
+              </FormControl>
+              <FormControl className="field-form"  fullWidth>
                 <TextField
                   id="address"
                   label="Dirección"
@@ -88,6 +96,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   error={touched.address && !!errors.address}
                   name="address"
                 />
+              </FormControl>
+              <FormControl className="field-form"  fullWidth>
                 <TextField
                   id="email"
                   label="Correo electrónico"
@@ -161,5 +171,9 @@ export default styled(Form)`
     width: 100%;
     display: flex;
     flex-direction: row;
+  }
+
+  .field-form {
+    margin: 12px 0px;
   }
 `;

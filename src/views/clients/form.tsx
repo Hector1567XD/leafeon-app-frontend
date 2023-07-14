@@ -31,8 +31,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} >
             <MainCard className={'form-data'} title={title}>
-              <FormControl fullWidth>
-                <TextField
+              <FormControl className="field-form" fullWidth>
+                 <TextField
                   id="clientDni"
                   label="Cedula"
                   variant="outlined"
@@ -44,7 +44,8 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="clientDni"
                 />
               </FormControl>
-              <FormControl fullWidth>
+
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="name"
                   label="Nombre del cliente"
@@ -57,7 +58,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="name"
                 />
               </FormControl>
-              <FormControl fullWidth>
+             <FormControl className="field-form" fullWidth>
                 <TextField
                   id="email"
                   label="Correo electrónico"
@@ -70,7 +71,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="email"
                 />
               </FormControl>
-              <FormControl fullWidth>
+             <FormControl className="field-form" fullWidth>
                 <TextField
                   id="mainPhone"
                   label="Teléfono principal"
@@ -83,7 +84,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="mainPhone"
                 />
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="secondaryPhone"
                   label="Teléfono secundario"
@@ -156,5 +157,9 @@ export default styled(Form)`
     width: 100%;
     display: flex;
     flex-direction: row;
+  }
+
+  .field-form {
+    margin: 12px 0px;
   }
 `;
