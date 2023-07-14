@@ -36,5 +36,5 @@ export default function usePaginate() {
     fetchItems();
   }, [fetchItems]);
 
-  return { items, paginate, setPage };
+  return { items, paginate, setPage, fetchItems };
 }

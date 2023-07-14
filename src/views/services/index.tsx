@@ -9,7 +9,7 @@ import { IconCirclePlus } from '@tabler/icons';
 
 const ServicesPage: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate();
-  const { items, paginate, setPage } = usePaginate();
+  const { items, paginate, setPage, fetchItems } = usePaginate();
   const goToCreate = useCallback(() => {
     navigate('/services/create');
   }, [navigate]);
@@ -28,7 +28,7 @@ const ServicesPage: FunctionComponent<Props> = ({ className }) => {
         </Button>
       </div>
     }>
-      <Table items={items} paginate={paginate} onChange={setPage} />
+      <Table items={items} fetchItems={fetchItems}  paginate={paginate} onChange={setPage} />
     </MainCard>
   );
 };
