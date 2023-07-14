@@ -10,9 +10,9 @@ const URL = `${API_BASE_URL}/managers/all`;
 
 export default async function getAllManagers(body?: Body): Promise<Manager[]> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
+    const urlParametrized = addQueryParams(URL, body || {});
     const response = await axios.get<Manager[]>(
-      urlPaginated, {
+      urlParametrized, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
