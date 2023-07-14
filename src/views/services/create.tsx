@@ -4,26 +4,29 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
-import createManager from 'services/managers/create-manager';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from 'store';
-import Form, { FormValues } from './form';
-import { FormikHelpers } from 'formik';
+import { useAppDispatch } from '../../store/index';
+import Form from './form';
+import createService from 'services/services/create-service';
 
-const CreateJob: FunctionComponent<Props> = ({className}) => {
+const CreateService: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+    console.log(values)
     try {
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createManager(values);
-      navigate('/managers');
-      dispatch(setSuccessMessage(`Encargado ${values.name} creado correctamente`));
+      await createService({
+        description: values.description,
+        activities: values.activities
+      });
+      navigate('/services');
+      dispatch(setSuccessMessage(`Servicio ${values.description} creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -43,21 +46,19 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Encargados
+          Servicios
         </Typography>
       </MainCard>
 
       <Form
+        serviceId={null}
+        initialActivities={[]}
         initialValues={{
-          managerDni: "",
-          name: "",
-          mainPhone: "",
-          secondaryPhone: "",
-          address: "",
-          email: "",
+          description: '',
+          activities: [],
           submit: null
         }}
-        title={'Crear encargado'}
+        title={'Crear servicio'}
         onSubmit={onSubmit}
       />
     </div>
@@ -68,7 +69,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(CreateJob)`
+export default styled(CreateService)`
   display: flex;
   flex-direction: column;
 

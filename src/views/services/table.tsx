@@ -1,43 +1,42 @@
 import { Button, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
-import { City } from 'core/cities/types';
 import styled from 'styled-components';
 // Own
-import { useAppDispatch } from '../../store/index';
-import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
-import BackendError from 'exceptions/backend-error';
-import deleteCity from 'services/cities/delete-city';
 import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
+import { PaginatedService } from 'core/services/types';
+import { useAppDispatch } from 'store';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
+import BackendError from 'exceptions/backend-error';
 import DialogDelete from 'components/dialogDelete';
+import deleteService from 'services/services/delete-service';
 
-const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
+const Table: FunctionComponent<Prop> = ({ items, paginate, fetchItems, className, onChange }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
-    const [currentCityId, setCurrentCityId] = useState<number>(0)
+    const [currentServiceId, setCurrentServiceId] = useState<number | null>(null)
 
-    const handleOpen = useCallback((currentCityId: number) => {
+    const handleOpen = useCallback((currentServiceId: number) => {
         setOpen(true);
-        setCurrentCityId(currentCityId);
+        setCurrentServiceId(currentServiceId);
     }, []);
 
     const handleClose = useCallback(() => {
         setOpen(false);
-        setCurrentCityId(0);
-    }, []);
+        setCurrentServiceId(null); 
+    }, [])
 
-    const onDelete = useCallback(async (jobId: number) => {
+    const onDelete = useCallback(async (serviceId: number) => {
         try {
             dispatch(setIsLoading(true));
-            await deleteCity(jobId!);
-            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
+            await deleteService(serviceId!);
+            dispatch(setSuccessMessage(`Servicio eliminado correctamente`));
         } catch (error) {
-            if (error instanceof BackendError) {
+            if (error instanceof BackendError)
                 dispatch(setErrorMessage(error.getMessage()));
-            }
         } finally {
             dispatch(setIsLoading(false));
             handleClose();
@@ -49,33 +48,34 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
         <div className={className}>
             <DynamicTable
                 headers={[
-                    { columnLabel: 'Id', fieldName: 'cityId', cellAlignment: 'left' },
-                    { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
-                    { columnLabel: 'Estado', fieldName: 'stateId', cellAlignment: 'left' },
+                    { columnLabel: 'Id', fieldName: 'serviceId', cellAlignment: 'left' },
+                    { columnLabel: 'Descripción', fieldName: 'description', cellAlignment: 'left' },
+                    { columnLabel: 'Coste total', fieldName: 'totalCost', cellAlignment: 'left' },
                     { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
                 ]}
-                rows={items} components={[
-                    (row: City) =>
+                rows={items}
+                components={[
+                    (row: PaginatedService) =>
                     <Button
                         color="primary"
-                        onClick={() => { navigate('/cities/edit/'+row.cityId) }}
+                        onClick={() => { navigate('/services/edit/'+row.serviceId) }}
                         startIcon={<IconEdit />}
                     >
                         Editar
                     </Button>,
-                    (row: City) =>
-                    <Button 
-                        color="secondary" 
-                        onClick={ () => handleOpen(row.cityId) }
+                    (row: PaginatedService) =>
+                    <Button
+                        color="secondary"
                         startIcon={<IconTrash />}
+                        onClick={ () => handleOpen(row.serviceId) }
                     >
                         Eliminar
                     </Button>
                 ]}
             />
-            <DialogDelete 
-                handleClose={handleClose} 
-                onDelete={() => { onDelete(currentCityId)  } } 
+            <DialogDelete
+                handleClose={handleClose}
+                onDelete={() => { currentServiceId && onDelete(currentServiceId) }}
                 open={open}
             />
             <div className={'paginator-container'}>
@@ -93,11 +93,11 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
 }
 
 interface Prop {
-  items: City[];
+  items: PaginatedService[];
   paginate: PaginateData;
   className?: string;
-  onChange: (page: number) => void;
   fetchItems: () => void;
+  onChange: (page: number) => void;
 }
 
 export default styled(Table)`

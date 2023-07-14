@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Pagination } from '@mui/material';
+import { Button, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
 import { Client } from 'core/clients/types';
 import styled from 'styled-components';
@@ -19,21 +19,20 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [clientDni, setClientDni] = useState<string>('')
 
-    const handleOpen = (clientDni: string) => {
+    const handleOpen = useCallback((clientDni: string) => {
         setOpen(true);
-        setClientDni(clientDni); 
-    }
+        setClientDni(clientDni);
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setClientDni(''); 
-    }
+        setClientDni('');
+    }, []);
 
     const onDelete = useCallback(async (clientDni: string) => {
         try {
             dispatch(setIsLoading(true));
             await deleteClient(clientDni!);
-            navigate('/clients');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -44,7 +43,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+      }, [dispatch, fetchItems]);
 
     return (
         <div className={className}>

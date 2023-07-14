@@ -3,7 +3,7 @@ import DynamicTable from 'components/DynamicTable';
 import { Agency } from 'core/agencies/types';
 import styled from 'styled-components';
 // Own
-import { useAppDispatch } from '../../store/index';
+import { useAppDispatch } from 'store';
 import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
 import { FunctionComponent, useState, useCallback } from 'react';
@@ -13,28 +13,26 @@ import { useNavigate } from 'react-router';
 import deleteAgency from 'services/agencies/delete-agency';
 import DialogDelete from 'components/dialogDelete';
 
-
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
     const [currentAgencyRif, setCurrentAgencyRif] = useState<string>('')
 
-    const handleOpen = (currentAgencyRif: string) => {
+    const handleOpen = useCallback((currentAgencyRif: string) => {
         setOpen(true);
-        setCurrentAgencyRif(currentAgencyRif); 
-    }
+        setCurrentAgencyRif(currentAgencyRif);
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setCurrentAgencyRif(''); 
-    }
+        setCurrentAgencyRif('');
+    }, []);
 
     const onDelete = useCallback(async (currentAgencyRif: string) => {
         try {
             dispatch(setIsLoading(true));
             await deleteAgency(currentAgencyRif!);
-            navigate('/agencies');
             dispatch(setSuccessMessage(`Agencia eliminada correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -45,8 +43,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
-
+    }, [dispatch, fetchItems, handleClose]);
 
     return (
         <div className={className}>

@@ -19,21 +19,20 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [managerDni, setManagerDni] = useState<string>('')
 
-    const handleOpen = (managerDni: string) => {
+    const handleOpen = useCallback((managerDni: string) => {
         setOpen(true);
-        setManagerDni(managerDni); 
-    }
+        setManagerDni(managerDni);
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setManagerDni(''); 
-    }
+        setManagerDni('');
+    }, []);
 
     const onDelete = useCallback(async (managerDni: string) => {
         try {
             dispatch(setIsLoading(true));
             await deleteManager(managerDni!);
-            navigate('/managers');
             dispatch(setSuccessMessage(`Encargado eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -44,7 +43,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+      }, [dispatch, fetchItems]);
 
     return (
         <div className={className}>

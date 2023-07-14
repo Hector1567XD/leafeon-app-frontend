@@ -48,7 +48,7 @@ const CustomSelect: FunctionComponent<Props> = ({
               name,
               id: name,
               value: newValue?.value || null,
-            },
+            } as any,
           } as any);
         }}
         renderInput={(params) =>

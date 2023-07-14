@@ -6,28 +6,35 @@ import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from 'store';
-import Form, { FormValues } from '../form';
-import editManager from 'services/managers/edit-manager';
-import useManagerByDni from './use-manager-by-dni';
-import useManagerDni from './use-manager-dni';
-import { FormikHelpers } from 'formik';
+import { useAppDispatch } from '../../../store/index';
+import Form from '../form';
+import editService from 'services/services/edit-service';
+import useServiceId from './use-service-id';
+import useServiceById from './use-service-by-id';
+import convertActivitiesToActivityInput from '../form/convert-activities-to-input-activities';
 
-const EditManager: FunctionComponent<Props> = ({className}) => {
+const EditService: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const managerDni = useManagerDni();
-  const manager = useManagerByDni(managerDni);
+  const serviceId = useServiceId();
+  const service = useServiceById(serviceId);
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
+  console.log('input service', service)
+
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     try {
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await editManager(managerDni!, values);
-      navigate('/managers');
-      dispatch(setSuccessMessage(`Encargado ${values.name} editado correctamente`));
+      await editService(
+        +serviceId!!,
+        {
+        description: values.description,
+        activities: values.activities
+      });
+      navigate('/services');
+      dispatch(setSuccessMessage(`Servicio ${values.description} editado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -41,29 +48,27 @@ const EditManager: FunctionComponent<Props> = ({className}) => {
       dispatch(setIsLoading(false));
       setSubmitting(false);
     }
-  }, [dispatch, navigate, managerDni]);
+  }, [dispatch, navigate, serviceId]);
 
   return (
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Encargados
+          Servicios
         </Typography>
       </MainCard>
       {
-        manager && (
+        service && (
           <Form
-            isUpdate={true}
+            serviceId={service.serviceId}
+            initialActivities={service?.activities || []}
             initialValues={{
-              managerDni: manager.managerDni,
-              name: manager.name,
-              mainPhone: manager.mainPhone,
-              secondaryPhone: manager.secondaryPhone,
-              address: manager.address,
-              email: manager.email,
-              submit: null
+              description: service.description,
+              submit: null,
+              activities: convertActivitiesToActivityInput(service.serviceId, service?.activities || [])
             }}
-            title={'Editar encargado'}
+            isUpdate={true}
+            title={'Editar servicio'}
             onSubmit={onSubmit}
           />
         )
@@ -76,7 +81,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(EditManager)`
+export default styled(EditService)`
   display: flex;
   flex-direction: column;
 
