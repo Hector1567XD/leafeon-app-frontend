@@ -33,7 +33,6 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
         try {
             dispatch(setIsLoading(true));
             await deleteManager(managerDni!);
-            navigate('/managers');
             dispatch(setSuccessMessage(`Encargado eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -44,7 +43,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+      }, [dispatch, fetchItems]);
 
     return (
         <div className={className}>

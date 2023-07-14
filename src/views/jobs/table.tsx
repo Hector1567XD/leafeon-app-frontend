@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Pagination } from '@mui/material';
+import { Button, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
 import { Job } from 'core/jobs/types';
 import styled from 'styled-components';
@@ -24,16 +24,15 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
         setJobId(jobId); 
     }
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setJobId(0); 
-    }
+        setJobId(0);
+    }, []);
 
     const onDelete = useCallback(async (jobId: number) => {
         try {
             dispatch(setIsLoading(true));
             await deleteJob(jobId!);
-            navigate('/jobs');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -44,7 +43,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+    }, [dispatch, fetchItems, handleClose]);
 
     return (
         <div className={className}>
