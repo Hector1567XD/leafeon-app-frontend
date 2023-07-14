@@ -149,7 +149,7 @@ interface Props {
   isUpdate?: boolean;
 }
 
-type FormValues = {
+export type FormValues = {
   agencyRif?: string;
   businessName: string;
   managerDni: string | null;

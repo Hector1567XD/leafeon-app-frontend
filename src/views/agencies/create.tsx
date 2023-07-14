@@ -8,25 +8,34 @@ import createAgency from 'services/agencies/create-agency';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
-import Form from './form';
+import Form, { FormValues } from './form';
+import { FormikHelpers } from 'formik';
 
 const CreateAgency: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = useCallback(async (values: any) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     console.log(values)
     try {
       dispatch(setIsLoading(true));
+      setErrors({});
+      setStatus({});
+      setSubmitting(true);
       await createAgency(values);
       navigate('/agencies');
       dispatch(setSuccessMessage(`Agencia ${values.businessName} creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
+        setErrors({
+          ...error.getFieldErrorsMessages(),
+          submit: error.getMessage()
+        });
         dispatch(setErrorMessage(error.getMessage()));
       }
     } finally {
       dispatch(setIsLoading(false));
+      setSubmitting(false);
     }
   }, [dispatch, navigate]);
 

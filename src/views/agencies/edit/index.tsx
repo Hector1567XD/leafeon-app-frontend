@@ -7,11 +7,12 @@ import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
-import Form from '../form';
+import Form, { FormValues } from '../form';
 import editAgency from 'services/agencies/edit-agency';
 import useAgencyByRif from './use-agency-by-rif';
 import useAgencyRif from './use-agency-rif';
 import useCityById from 'core/cities/use-city-by-id';
+import { FormikHelpers } from 'formik';
 
 const EditState: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -20,19 +21,27 @@ const EditState: FunctionComponent<Props> = ({className}) => {
   const agency = useAgencyByRif(agencyRif);
   const city = useCityById(agency?.cityId || null);
 
-  const onSubmit = useCallback(async (values: any) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     console.log(values)
     try {
       dispatch(setIsLoading(true));
+      setErrors({});
+      setStatus({});
+      setSubmitting(true);
       await editAgency(agencyRif!, values);
       navigate('/agencies');
       dispatch(setSuccessMessage(`Agencia ${values.businessName} editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
+        setErrors({
+          ...error.getFieldErrorsMessages(),
+          submit: error.getMessage()
+        });
         dispatch(setErrorMessage(error.getMessage()));
       }
     } finally {
       dispatch(setIsLoading(false));
+      setSubmitting(false);
     }
   }, [dispatch, navigate, agencyRif]);
 
