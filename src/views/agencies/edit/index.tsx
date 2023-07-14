@@ -39,6 +39,7 @@ const EditState: FunctionComponent<Props> = ({className}) => {
         });
         dispatch(setErrorMessage(error.getMessage()));
       }
+      setStatus({ success: false });
     } finally {
       dispatch(setIsLoading(false));
       setSubmitting(false);
