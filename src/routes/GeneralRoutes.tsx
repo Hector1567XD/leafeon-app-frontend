@@ -22,6 +22,10 @@ import EditJob from 'views/jobs/edit';
 import Managers from 'views/managers';
 import CreateManager from 'views/managers/create';
 import EditManager from 'views/managers/edit';
+//Clients
+import Clients from 'views/clients';
+import CreateClient from 'views/clients/create';
+import EditClient from 'views/clients/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -88,6 +92,19 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'managers/edit/:id',
     element: <EditManager />
+  },
+  //Clientes
+  {
+    path: 'clients',
+    element: <Clients />
+  },
+  {
+    path: 'clients/create',
+    element: <CreateClient />
+  },
+  {
+    path: 'clients/edit/:id',
+    element: <EditClient />
   },
 ];
 

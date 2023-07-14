@@ -23,4 +23,4 @@ export default async function createClient(body: ClientPayload): Promise<Client>
   }
 }
 
-export type ClientPayload = Omit<Client, 'ClientDni' | 'createdAt'>;
+export type ClientPayload = Omit<Client, 'clientDni' | 'createdAt'>;

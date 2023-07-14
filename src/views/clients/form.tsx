@@ -9,10 +9,10 @@ import styled from 'styled-components';
 const USE_AUTOCOMPLETES = false;
 
 const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues, isUpdate }) => {
-
   const isCreated = !isUpdate;
+
   const extraValidations: any = isCreated ? {
-    managerDni: Yup.string().max(30).required('La cédula del encargado es requerida'),
+    clientDni: Yup.string().max(8).required('La cedula del cliente es requerida'),
   } : {};
 
   return (
@@ -25,11 +25,10 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         validationSchema={
           Yup.object().shape({
             ...extraValidations,
-            name: Yup.string().max(30).required('El nombre del encargado es requerido'),
-            mainPhone: Yup.string().max(30).required('El teléfono principal del encargado es requerido'),
-            secondaryPhone: Yup.string().max(30).required('El teléfono secundario del encargado es requerido'),
-            address: Yup.string().max(30).required('La dirección del encargado es requerida'),
-            email: Yup.string().max(30).required('El correo electrónico del encargado es requerido'),
+            name: Yup.string().max(30).required('El nombre del cliente es requerido'),
+            email: Yup.string().max(30).required('El correo electrónico del cliente es requerido'),
+            mainPhone: Yup.string().max(11).required('El teléfono principal del cliente es requerido'),
+            secondaryPhone: Yup.string().max(11).required('El teléfono secundario del cliente es requerido'),
           })
         }
         onSubmit={onSubmit as any}
@@ -39,24 +38,24 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
             <MainCard className={'form-data'} title={title}>
               {
                 isCreated &&
-                <FormControl className="field-form"  fullWidth>
+                <FormControl className="field-form" fullWidth>
                   <TextField
-                    id="managerDni"
-                    label="Cédula"
+                    id="clientDni"
+                    label="Cedula"
                     variant="outlined"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.managerDni}
-                    helperText={touched.managerDni ? errors.managerDni : ''}
-                    error={touched.managerDni && !!errors.managerDni}
-                    name="managerDni"
+                    value={values.clientDni}
+                    helperText={touched.clientDni ? errors.clientDni : ''}
+                    error={touched.clientDni && !!errors.clientDni}
+                    name="clientDni"
                   />
                 </FormControl>
               }
               <FormControl className="field-form" fullWidth>
                 <TextField
                   id="name"
-                  label="Nombre"
+                  label="Nombre del cliente"
                   variant="outlined"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -66,7 +65,20 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="name"
                 />
               </FormControl>
-              <FormControl className="field-form"  fullWidth>
+             <FormControl className="field-form" fullWidth>
+                <TextField
+                  id="email"
+                  label="Correo electrónico"
+                  variant="outlined"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  helperText={touched.email ? errors.email : ''}
+                  error={touched.email && !!errors.email}
+                  name="email"
+                />
+              </FormControl>
+             <FormControl className="field-form" fullWidth>
                 <TextField
                   id="mainPhone"
                   label="Teléfono principal"
@@ -79,7 +91,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   name="mainPhone"
                 />
               </FormControl>
-              <FormControl className="field-form"  fullWidth>
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="secondaryPhone"
                   label="Teléfono secundario"
@@ -90,32 +102,6 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   helperText={touched.secondaryPhone ? errors.secondaryPhone : ''}
                   error={touched.secondaryPhone && !!errors.secondaryPhone}
                   name="secondaryPhone"
-                />
-              </FormControl>
-              <FormControl className="field-form"  fullWidth>
-                <TextField
-                  id="address"
-                  label="Dirección"
-                  variant="outlined"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.address}
-                  helperText={touched.address ? errors.address : ''}
-                  error={touched.address && !!errors.address}
-                  name="address"
-                />
-              </FormControl>
-              <FormControl className="field-form"  fullWidth>
-                <TextField
-                  id="email"
-                  label="Correo electrónico"
-                  variant="outlined"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.email}
-                  helperText={touched.email ? errors.email : ''}
-                  error={touched.email && !!errors.email}
-                  name="email"
                 />
               </FormControl>
             </MainCard>
@@ -136,20 +122,19 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
 };
 
 interface Props {
+  isUpdate?: boolean;
   className?: string;
   onSubmit: OnSubmit;
-  isUpdate?: boolean;
   title: string;
   initialValues: FormValues;
 }
 
 export type FormValues = {
-  managerDni: string;
+  clientDni: string;
   name: string;
-  mainPhone: string;
-  secondaryPhone?: string;
-  address: string;
   email: string;
+  mainPhone: string;
+  secondaryPhone: string;
   submit: string | null;
 };
 

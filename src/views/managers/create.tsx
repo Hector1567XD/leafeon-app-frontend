@@ -6,31 +6,35 @@ import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import createManager from 'services/managers/create-manager';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
-import Form from './form';
+import Form, { FormValues } from './form';
+import { FormikHelpers } from 'formik';
 
 const CreateJob: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
+      dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
       await createManager(values);
       navigate('/managers');
-      dispatch(setSuccessMessage(`Encargado ${values.description} creado correctamente`));
+      dispatch(setSuccessMessage(`Encargado ${values.name} creado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
           ...error.getFieldErrorsMessages(),
           submit: error.getMessage()
         });
+        dispatch(setErrorMessage(error.getMessage()));
       }
       setStatus({ success: false });
     } finally {
+      dispatch(setIsLoading(false));
       setSubmitting(false);
     }
   }, [dispatch, navigate]);
@@ -39,7 +43,7 @@ const CreateJob: FunctionComponent<Props> = ({className}) => {
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Cargos
+          Encargados
         </Typography>
       </MainCard>
 

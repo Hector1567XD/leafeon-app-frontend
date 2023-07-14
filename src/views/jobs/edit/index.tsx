@@ -5,12 +5,13 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
-import Form from '../form';
+import Form, { FormValues } from '../form';
 import editJob from 'services/jobs/edit-job';
 import useJobById from './use-job-by-id';
 import useJobId from './use-job-id';
+import { FormikHelpers } from 'formik';
 
 const EditJob: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -18,8 +19,9 @@ const EditJob: FunctionComponent<Props> = ({className}) => {
   const jobId = useJobId();
   const job = useJobById(jobId);
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any,  { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
+      dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
@@ -32,10 +34,11 @@ const EditJob: FunctionComponent<Props> = ({className}) => {
           ...error.getFieldErrorsMessages(),
           submit: error.getMessage()
         });
+        dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
+      setStatus({ success: 'false'});
     } finally {
-      setSubmitting(false);
+      dispatch(setIsLoading(false));
     }
   }, [dispatch, navigate, jobId]);
 

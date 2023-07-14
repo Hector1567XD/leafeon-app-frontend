@@ -7,17 +7,18 @@ import { styled } from 'styled-components';
 import { Button, Typography } from '@mui/material';
 import { IconCirclePlus } from '@tabler/icons';
 
-const AgenciesPage: FunctionComponent<Props> = ({ className }) => {
+const ClientsPage: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate();
-  const { items, paginate, setPage, fetchItems } = usePaginate();
+  const { clients, paginate, setPage, fetchClients } = usePaginate();
+
   const goToCreate = useCallback(() => {
-    navigate('/agencies/create');
+    navigate('/clients/create');
   }, [navigate]);
 
   return (
     <MainCard className={className} headerClass={'page-header'} title={
       <div className={'page-header'}>
-        <Typography variant="h3" className={'title-header'}>Agencias</Typography>
+        <Typography variant="h3" className={'title-header'}>Clientes</Typography>
         <Button
           color="primary"
           variant={'outlined'}
@@ -28,7 +29,7 @@ const AgenciesPage: FunctionComponent<Props> = ({ className }) => {
         </Button>
       </div>
     }>
-      <Table items={items} paginate={paginate} onChange={setPage} fetchItems={fetchItems} />
+      <Table items={clients} paginate={paginate} onChange={setPage} fetchItems={fetchClients}/>
     </MainCard>
   );
 };
@@ -37,7 +38,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(AgenciesPage)`
+export default styled(ClientsPage)`
   width: 100%;
   display: flex;
   flex-direction: column;

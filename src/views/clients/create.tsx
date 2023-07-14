@@ -4,20 +4,16 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
+import createClient from 'services/clients/create-client';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
-import Form, { FormValues } from '../form';
-import editManager from 'services/managers/edit-manager';
-import useManagerByDni from './use-manager-by-dni';
-import useManagerDni from './use-manager-dni';
+import { useAppDispatch } from '../../store/index';
+import Form, { FormValues } from './form';
 import { FormikHelpers } from 'formik';
 
-const EditManager: FunctionComponent<Props> = ({className}) => {
+const CreateClient: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const managerDni = useManagerDni();
-  const manager = useManagerByDni(managerDni);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
@@ -25,9 +21,9 @@ const EditManager: FunctionComponent<Props> = ({className}) => {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await editManager(managerDni!, values);
-      navigate('/managers');
-      dispatch(setSuccessMessage(`Encargado ${values.name} editado correctamente`));
+      await createClient(values);
+      navigate('/clients');
+      dispatch(setSuccessMessage(`Cliente ${values.name} creado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -36,38 +32,33 @@ const EditManager: FunctionComponent<Props> = ({className}) => {
         });
         dispatch(setErrorMessage(error.getMessage()));
       }
-      setStatus({ success: false });
+      setStatus({ success: 'false'});
     } finally {
       dispatch(setIsLoading(false));
       setSubmitting(false);
     }
-  }, [dispatch, navigate, managerDni]);
+  }, [dispatch, navigate]);
 
   return (
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Encargados
+          Clientes
         </Typography>
       </MainCard>
-      {
-        manager && (
-          <Form
-            isUpdate={true}
-            initialValues={{
-              managerDni: manager.managerDni,
-              name: manager.name,
-              mainPhone: manager.mainPhone,
-              secondaryPhone: manager.secondaryPhone,
-              address: manager.address,
-              email: manager.email,
-              submit: null
-            }}
-            title={'Editar encargado'}
-            onSubmit={onSubmit}
-          />
-        )
-      }
+
+      <Form
+        initialValues={{
+          clientDni: '',
+          name: '',
+          email: '',
+          mainPhone: '',
+          secondaryPhone: '',
+          submit: null
+        }}
+        title={'Crear cliente'}
+        onSubmit={onSubmit}
+      />
     </div>
   );
 };
@@ -76,7 +67,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(EditManager)`
+export default styled(CreateClient)`
   display: flex;
   flex-direction: column;
 
@@ -99,4 +90,3 @@ export default styled(EditManager)`
     flex-direction: row;
   }
 `;
-

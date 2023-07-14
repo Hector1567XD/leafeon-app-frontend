@@ -49,43 +49,44 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     return (
         <div className={className}>
             <DynamicTable
-            headers={[
-                { columnLabel: 'Id', fieldName: 'jobId', cellAlignment: 'left' },
-                { columnLabel: 'Nombre', fieldName: 'description', cellAlignment: 'left' }
-            ]}
-            rows={items} components={[
-                (row: Job) =>
-                <Button
-                    color="primary"
-                    onClick={() => { navigate('/jobs/edit/'+row.jobId) }}
-                    startIcon={<IconEdit />}
-                >
-                    Editar
-                </Button>,
-                (row: Job) =>
-                <Button 
-                    color="secondary" 
-                    onClick={ () => handleOpen(row.jobId) }
-                    startIcon={<IconTrash />}
-                >
-                    Eliminar
-                </Button>
-            ]}
-        />
-        <DialogDelete handleClose={handleClose} onDelete={() => {
-            onDelete(jobId)
-        } } open={open}/>
-
+                headers={[
+                    { columnLabel: 'Id', fieldName: 'jobId', cellAlignment: 'left' },
+                    { columnLabel: 'Nombre', fieldName: 'description', cellAlignment: 'left' }
+                ]}
+                rows={items} components={[
+                    (row: Job) =>
+                    <Button
+                        color="primary"
+                        onClick={() => { navigate('/jobs/edit/'+row.jobId) }}
+                        startIcon={<IconEdit />}
+                    >
+                        Editar
+                    </Button>,
+                    (row: Job) =>
+                    <Button 
+                        color="secondary" 
+                        onClick={ () => handleOpen(row.jobId) }
+                        startIcon={<IconTrash />}
+                    >
+                        Eliminar
+                    </Button>
+                ]}
+             />
+            <DialogDelete 
+                handleClose={handleClose} 
+                onDelete={() => { onDelete(jobId)  } } 
+                open={open}
+            />
             <div className={'paginator-container'}>
-              <Pagination
-                  count={paginate.pages}
-                  page={paginate.page}
-                  variant="outlined"
-                  shape="rounded"
-                  color="primary"
-                  onChange={(event, page) => { onChange(page) }}
-              />
-          </div>
+                <Pagination
+                    count={paginate.pages}
+                    page={paginate.page}
+                    variant="outlined"
+                    shape="rounded"
+                    color="primary"
+                    onChange={(event, page) => { onChange(page) }}
+                />
+            </div>
         </div>
     );
 }

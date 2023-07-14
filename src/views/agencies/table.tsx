@@ -11,9 +11,10 @@ import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 import deleteAgency from 'services/agencies/delete-agency';
-import DialogDelete from './dialogDelete';
+import DialogDelete from 'components/dialogDelete';
 
-const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }) => {
+
+const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
@@ -42,8 +43,9 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
         } finally {
             dispatch(setIsLoading(false));
             handleClose();
+            fetchItems();
         }
-      }, [dispatch, navigate]);
+      }, [dispatch, fetchItems, navigate]);
 
 
     return (
@@ -75,7 +77,11 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange }
                         </Button>
                 ]}
             />
-            <DialogDelete handleClose={handleClose} id={currentAgencyRif} onDelete={onDelete} open={open}/>
+            <DialogDelete 
+                handleClose={handleClose} 
+                onDelete={() => { onDelete(currentAgencyRif)  } } 
+                open={open}
+            />
             <div className={'paginator-container'}>
                 <Pagination
                     count={paginate.pages}
@@ -95,6 +101,7 @@ interface Prop {
   paginate: PaginateData;
   className?: string;
   onChange: (page: number) => void;
+  fetchItems: () => void;
 }
 
 export default styled(Table)`

@@ -5,12 +5,13 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
-import Form from '../form';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
+import { useAppDispatch } from 'store';
+import Form, { FormValues } from '../form';
 import editCity from 'services/cities/edit-city';
-import useCityById from '../../../core/cities/use-city-by-id';
+import useCityById from 'core/cities/use-city-by-id';
 import useCityId from './use-city-id';
+import { FormikHelpers } from 'formik';
 
 const EditState: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -18,8 +19,9 @@ const EditState: FunctionComponent<Props> = ({className}) => {
   const cityId = useCityId();
   const city = useCityById(cityId);
 
-  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
+      dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
@@ -32,9 +34,11 @@ const EditState: FunctionComponent<Props> = ({className}) => {
           ...error.getFieldErrorsMessages(),
           submit: error.getMessage()
         });
+        dispatch(setErrorMessage(error.getMessage()));
       }
       setStatus({ success: false });
     } finally {
+      dispatch(setIsLoading(false));
       setSubmitting(false);
     }
   }, [dispatch, navigate, cityId]);

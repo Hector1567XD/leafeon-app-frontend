@@ -10,7 +10,7 @@ import { FunctionComponent, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 const States: FunctionComponent<Prop> = ({ className }) => {
-  const { items, paginate, setPage } = usePaginate();
+  const { items, paginate, setPage, fetchManagers } = usePaginate();
   const navigate = useNavigate();
 
   const goToCreate = useCallback(() => {
@@ -31,7 +31,7 @@ const States: FunctionComponent<Prop> = ({ className }) => {
         </Button>
       </div>
     }>
-      <Table items={items} paginate={paginate} onChange={setPage} />
+      <Table items={items} paginate={paginate} onChange={setPage} fetchItems={fetchManagers}/>
     </MainCard>
   );
 };

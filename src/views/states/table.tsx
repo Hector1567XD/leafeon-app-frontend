@@ -10,32 +10,32 @@ import { FunctionComponent, useCallback, useState } from 'react';
 import { StatePaginatedResponse } from 'services/states/get-paginate';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import { useAppDispatch } from '../../store/index';
+import { useAppDispatch } from 'store/index';
 import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
 import deleteState from 'services/states/delete-state';
-import DialogDelete from './dialogDelete';
+import DialogDelete from 'components/dialogDelete';
 
-const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange }) => {
+const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
-    const [currentStateId, setCurrentStateId] = useState<number>(0)
+    const [stateId, setStateId] = useState<number>(0)
 
-    const handleOpen = (currentStateId: number) => {
+    const handleOpen = (stateId: number) => {
         setOpen(true);
-        setCurrentStateId(currentStateId); 
+        setStateId(stateId); 
     }
 
     const handleClose = () => {
         setOpen(false);
-        setCurrentStateId(0); 
+        setStateId(0); 
     }
 
-    const onDelete = useCallback(async (currentStateId: number) => {
+    const onDelete = useCallback(async (stateId: number) => {
         try {
             dispatch(setIsLoading(true));
-            await deleteState(currentStateId!);
+            await deleteState(stateId!);
             navigate('/states');
             dispatch(setSuccessMessage(`Estado eliminado correctamente`));
         } catch (error) {
@@ -45,8 +45,9 @@ const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange 
         } finally {
             dispatch(setIsLoading(false));
             handleClose();
+            fetchItems();
         }
-      }, [dispatch, navigate]);
+      }, [dispatch, fetchItems, navigate]);
 
     return (
         <div className={className}>
@@ -58,24 +59,28 @@ const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange 
                 ]}
                 rows={items} components={[
                     (row: State) =>
-                    <Button
-                        color="primary"
-                        onClick={() => { navigate('/states/edit/'+row.stateId) }}
-                        startIcon={<IconEdit />}
-                    >
-                        Editar
-                    </Button>,
+                        <Button
+                            color="primary"
+                            onClick={() => { navigate('/states/edit/'+row.stateId) }}
+                            startIcon={<IconEdit />}
+                        >
+                            Editar
+                        </Button>,
                     (row: State) =>
-                    <Button 
-                        color="secondary" 
-                        onClick={ () => handleOpen(row.stateId) }
-                        startIcon={<IconTrash />}
-                    >
-                        Eliminar
-                    </Button>
+                        <Button 
+                            color="secondary" 
+                            onClick={ () => handleOpen(row.stateId) }
+                            startIcon={<IconTrash />}
+                        >
+                            Eliminar
+                        </Button>
                 ]}
             />
-            <DialogDelete handleClose={handleClose} id={currentStateId} onDelete={onDelete} open={open}/>
+            <DialogDelete 
+                handleClose={handleClose} 
+                onDelete={() => { onDelete(stateId) } } 
+                open={open}
+            />
             <div className={'paginator-container'}>
                 <Pagination
                     count={paginate.pages}
@@ -90,7 +95,11 @@ const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange 
     );
 }
 
-type Props = StatePaginatedResponse & { className?: string, onChange: (page: number) => void };
+type Props = StatePaginatedResponse & { 
+    className?: string, 
+    onChange: (page: number) => void,
+    fetchItems: () => void
+};
 
 export default styled(Table)`
     display: flex;
