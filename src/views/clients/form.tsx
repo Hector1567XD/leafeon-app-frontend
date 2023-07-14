@@ -120,7 +120,7 @@ interface Props {
   initialValues: FormValues;
 }
 
-type FormValues = {
+export type FormValues = {
   clientDni: string;
   name: string;
   email: string;

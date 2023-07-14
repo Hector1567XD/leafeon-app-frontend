@@ -8,10 +8,11 @@ import { useNavigate } from 'react-router';
 import BackendError from 'exceptions/backend-error';
 import { useAppDispatch } from '../../../store/index';
 import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
-import Form from '../form';
+import Form, { FormValues } from '../form';
 import editClient from 'services/clients/edit-client';
 import useClientByDni from './use-client-by-dni';
 import useClientDni from './use-client-dni';
+import { FormikHelpers } from 'formik';
 
 const EditClient: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
@@ -19,20 +20,27 @@ const EditClient: FunctionComponent<Props> = ({className}) => {
   const clientDni = useClientDni();
   const client = useClientByDni(clientDni);
 
-  const onSubmit = useCallback(async (values: any) => {
+  const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
       dispatch(setIsLoading(true));
+      setErrors({});
+      setStatus({});
+      setSubmitting(true);
       await editClient(clientDni!, values);
       navigate('/clients');
       dispatch(setSuccessMessage(`Cliente ${values.name} editado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
-        if (error instanceof BackendError) {
-          dispatch(setErrorMessage(error.getMessage()));
-        }
+        setErrors({
+          ...error.getFieldErrorsMessages(),
+          submit: error.getMessage()
+        });
+        dispatch(setErrorMessage(error.getMessage()));
       }
+      setStatus({ success: 'false'});
     } finally {
       dispatch(setIsLoading(false));
+      setSubmitting(false);
     }
   }, [clientDni, navigate, dispatch]);
 
