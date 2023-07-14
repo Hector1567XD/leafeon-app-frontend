@@ -7,18 +7,10 @@ const URL = `${API_BASE_URL}/login`;
 
 export default async function login(body: LoginBody): Promise<LoginResponse> {
   try {
-    //const response = await axios.post<LoginResponse>(URL, body);
-    //console.log('lo chido', response);
-    return new Promise((resolve, reject) => {
-      resolve({
-        name: 'Hector',
-        email: 'email@gmail.com',
-        token: 'token'
-      });
-    });
-    //return response.data;
+    console.log('akak '+URL)
+    const response = await axios.post<LoginResponse>(URL, body);
+    return response.data;
   } catch (error: unknown) {
-    console.log('lo chido error', error);
     throw new BackendError(error);
   }
 }

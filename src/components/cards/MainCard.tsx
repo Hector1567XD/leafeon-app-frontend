@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
+import { forwardRef, HTMLAttributes } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -12,7 +11,7 @@ const headerSX = {
 
 // ==============================|| CUSTOM MAIN CARD ||============================== //
 
-const MainCard = forwardRef(
+const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
   (
     {
       border = true,
@@ -24,16 +23,19 @@ const MainCard = forwardRef(
       darkTitle,
       secondary,
       shadow,
+      className,
       sx = {},
+      headerClass,
       title,
       ...others
     },
     ref
   ) => {
-    const theme = useTheme();
+    const theme = useTheme<any>();
 
     return (
       <Card
+        className={className}
         ref={ref}
         {...others}
         sx={{
@@ -46,7 +48,14 @@ const MainCard = forwardRef(
         }}
       >
         {/* card header and action */}
-        {title && <CardHeader sx={headerSX} title={darkTitle ? <Typography variant="h3">{title}</Typography> : title} action={secondary} />}
+        {title && 
+          <CardHeader
+            sx={headerSX as any}
+            title={(darkTitle ? <Typography variant="h3">{title as any}</Typography> : title) as any}
+            action={secondary as any} 
+            headerClass={headerClass}
+          />
+        }
 
         {/* content & header divider */}
         {title && <Divider />}
@@ -63,18 +72,19 @@ const MainCard = forwardRef(
   }
 );
 
-MainCard.propTypes = {
-  border: PropTypes.bool,
-  boxShadow: PropTypes.bool,
-  children: PropTypes.node,
-  content: PropTypes.bool,
-  contentClass: PropTypes.string,
-  contentSX: PropTypes.object,
-  darkTitle: PropTypes.bool,
-  secondary: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-  shadow: PropTypes.string,
-  sx: PropTypes.object,
-  title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
-};
+interface MainCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'content'> {
+  border?: boolean;
+  className?: string;
+  boxShadow?: boolean;
+  content?: boolean;
+  contentClass?: string;
+  headerClass?: string;
+  contentSX?: object;
+  sx?: Record<string, any>;
+  darkTitle?: boolean;
+  secondary?: React.ReactNode | string | object;
+  shadow?: string;
+  title?: React.ReactNode | string | object;
+}
 
 export default MainCard;

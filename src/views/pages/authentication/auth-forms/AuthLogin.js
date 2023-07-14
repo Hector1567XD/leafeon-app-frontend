@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import AnimateButton from 'ui-component/extended/AnimateButton';
+import AnimateButton from 'components/extended/AnimateButton';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
@@ -58,8 +58,8 @@ const FirebaseLogin = ({ ...others }) => {
     <>
       <Formik
         initialValues={{
-          email: 'a@a.ve',
-          password: 'a',
+          email: 'ajrosas.19@est.ucab.edu.ve',
+          password: '1234',
           submit: null
         }}
         validationSchema={Yup.object().shape({

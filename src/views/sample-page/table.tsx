@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function createData(name, calories, fat, carbs, protein) {
+function createData(name: any, calories: any, fat: any, carbs: any, protein: any) {
     return { name, calories, fat, carbs, protein };
 }
 
