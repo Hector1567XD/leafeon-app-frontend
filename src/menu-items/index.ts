@@ -1,12 +1,12 @@
 import dashboard from './dashboard';
 import general from './general';
-import company from './company';
+import business from './business';
 import { MenuItem } from './types';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems: { items: MenuItem[] } = {
-  items: [dashboard, general, company]
+  items: [dashboard, general, business]
 };
 
 export default menuItems;

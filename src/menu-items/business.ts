@@ -3,10 +3,10 @@ import { IconGasStation } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
-const other: MenuItem = {
-  id: 'company-crud-category',
+const business: MenuItem = {
+  id: 'business-crud-category',
   type: MenuItemType.Group,
-  title: 'Compañia',
+  title: 'Negocio',
   children: [
     {
       id: 'services',
@@ -34,4 +34,4 @@ const other: MenuItem = {
   ]
 };
 
-export default other;
+export default business;
