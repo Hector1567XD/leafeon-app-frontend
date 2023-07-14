@@ -5,7 +5,7 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
 import Form from '../form';
 import editService from 'services/services/edit-service';
@@ -23,6 +23,7 @@ const EditService: FunctionComponent<Props> = ({className}) => {
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     try {
+      dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
@@ -40,9 +41,11 @@ const EditService: FunctionComponent<Props> = ({className}) => {
           ...error.getFieldErrorsMessages(),
           submit: error.getMessage()
         });
+        dispatch(setErrorMessage(error.getMessage()));
       }
       setStatus({ success: false });
     } finally {
+      dispatch(setIsLoading(false));
       setSubmitting(false);
     }
   }, [dispatch, navigate, serviceId]);

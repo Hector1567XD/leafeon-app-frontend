@@ -5,7 +5,7 @@ import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
-import { setSuccessMessage } from 'store/customizationSlice';
+import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
 import Form from './form';
 import createService from 'services/services/create-service';
@@ -17,6 +17,7 @@ const CreateService: FunctionComponent<Props> = ({ className }) => {
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     console.log(values)
     try {
+      dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
@@ -32,9 +33,11 @@ const CreateService: FunctionComponent<Props> = ({ className }) => {
           ...error.getFieldErrorsMessages(),
           submit: error.getMessage()
         });
+        dispatch(setErrorMessage(error.getMessage()));
       }
       setStatus({ success: false });
     } finally {
+      dispatch(setIsLoading(false));
       setSubmitting(false);
     }
   }, [dispatch, navigate]);
