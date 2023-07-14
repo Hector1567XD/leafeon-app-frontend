@@ -7,7 +7,7 @@ import BackendError from 'exceptions/backend-error';
 import createManager from 'services/managers/create-manager';
 import { useNavigate } from 'react-router';
 import { setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../store/index';
+import { useAppDispatch } from 'store/index';
 import Form from './form';
 
 const CreateJob: FunctionComponent<Props> = ({className}) => {
