@@ -26,6 +26,10 @@ import EditManager from 'views/managers/edit';
 import Clients from 'views/clients';
 import CreateClient from 'views/clients/create';
 import EditClient from 'views/clients/edit';
+//Employees
+import Employees from 'views/employees';
+import CreateEmployee from 'views/employees/create';
+import EditEmployee from 'views/employees/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -105,6 +109,19 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'clients/edit/:id',
     element: <EditClient />
+  },
+  //Empleados
+  {
+    path: 'employees',
+    element: <Employees />
+  },
+  {
+    path: 'employees/create',
+    element: <CreateEmployee/>
+  },
+  {
+    path: 'employees/edit/:id',
+    element: <EditEmployee/>
   },
 ];
 

@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
-import { Client } from 'core/clients/types';
+import { Employee } from 'core/employees/types';
 import styled from 'styled-components';
 // Own
 import { useAppDispatch } from 'store/index';
@@ -10,31 +10,31 @@ import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
 import { IconEdit, IconTrash } from '@tabler/icons';
 import { useNavigate } from 'react-router';
-import deleteClient from 'services/clients/delete-client';
+import deleteEmployee from 'services/employees/delete-employee';
 import DialogDelete from 'components/dialogDelete';
 
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
-    const [clientDni, setClientDni] = useState<string>('')
+    const [employeeDni, setEmployeeDni] = useState<string>('')
 
-    const handleOpen = (clientDni: string) => {
+    const handleOpen = (employeeDni: string) => {
         setOpen(true);
-        setClientDni(clientDni); 
+        setEmployeeDni(employeeDni); 
     }
 
     const handleClose = () => {
         setOpen(false);
-        setClientDni(''); 
+        setEmployeeDni(''); 
     }
 
-    const onDelete = useCallback(async (clientDni: string) => {
+    const onDelete = useCallback(async (employeeDni: string) => {
         try {
             dispatch(setIsLoading(true));
-            await deleteClient(clientDni!);
-            navigate('/clients');
-            dispatch(setSuccessMessage(`Cliente eliminado correctamente`));
+            await deleteEmployee(employeeDni!);
+            navigate('/employees');
+            dispatch(setSuccessMessage(`Empleado eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
                 dispatch(setErrorMessage(error.getMessage()));
@@ -50,25 +50,27 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
         <div className={className}>
             <DynamicTable
                 headers={[
-                    { columnLabel: 'Cedula', fieldName: 'clientDni', cellAlignment: 'left' },
+                    { columnLabel: 'Cedula', fieldName: 'employeeDni', cellAlignment: 'left' },
                     { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
-                    { columnLabel: 'Correo electrónico', fieldName: 'email', cellAlignment: 'left' },
-                    { columnLabel: 'Teléfono principal', fieldName: 'mainPhone', cellAlignment: 'left' },
-                    { columnLabel: 'Teléfono secundario', fieldName: 'secondaryPhone', cellAlignment: 'left' }
+                    { columnLabel: 'Teléfono', fieldName: 'phone', cellAlignment: 'left' },
+                    { columnLabel: 'Dirección', fieldName: 'address', cellAlignment: 'left' },
+                    { columnLabel: 'Salario', fieldName: 'salary', cellAlignment: 'left' },
+                    { columnLabel: 'Agencia', fieldName: 'agencyRif', cellAlignment: 'left' },
+                    { columnLabel: 'Cargo', fieldName: 'jobId', cellAlignment: 'left' },
                 ]}
                 rows={items} components={[
-                    (row: Client) =>
+                    (row: Employee) =>
                         <Button
                             color="primary"
-                            onClick={() => { navigate('/clients/edit/'+row.clientDni) }}
+                            onClick={() => { navigate('/employees/edit/'+row.employeeDni) }}
                             startIcon={<IconEdit />}
                         >
                             Editar
                         </Button>,
-                    (row: Client) =>
+                    (row: Employee) =>
                         <Button 
                             color="secondary" 
-                            onClick={ () => handleOpen(row.clientDni) }
+                            onClick={ () => handleOpen(row.employeeDni) }
                             startIcon={<IconTrash />}
                         >
                             Eliminar
@@ -77,7 +79,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             />
             <DialogDelete 
                 handleClose={handleClose} 
-                onDelete={() => { onDelete(clientDni) }} 
+                onDelete={() => { onDelete(employeeDni) }} 
                 open={open}
             />
 
@@ -96,7 +98,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
 }
 
 interface Prop {
-  items: Client[];
+  items: Employee[];
   paginate: PaginateData;
   className?: string;
   onChange: (page: number) => void;

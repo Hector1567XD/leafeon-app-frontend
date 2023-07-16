@@ -1,20 +1,20 @@
 import { SelectOption } from "components/SelectField";
-import { Job } from "core/jobs/types";
+import { Service } from "core/services/types";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllJobs from "services/jobs/get-all-jobs";
+import getAllServices from "services/services/get-all-services";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 
-export default function useJobsOptions(): SelectOption[] {
-  const [jobs, setJobs] = useState<Job[]>([]);
+export default function useServicesOptions(): SelectOption[] {
+  const [services, setServices] = useState<Service[]>([]);
   const dispatch = useAppDispatch();
 
-  const fetchJobs = useCallback(async () => {
+  const fetchServices = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllJobs();
-      setJobs(response);
+      const response = await getAllServices();
+      setServices(response);
     } catch (error) {
       if (error instanceof BackendError)
         dispatch(setErrorMessage(error.getMessage()));
@@ -24,11 +24,11 @@ export default function useJobsOptions(): SelectOption[] {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchJobs();
-  }, [fetchJobs]);
+    fetchServices();
+  }, [fetchServices]);
 
-  return jobs.map(job => ({
-    label: job.description,
-    value: job.jobId,
+  return services.map(service => ({
+    label: service.description,
+    value: service.serviceId,
   }));
 }

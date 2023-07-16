@@ -1,20 +1,20 @@
 import { SelectOption } from "components/SelectField";
-import { Job } from "core/jobs/types";
+import { Agency } from "core/agencies/types";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllJobs from "services/jobs/get-all-jobs";
+import getAllAgencies from "services/agencies/get-all-agencies";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 
-export default function useJobsOptions(): SelectOption[] {
-  const [jobs, setJobs] = useState<Job[]>([]);
+export default function useAgencyOptions(): SelectOption[] {
+  const [agencies, setAgencies] = useState<Agency[]>([]);
   const dispatch = useAppDispatch();
 
-  const fetchJobs = useCallback(async () => {
+  const fetchAgencies = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllJobs();
-      setJobs(response);
+      const response = await getAllAgencies();
+      setAgencies(response);
     } catch (error) {
       if (error instanceof BackendError)
         dispatch(setErrorMessage(error.getMessage()));
@@ -24,11 +24,11 @@ export default function useJobsOptions(): SelectOption[] {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchJobs();
-  }, [fetchJobs]);
+    fetchAgencies();
+  }, [fetchAgencies]);
 
-  return jobs.map(job => ({
-    label: job.description,
-    value: job.jobId,
+  return agencies.map(agency => ({
+    label: agency.businessName,
+    value: agency.agencyRif,
   }));
 }

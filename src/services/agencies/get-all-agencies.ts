@@ -1,15 +1,15 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Job } from 'core/jobs/types';
+import { Agency } from 'core/agencies/types';
 import BackendError from 'exceptions/backend-error';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/jobs/all`;
+const URL = `${API_BASE_URL}/agencies/all`;
 
-export default async function getAllJobs(): Promise<Job[]> {
+export default async function getAllAgencies(): Promise<Agency[]> {
   try {
-    const response = await axios.get<Job[]>(
+    const response = await axios.get<Agency[]>(
       URL, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
