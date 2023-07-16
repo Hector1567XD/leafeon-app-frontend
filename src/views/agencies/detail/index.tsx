@@ -7,6 +7,7 @@ import { Box, Tabs, Typography, Tab, Card } from '@mui/material';
 import CoordinatorsCrudComponent from 'core/coordinators/crud';
 import useAgencyRif from 'core/agencies/use-agency-rif';
 import useAgencyByRif from 'core/agencies/use-agency-by-rif';
+import StocksCrudComponent from 'core/stocks/crud';
 
 function TabPanel(props: any) {
   const { children, value, index, ...other } = props;
@@ -67,6 +68,7 @@ const DetailWrapper: FunctionComponent<Props> = ({ className }) => {
         >
           <Tab label="Agencia" {...a11yProps(0)} />
           <Tab label="Coordinadores" {...a11yProps(1)} />
+          <Tab label="Inventario" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} className={'tab-complete-width'} index={0}>
           <PrincipalDetail agency={agency} reload={reload} />
@@ -76,6 +78,16 @@ const DetailWrapper: FunctionComponent<Props> = ({ className }) => {
             header={
               <span>
                 Coordinadores
+              </span>
+            }
+            fixedAgencyRif={agency.agencyRif}
+          />
+        </TabPanel>
+        <TabPanel value={value} className={'tab-complete-width'} index={2}>
+          <StocksCrudComponent
+            header={
+              <span>
+                Inventario
               </span>
             }
             fixedAgencyRif={agency.agencyRif}

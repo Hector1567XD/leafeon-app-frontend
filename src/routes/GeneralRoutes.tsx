@@ -33,6 +33,8 @@ import CreateClient from 'views/clients/create';
 import EditClient from 'views/clients/edit';
 //Coordinadores
 import Coordinators from 'views/coordinators';
+//Stocks / Inventarios
+import Stocks from 'views/stocks';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -138,6 +140,11 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'coordinators',
     element: <Coordinators />
+  },
+  //Inventario
+  {
+    path: 'inventory',
+    element: <Stocks />
   }
 ];
 
