@@ -1,16 +1,18 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Job } from 'core/jobs/types';
+import { Order } from 'core/orders/types';
 import BackendError from 'exceptions/backend-error';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/jobs`;
+const URL = `${API_BASE_URL}/orders`;
 
-export default async function getJob(idJob: number): Promise<Job> {
+export default async function editOrder(idOrder: number, body: OrderPayload):
+  Promise<Order>
+{
   try {
-    const response = await axios.get<Job>(
-        `${URL}/${idJob}`, {
+    const response = await axios.put<Order>(
+        `${URL}/${idOrder}`, body, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -21,3 +23,5 @@ export default async function getJob(idJob: number): Promise<Job> {
     throw new BackendError(error);
   }
 }
+
+export type OrderPayload = Omit<Order, 'orderId' | 'createdAt'>;
