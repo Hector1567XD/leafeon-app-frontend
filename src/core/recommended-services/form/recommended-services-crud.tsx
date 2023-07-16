@@ -26,7 +26,9 @@ const DEFAULT_INITIAL_VALUE: RecommendedServiceFormValues = {
   submit: null,
 };
 
-const RecommendedServicesCrud: FunctionComponent<Props> = ({ className, items, onDelete, onUpdate, onCreate, modelId }) => {
+const RecommendedServicesCrud: FunctionComponent<Props> = ({
+  className, items, onDelete, onUpdate, onCreate, modelId, isParentUpdate
+}) => {
   //const isCreated = !isUpdate;
   const [open, setOpen] = useState(false);
   const [initialValue, setInitialValue] = useState<RecommendedServiceFormValues | null>(null);
@@ -94,6 +96,7 @@ const RecommendedServicesCrud: FunctionComponent<Props> = ({ className, items, o
             >
               {open && initialValue &&
                 <Form
+                  isParentUpdate={isParentUpdate}
                   onSubmit={
                     (
                       values: RecommendedServiceFormValues, helpers: FormikHelpers<RecommendedServiceFormValues>
@@ -119,6 +122,7 @@ const RecommendedServicesCrud: FunctionComponent<Props> = ({ className, items, o
 };
 
 interface Props {
+  isParentUpdate?: boolean;
   className?: string;
   isUpdate?: boolean;
   items: LocalRecommendedService[];

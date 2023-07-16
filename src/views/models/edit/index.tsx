@@ -9,17 +9,15 @@ import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customiz
 import { useAppDispatch } from 'store';
 import Form from '../form';
 import editModel from 'services/models/edit-model';
-import useModelId from './use-model-id';
-import useModelById from './use-model-by-id';
 import convertLocalToRecommendedServicesInput from 'core/recommended-services/form/utils/convert-local-to-recommended-services-input';
+import useModelId from 'core/models/use-model-id';
+import useModelById from 'core/models/use-model-by-id';
 
 const EditModel: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const modelId = useModelId();
-  const model = useModelById(modelId);
-
-  console.log('input model', model)
+  const { model } = useModelById(modelId);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
     try {

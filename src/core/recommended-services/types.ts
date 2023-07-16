@@ -1,5 +1,4 @@
 import { Service } from 'core/services/types';
-import { ChangeEvent } from 'react';
 
 export interface RecommendedService {
   serviceId: number;

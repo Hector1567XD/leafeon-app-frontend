@@ -4,9 +4,17 @@ import { Formik, FormikHelpers } from 'formik';
 // material-ui
 import { Button, FormControl, FormHelperText, InputAdornment, TextField } from '@mui/material';
 import styled from 'styled-components';
+import useServicesOptions from 'core/services/use-services-options';
+import SelectField from 'components/SelectField';
 
-const ActivitiesForm: FunctionComponent<Props> = ({ className, onSubmit, initialValues, isUpdate }) => {
+const USE_AUTOCOMPLETES = false;
+
+const ActivitiesForm: FunctionComponent<Props> = ({
+  className, onSubmit, initialValues, isUpdate, isParentUpdate
+}) => {
   const isCreated = !isUpdate;
+  const servicesOptions = useServicesOptions();
+  
   return (
     <div className={className}>
       <Formik
@@ -25,35 +33,57 @@ const ActivitiesForm: FunctionComponent<Props> = ({ className, onSubmit, initial
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} >
-            <FormControl className="field-form" fullWidth>
+            <FormControl
+              className="field-form"
+              fullWidth
+              disabled={isParentUpdate && isUpdate}
+            >
+              <SelectField
+                className="field-form"
+                fullWidth={true}
+                name="serviceId"
+                disabled={isParentUpdate && isUpdate}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Servicios"
+                options={servicesOptions}
+                helperText={touched.serviceId ? errors.serviceId : ''}
+                error={touched.serviceId && !!errors.serviceId}
+                isAutocomplete={USE_AUTOCOMPLETES}
+                value={values.serviceId}
+              />
               <TextField
+                disabled={isParentUpdate && isUpdate}
                 id="mileage"
-                label="Descripcion de la actividad"
+                label="Kilometraje"
                 variant="outlined"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.mileage}
                 helperText={touched.mileage ? errors.mileage : ''}
                 error={touched.mileage && !!errors.mileage}
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">Km</InputAdornment>
+                }}
                 name="mileage"
               />
-            </FormControl>
-            <FormControl className="field-form" fullWidth>
-              <TextField
-                id="useTime"
-                label="Coste por hora de la actividad"
-                variant="outlined"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.useTime}
-                helperText={touched.useTime ? errors.useTime : ''}
-                error={touched.useTime && !!errors.useTime}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>
-                }}
-                name="useTime"
-              />
-            </FormControl>
+              </FormControl>
+              <FormControl className="field-form" fullWidth>
+                <TextField
+                  id="useTime"
+                  label="Tiempo de uso"
+                  variant="outlined"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.useTime}
+                  helperText={touched.useTime ? errors.useTime : ''}
+                  error={touched.useTime && !!errors.useTime}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="start">Meses</InputAdornment>
+                  }}
+                  name="useTime"
+                />
+              </FormControl>
             {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
             )}
@@ -72,12 +102,14 @@ interface Props {
   onSubmit: OnSubmit;
   initialValues: RecommendedServiceFormValues;
   isUpdate?: boolean;
+  isParentUpdate?: boolean;
 }
 
 export type RecommendedServiceFormValues = {
   serviceId: number;
   mileage: number;
   useTime: number;
+  isParentUpdate?: boolean;
   submit: string | null;
 };
 

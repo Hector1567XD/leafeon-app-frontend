@@ -14,7 +14,8 @@ const RecommendedServicesCrudField: FunctionComponent<Props> = (
     fieldName,
     error,
     helperText,
-    modelId
+    modelId,
+    isParentUpdate
   }
 ) => {
   const onChangeRecommendedServices = useCallback(
@@ -33,6 +34,7 @@ const RecommendedServicesCrudField: FunctionComponent<Props> = (
   return (
     <FormControl error={error} fullWidth>
       <RecommendedServicesCrud
+        isParentUpdate={isParentUpdate}
         modelId={modelId}
         onDelete={onDelete}
         onUpdate={onUpdate}
@@ -53,6 +55,7 @@ interface Props {
   onChange?: (services: InputRecommendedService[]) => void;
   onHandleFormChange: (services: ChangeEventRecommendedServices) => void;
   modelId: string;
+  isParentUpdate?: boolean;
 }
 
 function createChangeEvent(fieldName: string, services: InputRecommendedService[]): ChangeEventRecommendedServices

@@ -6,7 +6,7 @@ import { useAppDispatch } from 'store';
 import { Model } from 'core/models/types';
 import getModel from 'services/models/get-model';
 
-export default function useModelById(modelId: string | null) {
+export default function useModelById(modelId: string | null): ModelById {
   const dispatch = useAppDispatch();
   const [item, setItem] = useState<Model | null>(null);
 
@@ -23,9 +23,15 @@ export default function useModelById(modelId: string | null) {
     }
   }, [dispatch]);
 
-  useEffect(() => {
+  const reload = useCallback(() => {
     if (modelId) fetchItem(modelId);
   }, [fetchItem, modelId]);
 
-  return item;
+  useEffect(() => {
+    reload();
+  }, [reload]);
+
+  return { model: item, reload };
 };
+
+interface ModelById { model: Model | null, reload: () => void }

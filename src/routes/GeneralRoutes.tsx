@@ -1,7 +1,6 @@
 // project imports
 import { RouteObject } from 'react-router';
 
-// pages
 // State
 import States from 'views/states';
 import CreateState from 'views/states/create';
@@ -18,6 +17,7 @@ import EditAgency from 'views/agencies/edit';
 import Models from 'views/models';
 import CreateModel from 'views/models/create';
 import EditModel from 'views/models/edit';
+import DetailModel from 'views/models/detail';
 //Job
 import Jobs from 'views/jobs';
 import CreateJob from 'views/jobs/create';
@@ -30,7 +30,6 @@ import EditManager from 'views/managers/edit';
 import Clients from 'views/clients';
 import CreateClient from 'views/clients/create';
 import EditClient from 'views/clients/edit';
-
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -84,6 +83,10 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'models/edit/:id',
     element: <EditModel />
+  },
+  {
+    path: 'models/detail/:id',
+    element: <DetailModel />
   },
   //Cargos
   {

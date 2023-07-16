@@ -169,6 +169,7 @@ const Form: FunctionComponent<Props> = ({
                   <div className={'form-data activites-crud'}>
                     <RecommendedServicesCreateField
                       modelId={values.modelId}
+                      isParentUpdate={isUpdate}
                       //NOT use inputServices={values.services} (for moment)
                       inputServices={inputServices}
                       fieldName={'services'}

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 // Own
 import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
-import { IconEdit, IconTrash } from '@tabler/icons';
+import { IconEdit, IconTrash, IconEye } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 import { PaginatedModel } from 'core/models/types';
 import { useAppDispatch } from 'store';
@@ -51,7 +51,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, fetchItems, className
                     { columnLabel: 'Modelo Id', fieldName: 'modelId', cellAlignment: 'left' },
                     { columnLabel: 'Descripción', fieldName: 'description', cellAlignment: 'left' },
                     //{ columnLabel: 'Cantidad de acientos', fieldName: 'seatsQuantity', cellAlignment: 'left' },
-                    { columnLabel: 'Peso', fieldName: 'modelKg', cellAlignment: 'left' },
+                    /*{ columnLabel: 'Peso', fieldName: 'modelKg', cellAlignment: 'left' },*/
                     { columnLabel: 'Año', fieldName: 'modelYear', cellAlignment: 'left' },
                     { columnLabel: 'Refrigeracion', fieldName: 'refrigerantType', cellAlignment: 'left' },
                     { columnLabel: 'Octanaje', fieldName: 'octane', cellAlignment: 'left' },
@@ -68,6 +68,14 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, fetchItems, className
                         startIcon={<IconEdit />}
                     >
                         Editar
+                    </Button>,
+                    (row: PaginatedModel) =>
+                    <Button
+                        color="secondary"
+                        onClick={() => { navigate('/models/detail/'+row.modelId) }}
+                        startIcon={<IconEye />}
+                    >
+                        Detalle
                     </Button>,
                     (row: PaginatedModel) =>
                     <Button
