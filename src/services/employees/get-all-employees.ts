@@ -1,17 +1,17 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Manager } from 'core/managers/types';
+import { Employee } from 'core/employees/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/managers/all`;
+const URL = `${API_BASE_URL}/employees/all`;
 
-export default async function getAllManagers(body?: Body): Promise<Manager[]> {
+export default async function getAllEmployees(body?: Body): Promise<Employee[]> {
   try {
     const urlParametrized = addQueryParams(URL, body || {});
-    const response = await axios.get<Manager[]>(
+    const response = await axios.get<Employee[]>(
       urlParametrized, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
@@ -20,12 +20,10 @@ export default async function getAllManagers(body?: Body): Promise<Manager[]> {
     );
     return response.data;
   } catch (error: unknown) {
-    console.log(error);
     throw new BackendError(error);
   }
 }
 
 export type Body = {
-  onlyAvailable: boolean,
-  includeManager: string | null,
+  onlyForAgencyRif: string | null,
 }

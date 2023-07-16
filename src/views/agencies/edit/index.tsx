@@ -9,16 +9,16 @@ import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customiz
 import { useAppDispatch } from '../../../store/index';
 import Form, { FormValues } from '../form';
 import editAgency from 'services/agencies/edit-agency';
-import useAgencyByRif from './use-agency-by-rif';
-import useAgencyRif from './use-agency-rif';
 import useCityById from 'core/cities/use-city-by-id';
 import { FormikHelpers } from 'formik';
+import useAgencyRif from 'core/agencies/use-agency-rif';
+import useAgencyByRif from 'core/agencies/use-agency-by-rif';
 
 const EditState: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const agencyRif = useAgencyRif();
-  const agency = useAgencyByRif(agencyRif);
+  const { agency } = useAgencyByRif(agencyRif);
   const city = useCityById(agency?.cityId || null);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
