@@ -53,7 +53,7 @@ const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
             sx={headerSX as any}
             title={(darkTitle ? <Typography variant="h3">{title as any}</Typography> : title) as any}
             action={secondary as any} 
-            headerClass={headerClass}
+            className={headerClass}
           />
         }
 

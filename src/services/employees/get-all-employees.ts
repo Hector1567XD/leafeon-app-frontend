@@ -10,9 +10,9 @@ const URL = `${API_BASE_URL}/employees/all`;
 
 export default async function getAllEmployees(body?: Body): Promise<Employee[]> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
+    const urlParametrized = addQueryParams(URL, body || {});
     const response = await axios.get<Employee[]>(
-      urlPaginated, {
+      urlParametrized, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -20,9 +20,8 @@ export default async function getAllEmployees(body?: Body): Promise<Employee[]> 
     );
     return response.data;
   } catch (error: unknown) {
-    console.log(error);
     throw new BackendError(error);
   }
 }
 
-export type Body = { employeeDni?: number; };
+export type Body = { employeeDni?: number; onlyForAgencyRif: string | null, };

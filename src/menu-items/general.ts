@@ -1,5 +1,5 @@
 // assets
-import { IconCurrentLocation, IconBuildingEstate, IconBuildingStore } from '@tabler/icons';
+import { IconCurrentLocation, IconBuildingEstate, IconBuildingStore, IconCar } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -73,6 +73,29 @@ const other: MenuItem = {
           title: 'Crear agencia',
           type: MenuItemType.Item,
           url: '/agencies/create',
+          breadcrumbs: false,
+        }
+      ]
+    },
+    {
+      id: 'models',
+      title: 'Modelos',
+      type: MenuItemType.Collapse,
+      icon: IconCar,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-models',
+          title: 'Lista de modelos',
+          type: MenuItemType.Item,
+          url: '/models',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-models',
+          title: 'Crear modelo',
+          type: MenuItemType.Item,
+          url: '/models/create',
           breadcrumbs: false,
         }
       ]

@@ -19,21 +19,20 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [jobId, setJobId] = useState<number>(0)
 
-    const handleOpen = (jobId: number) => {
+    const handleOpen = useCallback((jobId: number) => {
         setOpen(true);
-        setJobId(jobId); 
-    }
+        setJobId(jobId);
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setJobId(0); 
-    }
+        setJobId(0);
+    }, []);
 
     const onDelete = useCallback(async (jobId: number) => {
         try {
             dispatch(setIsLoading(true));
             await deleteJob(jobId!);
-            navigate('/jobs');
             dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -44,7 +43,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+    }, [dispatch, fetchItems, handleClose]);
 
     return (
         <div className={className}>

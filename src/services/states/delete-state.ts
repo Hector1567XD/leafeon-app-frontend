@@ -7,20 +7,17 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/states`;
 
-export default async function deleteState(idState: number): Promise<State> {
+export default async function deleteState(idState: number): Promise<void> {
   try {
-    const response = await axios.delete<State>(
-      `${URL}/${idState}`, {
-      headers: {
-        Authorization: `Bearer ${store.getState().auth.token}`,
+    await axios.delete(
+        `${URL}/${idState}`, {
+        headers: {
+          Authorization: `Bearer ${store.getState().auth.token}`,
+        }
       }
-    }
-  );
-    return response.data;
+    );
   } catch (error: unknown) {
     console.log(error);
     throw new BackendError(error);
   }
 }
-
-export type StatePayload = Omit<State, 'stateId' | 'createdAt'>;

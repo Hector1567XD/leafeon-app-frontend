@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 // material-ui
 import BackendError from 'exceptions/backend-error';
 import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
+import { useAppDispatch } from '../../store/index';
 import { Agency } from 'core/agencies/types';
 import getAgency from 'services/agencies/get-agency';
 
-export default function useAgencyByRif(agencyRif: string | null) {
+export default function useAgencyByRif(agencyRif: string | null):
+  { agency: Agency | null, reload: () => void }
+{
   const dispatch = useAppDispatch();
   const [state, setState] = useState<Agency | null>(null);
 
@@ -23,9 +25,13 @@ export default function useAgencyByRif(agencyRif: string | null) {
     }
   }, [dispatch]);
 
-  useEffect(() => {
+  const reload = useCallback(() => {
     if (agencyRif) fetchAgency(agencyRif);
   }, [fetchAgency, agencyRif]);
 
-  return state;
+  useEffect(() => {
+    reload();
+  }, [reload]);
+
+  return { agency: state, reload };
 };
