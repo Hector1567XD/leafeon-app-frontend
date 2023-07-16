@@ -4,4 +4,8 @@ export interface Agency {
   managerDni: string;
   cityId: number;
   createdAt: string;
+  createdAtFormatted: string;
+  cityName: string;
+  stateName: string;
+  managerName: string;
 }

@@ -6,13 +6,13 @@ import usePaginate from './use-paginate';
 import { Button, FormControl, Typography } from '@mui/material';
 import { IconCirclePlus } from '@tabler/icons';
 import { styled } from 'styled-components';
-import { FunctionComponent, useCallback, useState } from 'react';
+import { FunctionComponent, ReactNode, useCallback, useState } from 'react';
 import useAgenciesOptions from 'core/agencies/use-agencies-options';
 import SelectField from 'components/SelectField';
 
 const USE_AUTOCOMPLETES = false;
 
-const CoordinatorsCrud: FunctionComponent<Prop> = ({ className, fixedAgencyRif }) => {
+const CoordinatorsCrud: FunctionComponent<Prop> = ({ className, fixedAgencyRif, header }) => {
   const [agencyRif, setAgencyRif] = useState<string | null>(fixedAgencyRif);
   const { items, paginate, setPage, reload } = usePaginate({
     onlyForAgencyRif: fixedAgencyRif ?? agencyRif,
@@ -30,13 +30,16 @@ const CoordinatorsCrud: FunctionComponent<Prop> = ({ className, fixedAgencyRif }
   }, []);
 
   const agenciesOptions = useAgenciesOptions();
+  const headerIsString = typeof header === 'string';
 
   return (
     <MainCard className={className} headerClass={'crud-header'} title={
       <div className={'crud-header'}>
-        <Typography variant="h3" className={'title-header'}>
-          Coordinadores de servicio
-        </Typography>
+        {headerIsString ? (
+          <Typography variant="h3" className={'title-header'}>
+            {header}
+          </Typography>
+        ) : header}
         <FormControl disabled={!!fixedAgencyRif} className={'field-form-header-container'}>
           <SelectField
             className="field-form-header"
@@ -60,6 +63,7 @@ const CoordinatorsCrud: FunctionComponent<Prop> = ({ className, fixedAgencyRif }
           variant={'outlined'}
           onClick={onOpenCreate}
           startIcon={<IconCirclePlus />}
+          size="small"
         >
           Crear
         </Button>
@@ -73,17 +77,20 @@ const CoordinatorsCrud: FunctionComponent<Prop> = ({ className, fixedAgencyRif }
         reload={reload}
         onCloseCreate={onCloseCreate}
         fixedAgencyRif={agencyRif}
+        isFixedRif={!!fixedAgencyRif}
       />
     </MainCard>
   );
 };
 
 interface Prop {
+  header?: string | ReactNode;
   className?: string;
   fixedAgencyRif: string | null;
 }
 
 export default styled(CoordinatorsCrud)`
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;

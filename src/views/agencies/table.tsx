@@ -52,8 +52,9 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
                     { columnLabel: 'RIF', fieldName: 'agencyRif', cellAlignment: 'left' },
                     { columnLabel: 'Nombre', fieldName: 'businessName', cellAlignment: 'left' },
                     { columnLabel: 'Manager DNI', fieldName: 'managerDni', cellAlignment: 'left' },
-                    { columnLabel: 'Ciudad', fieldName: 'cityId', cellAlignment: 'left' },
-                    { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
+                    { columnLabel: 'Ciudad', fieldName: 'cityName', cellAlignment: 'left' },
+                    { columnLabel: 'Estado', fieldName: 'stateName', cellAlignment: 'left' },
+                    { columnLabel: 'Creación', fieldName: 'createdAtFormatted', cellAlignment: 'left' }
                 ]}
                 rows={items} components={[
                     (row: Agency) =>

@@ -8,7 +8,7 @@ const Detail: FunctionComponent<Props> = ({ className, agency, onRefresh }) => {
   return (
     <div className={className}>
       <div className={'container-form-services'}>
-        <MainCard className={'form-data'} contentClass={'form-content'} title={'Datos de la agencia'}>
+        <MainCard title={'Datos de la agencia'}>
           <TableContainer component={Paper}>
             <Table aria-label="Datos de agencia">
               <TableBody>
@@ -21,12 +21,24 @@ const Detail: FunctionComponent<Props> = ({ className, agency, onRefresh }) => {
                   <TableCell align="right">{agency.businessName}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Ciudad de agencia</TableCell>
+                  <TableCell>Id de Ciudad</TableCell>
                   <TableCell align="right">{agency.cityId}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Creacion de agencia:</TableCell>
-                  <TableCell align="right">{agency.createdAt}</TableCell>
+                  <TableCell align="right">{agency.createdAtFormatted}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Nombre del Manager</TableCell>
+                  <TableCell align="right">{agency.managerName}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Ciudad de agencia</TableCell>
+                  <TableCell align="right">{agency.cityName}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Estado de la agencia:</TableCell>
+                  <TableCell align="right">{agency.stateName}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

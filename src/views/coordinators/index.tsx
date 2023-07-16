@@ -3,7 +3,11 @@ import { styled } from 'styled-components';
 import CoordinatorsCrudComponent from 'core/coordinators/crud'
 
 const CoordinatorsCrud: FunctionComponent<Props> = ({ className }) => {
-  return (<CoordinatorsCrudComponent fixedAgencyRif={null} />);
+  return (
+  <CoordinatorsCrudComponent
+    header={'Coordinadores'}
+    fixedAgencyRif={null}
+  />);
 };
 
 interface Props {

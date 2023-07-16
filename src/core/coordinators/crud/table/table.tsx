@@ -6,7 +6,7 @@ import {
     Pagination,
 } from '@mui/material';
 import { IconTrash, IconEdit } from '@tabler/icons';
-import DynamicTable from 'components/DynamicTable';
+import DynamicTable, { Header } from 'components/DynamicTable';
 // Own
 import { FunctionComponent, useCallback, useMemo, useState } from 'react';
 import { CoordinatorPaginatedResponse } from 'services/coordinators/get-paginate';
@@ -34,7 +34,7 @@ const styleUpdateModal = {
 };
 
 const Table: FunctionComponent<Props> = (
-    { items, paginate, className, onChange, reload, openCreate, fixedAgencyRif, onCloseCreate }
+    { isFixedRif, items, paginate, className, onChange, reload, openCreate, fixedAgencyRif, onCloseCreate }
 ) => {
     const dispatch = useAppDispatch();
     const [openDelete, setOpenDelete] = useState<boolean>(false)
@@ -145,17 +145,23 @@ const Table: FunctionComponent<Props> = (
 
     const initialFormValue = useInitialFormValue(coordinator, fixedAgencyRif);
 
+    const headerArray = useMemo(() => {
+        const _headerArray: Header<any>[] = [
+            { columnLabel: 'Dni coordinador', fieldName: 'employeeDni', cellAlignment: 'left' },
+            { columnLabel: 'Nombre coordinador', fieldName: 'employeeName', cellAlignment: 'left' },
+            { columnLabel: 'Nombre servicio', fieldName: 'serviceName', cellAlignment: 'left' },
+            { columnLabel: 'Tiempo de reserva', fieldName: 'reservationTime', cellAlignment: 'left' },
+            { columnLabel: 'Capacidad', fieldName: 'capacity', cellAlignment: 'left' }
+        ]
+        if (!isFixedRif)
+            _headerArray.push({ columnLabel: 'Rif Agencia', fieldName: 'agencyRif', cellAlignment: 'left' })
+        return _headerArray;
+    }, [isFixedRif])
+
     return (
         <div className={className}>
             <DynamicTable
-                headers={[
-                    /*{ columnLabel: 'Rif Agencia', fieldName: 'agencyRif', cellAlignment: 'left' },*/
-                    { columnLabel: 'Dni coordinador', fieldName: 'employeeDni', cellAlignment: 'left' },
-                    { columnLabel: 'Nombre coordinador', fieldName: 'employeeName', cellAlignment: 'left' },
-                    { columnLabel: 'Nombre servicio', fieldName: 'serviceName', cellAlignment: 'left' },
-                    { columnLabel: 'Tiempo de reserva', fieldName: 'reservationTime', cellAlignment: 'left' },
-                    { columnLabel: 'Capacidad', fieldName: 'capacity', cellAlignment: 'left' }
-                ]}
+                headers={headerArray}
                 emptyState={
                     <center className={'full-empty-state'}>
                         <p>No hay coordinadores</p>
@@ -262,6 +268,7 @@ type Props = CoordinatorPaginatedResponse & {
     openCreate: boolean,
     onCloseCreate: () => void,
     fixedAgencyRif: string | null;
+    isFixedRif: boolean;
 };
 
 export default styled(Table)`
