@@ -4,28 +4,26 @@ import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
-import createEmployee from 'services/employees/create-employee';
+import createBooking from 'services/bookings/create-booking';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../store/index';
 import Form, { FormValues } from './form';
 import { FormikHelpers } from 'formik';
 
-const CreateEmployee: FunctionComponent<Props> = ({className}) => {
+const CreateBooking: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
-      values.salary = parseFloat(values.salary);
-      console.log('as'+JSON.stringify(values))
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createEmployee(values);
-      navigate('/employees');
-      dispatch(setSuccessMessage(`Employeee ${values.name} creado correctamente`));
+      await createBooking(values);
+      navigate('/bookings');
+      dispatch(setSuccessMessage(`Reserva creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -45,23 +43,18 @@ const CreateEmployee: FunctionComponent<Props> = ({className}) => {
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Employeees
+          Reservas
         </Typography>
       </MainCard>
 
       <Form
         initialValues={{
-          employeeDni: '',
-          name: '',
-          phone: '',
-          address: '',
-          salary: 0,
-          agencyRif: '',
-          jobId: 0,
-          servicesIds: [0],
-          submit: null
+          clientDni: '',
+          licensePlate: '',
+          servicesId: 0,
+          submit: null,
         }}
-        title={'Crear empleado'}
+        title={'Crear reserva'}
         onSubmit={onSubmit}
       />
     </div>
@@ -72,7 +65,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(CreateEmployee)`
+export default styled(CreateBooking)`
   display: flex;
   flex-direction: column;
 

@@ -22,6 +22,7 @@ const EditEmployee: FunctionComponent<Props> = ({className}) => {
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
+      console.log("asss"+JSON.stringify(values));
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
@@ -63,7 +64,7 @@ const EditEmployee: FunctionComponent<Props> = ({className}) => {
               salary: employee.salary,
               agencyRif: employee.agencyRif,
               jobId: employee.jobId,
-              speciality: employee.name,
+              servicesIds: employee.services.map(service => service.serviceId),
               submit: null,
             }}
             title={'Editar empleado'}

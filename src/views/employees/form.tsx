@@ -1,26 +1,43 @@
-import { FunctionComponent } from 'react';
-import * as Yup from 'yup';
-import { Formik, FormikHelpers } from 'formik';
+import { FunctionComponent, useState } from "react";
+import * as Yup from "yup";
+import { ErrorMessage, Field, FieldArray, Formik, FormikHelpers } from "formik";
 // material-ui
-import MainCard from 'components/cards/MainCard';
-import { Button, FormControl, FormHelperText, InputAdornment, TextField } from '@mui/material';
-import styled from 'styled-components';
-import SelectField from 'components/SelectField';
-import useAgencyOptions from 'core/agencies/use-agency-options';
-import useJobOptions from 'core/jobs/use-jobs-options';
-import useServicesOptions from 'core/services/use-services-options';
+import MainCard from "components/cards/MainCard";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import styled from "styled-components";
+import SelectField from "components/SelectField";
+import useAgencyOptions from "core/agencies/use-agency-options";
+import useJobOptions from "core/jobs/use-jobs-options";
+import useServicesOptions from "core/services/use-services-options";
+import { IconCirclePlus } from "@tabler/icons";
 
 const USE_AUTOCOMPLETES = false;
 
-const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialValues, isUpdate }) => {
+const Form: FunctionComponent<Props> = ({
+  className,
+  title,
+  onSubmit,
+  initialValues,
+  isUpdate,
+}) => {
   const isCreated = !isUpdate;
   const agencyOptions = useAgencyOptions();
   const jobOptions = useJobOptions();
   const serviceOptions = useServicesOptions();
 
-  const extraValidations: any = isCreated ? {
-    employeeDni: Yup.string().max(8).required('La cedula del empleado es requerida'),
-  } : {};
+  const extraValidations: any = isCreated
+    ? {
+        employeeDni: Yup.string()
+          .max(8)
+          .required("La cedula del empleado es requerida"),
+      }
+    : {};
 
   return (
     <div className={className}>
@@ -29,22 +46,42 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
         validateOnBlur={false}
         validateOnMount={false}
         initialValues={initialValues}
-        validationSchema={
-          Yup.object().shape({
-            ...extraValidations,
-            name: Yup.string().max(30).required('El nombre del empleado es requerido'),
-            email: Yup.string().max(30).required('El correo electrónico del empleado es requerido'),
-            mainPhone: Yup.string().max(11).required('El teléfono principal del empleado es requerido'),
-            secondaryPhone: Yup.string().max(11).required('El teléfono secundario del empleado es requerido'),
-          })
-        }
+        validationSchema={Yup.object().shape({
+          ...extraValidations,
+          name: Yup.string()
+            .max(30)
+            .required("El nombre del empleado es requerido"),
+          phone: Yup.string()
+            .max(11)
+            .required("El teléfono principal del empleado es requerido"),
+          address: Yup.number().required(
+            "La dirección es requerida"
+          ),
+          salary: Yup.number().required(
+            "El salario es requerido"
+          ),
+          servicesIds: Yup.array().of(
+            Yup.number().test(
+              "not-zero",
+              "Seleccione un servicio o elimine este campo",
+              (value) => value !== 0
+            )
+          ),
+        })}
         onSubmit={onSubmit as any}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} >
-            <MainCard className={'form-data'} title={title}>
-              {
-                isCreated &&
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
+          <form noValidate onSubmit={handleSubmit}>
+            <MainCard className={"form-data"} title={title}>
+              {isCreated && (
                 <FormControl className="field-form" fullWidth>
                   <TextField
                     id="employeeDni"
@@ -53,12 +90,12 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.employeeDni}
-                    helperText={touched.employeeDni ? errors.employeeDni : ''}
+                    helperText={touched.employeeDni ? errors.employeeDni : ""}
                     error={touched.employeeDni && !!errors.employeeDni}
                     name="employeeDni"
                   />
                 </FormControl>
-              }
+              )}
               <FormControl className="field-form" fullWidth>
                 <TextField
                   id="name"
@@ -67,12 +104,12 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.name}
-                  helperText={touched.name ? errors.name : ''}
+                  helperText={touched.name ? errors.name : ""}
                   error={touched.name && !!errors.name}
                   name="name"
                 />
               </FormControl>
-             <FormControl className="field-form" fullWidth>
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="phone"
                   label="Teléfono"
@@ -80,12 +117,12 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.phone}
-                  helperText={touched.phone ? errors.phone : ''}
+                  helperText={touched.phone ? errors.phone : ""}
                   error={touched.phone && !!errors.phone}
                   name="phone"
                 />
               </FormControl>
-             <FormControl className="field-form" fullWidth>
+              <FormControl className="field-form" fullWidth>
                 <TextField
                   id="address"
                   label="Dirección"
@@ -93,7 +130,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.address}
-                  helperText={touched.address ? errors.address : ''}
+                  helperText={touched.address ? errors.address : ""}
                   error={touched.address && !!errors.address}
                   name="address"
                 />
@@ -102,14 +139,17 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 <TextField
                   id="salary"
                   label="Salario"
+                  type="number"
                   variant="outlined"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.salary}
-                  helperText={touched.salary ? errors.salary : ''}
+                  helperText={touched.salary ? errors.salary : ""}
                   error={touched.salary && !!errors.salary}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
                   }}
                   name="salary"
                 />
@@ -122,7 +162,7 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 onBlur={handleBlur}
                 label="Agencia"
                 options={agencyOptions}
-                helperText={touched.agencyRif ? errors.agencyRif : ''}
+                helperText={touched.agencyRif ? errors.agencyRif : ""}
                 error={touched.agencyRif && !!errors.agencyRif}
                 isAutocomplete={USE_AUTOCOMPLETES}
                 value={values.agencyRif}
@@ -135,35 +175,76 @@ const Form: FunctionComponent<Props> = ({ className, title, onSubmit, initialVal
                 onBlur={handleBlur}
                 label="Cargo"
                 options={jobOptions}
-                helperText={touched.jobId ? errors.jobId : ''}
+                helperText={touched.jobId ? errors.jobId : ""}
                 error={touched.jobId && !!errors.jobId}
                 isAutocomplete={USE_AUTOCOMPLETES}
                 value={values.jobId}
               />
-              <SelectField
-                fullWidth={true}
-                className="field-form"
-                name="speciality"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                label="Especialidad"
-                options={serviceOptions}
-                helperText={touched.speciality ? errors.speciality : ''}
-                error={touched.speciality && !!errors.speciality}
-                isAutocomplete={USE_AUTOCOMPLETES}
-                value={values.speciality}
-              />
-              
             </MainCard>
-            <MainCard className={'form-data flex-column'}>
+            <MainCard
+              className={"form-data"}
+              headerClass={"page-header-container"}
+              title={
+                <div className={"page-header"}>
+                  <span>Especialidades</span>
+                </div>
+              }
+            >
+              <FieldArray name="servicesIds">
+                {({ insert, remove, push }) => (
+                  <div>
+                    {values.servicesIds.length > 0 &&
+                      values.servicesIds.map((speciality, index) => (
+                        <div key={`service-${index}`}>
+                          <Field
+                            name={`servicesIds.${index}`}
+                            as={SelectField}
+                            type="text"
+                            label={`Especialidad ${index + 1}`}
+                            fullWidth
+                            isAutocomplete={USE_AUTOCOMPLETES}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.servicesIds[index]}
+                            options={serviceOptions}
+                          />
+                          <ErrorMessage
+                            name={`servicesIds.${index}`}
+                            component="div"
+                            className="field-error"
+                          />
+                          <Button
+                            color="secondary"
+                            variant="outlined"
+                            size="small"
+                            onClick={() => remove(index)}
+                          >
+                            Eliminar
+                          </Button>
+                        </div>
+                      ))}
+                    <Button
+                      type="button"
+                      color="primary"
+                      size="small"
+                      variant={"outlined"}
+                      onClick={() => push(0)}
+                      startIcon={<IconCirclePlus />}
+                    >
+                      Añadir
+                    </Button>
+                  </div>
+                )}
+              </FieldArray>
+            </MainCard>
+            <MainCard className={"form-data flex-column"}>
               {errors.submit && (
-                  <FormHelperText error>{errors.submit}</FormHelperText>
+                <FormHelperText error>{errors.submit}</FormHelperText>
               )}
               <Button variant="outlined" type="submit" color="primary">
                 Guardar
               </Button>
             </MainCard>
-
           </form>
         )}
       </Formik>
@@ -184,10 +265,10 @@ export type FormValues = {
   name: string;
   phone: string;
   address: string;
-  salary: string;
+  salary: number;
   agencyRif: string;
   jobId: number;
-  speciality: string;
+  servicesIds: number[];
   submit: string | null;
 };
 
@@ -196,10 +277,14 @@ export type OnSubmit = (
   helpers: FormikHelpers<FormValues>
 ) => void | Promise<any>;
 
-
 export default styled(Form)`
   display: flex;
   flex-direction: column;
+  width: 100%;
+
+  .page-header-container {
+    padding-bottom: 18.5px;
+  }
 
   .flex-column {
     display: flex;

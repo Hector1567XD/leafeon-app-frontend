@@ -1,5 +1,5 @@
 // assets
-import { IconUsers } from '@tabler/icons';
+import { IconUsers, IconCalendarEvent } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -27,6 +27,29 @@ const other: MenuItem = {
           title: 'Crear cliente',
           type: MenuItemType.Item,
           url: '/clients/create',
+          breadcrumbs: false,
+        }
+      ]
+    },
+    {
+      id: 'bookings',
+      title: 'Reservas',
+      type: MenuItemType.Collapse,
+      icon: IconCalendarEvent,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-bookings',
+          title: 'Lista de reservas',
+          type: MenuItemType.Item,
+          url: '/bookings',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-bookings',
+          title: 'Crear reserva',
+          type: MenuItemType.Item,
+          url: '/bookings/create',
           breadcrumbs: false,
         }
       ]

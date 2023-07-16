@@ -3,18 +3,18 @@ import { useCallback, useEffect, useState } from 'react';
 import BackendError from 'exceptions/backend-error';
 import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
-import { EmployeeEdit } from 'core/employees/types';
-import getEmployee from 'services/employees/get-employee';
+import { Booking } from 'core/bookings/types';
+import getBooking from 'services/bookings/get-booking';
 
-export default function useEmployeeByDni(employeeDni: string | null) {
+export default function useBookingById(bookingId: number | null) {
   const dispatch = useAppDispatch();
-  const [employee, setEmployee] = useState<EmployeeEdit | null>(null);
+  const [booking, setBooking] = useState<Booking | null>(null);
 
-  const fetchEmployee = useCallback(async (employeeDni: string) => {
+  const fetchBooking = useCallback(async (bookingId: number) => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getEmployee(employeeDni);
-      setEmployee(response);
+      const response = await getBooking(bookingId);
+      setBooking(response);
     } catch (error) {
       if (error instanceof BackendError)
         dispatch(setErrorMessage(error.getMessage()));
@@ -24,8 +24,8 @@ export default function useEmployeeByDni(employeeDni: string | null) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (employeeDni) fetchEmployee(employeeDni);
-  }, [fetchEmployee, employeeDni]);
+    if (bookingId) fetchBooking(bookingId);
+  }, [fetchBooking, bookingId]);
 
-  return employee;
+  return booking;
 };

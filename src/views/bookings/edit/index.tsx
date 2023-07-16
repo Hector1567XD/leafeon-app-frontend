@@ -3,29 +3,32 @@ import { FunctionComponent, useCallback } from 'react';
 import MainCard from 'components/cards/MainCard';
 import {  Typography } from '@mui/material';
 import styled from 'styled-components';
-import BackendError from 'exceptions/backend-error';
-import createEmployee from 'services/employees/create-employee';
 import { useNavigate } from 'react-router';
-import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../store/index';
-import Form, { FormValues } from './form';
+//own
+import BackendError from 'exceptions/backend-error';
+import { useAppDispatch } from 'store/index';
+import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
+import Form, { FormValues } from '../form';
+import editBooking from 'services/bookings/edit-booking';
+import useBookingById from './use-booking-by-dni';
+import useBookingId from './use-booking-dni';
 import { FormikHelpers } from 'formik';
 
-const CreateEmployee: FunctionComponent<Props> = ({className}) => {
+const EditBooking: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const bookingId = useBookingId();
+  const booking = useBookingById(bookingId);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
-      values.salary = parseFloat(values.salary);
-      console.log('as'+JSON.stringify(values))
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createEmployee(values);
-      navigate('/employees');
-      dispatch(setSuccessMessage(`Employeee ${values.name} creado correctamente`));
+      await editBooking(bookingId!, values);
+      navigate('/bookings');
+      dispatch(setSuccessMessage(`Reserva editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -39,31 +42,30 @@ const CreateEmployee: FunctionComponent<Props> = ({className}) => {
       dispatch(setIsLoading(false));
       setSubmitting(false);
     }
-  }, [dispatch, navigate]);
+  }, [bookingId, navigate, dispatch]);
 
   return (
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Employeees
+          Reservas
         </Typography>
       </MainCard>
-
-      <Form
-        initialValues={{
-          employeeDni: '',
-          name: '',
-          phone: '',
-          address: '',
-          salary: 0,
-          agencyRif: '',
-          jobId: 0,
-          servicesIds: [0],
-          submit: null
-        }}
-        title={'Crear empleado'}
-        onSubmit={onSubmit}
-      />
+      {
+        booking && (
+          <Form
+            isUpdate={true}
+            initialValues={{
+              clientDni: booking.clientDni,
+              licensePlate: booking.licensePlate,
+              servicesId: 0,
+              submit: null,
+            }}
+            title={'Editar reserva'}
+            onSubmit={onSubmit}
+          />
+        )
+      }
     </div>
   );
 };
@@ -72,7 +74,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(CreateEmployee)`
+export default styled(EditBooking)`
   display: flex;
   flex-direction: column;
 
@@ -95,3 +97,4 @@ export default styled(CreateEmployee)`
     flex-direction: row;
   }
 `;
+
