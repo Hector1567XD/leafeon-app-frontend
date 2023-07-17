@@ -83,7 +83,13 @@ const Form: FunctionComponent<Props> = ({
                   fullWidth={true}
                   className="field-form"
                   name="clientDni"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    setClientDni(e.target.value as string);
+                    handleChange({
+                      target: { name: 'clientDni', value: null }
+                    });
+                  }}
                   onBlur={handleBlur}
                   label="Cédula del cliente"
                   options={clientOptions}
