@@ -17,6 +17,7 @@ const CreateBooking: FunctionComponent<Props> = ({className}) => {
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
+      console.log("as"+JSON.stringify(values))
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
@@ -49,9 +50,10 @@ const CreateBooking: FunctionComponent<Props> = ({className}) => {
 
       <Form
         initialValues={{
+          expirationDate: '',
           clientDni: '',
           licensePlate: '',
-          servicesId: 0,
+          servicesIds: [0],
           submit: null,
         }}
         title={'Crear reserva'}
