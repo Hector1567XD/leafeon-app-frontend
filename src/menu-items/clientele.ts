@@ -1,5 +1,5 @@
 // assets
-import { IconUsers } from '@tabler/icons';
+import { IconUsers, IconCreditCard } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -27,6 +27,29 @@ const other: MenuItem = {
           title: 'Crear cliente',
           type: MenuItemType.Item,
           url: '/clients/create',
+          breadcrumbs: false,
+        }
+      ]
+    },
+    {
+      id: 'bankCard',
+      title: 'Tarjetas',
+      type: MenuItemType.Collapse,
+      icon: IconCreditCard,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-bankCard',
+          title: 'Lista de tarjetas',
+          type: MenuItemType.Item,
+          url: '/bankCards',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-bankCard',
+          title: 'Crear tarjeta',
+          type: MenuItemType.Item,
+          url: '/bankCards/create',
           breadcrumbs: false,
         }
       ]
