@@ -37,7 +37,7 @@ const EditBankCard: FunctionComponent<Props> = ({ className }) => {
         navigate("/bankCards");
         dispatch(
           setSuccessMessage(
-            `Tarjeta ${values.description} editado correctamente`
+            `Tarjeta ${values.bank} editado correctamente`
           )
         );
       } catch (error) {
