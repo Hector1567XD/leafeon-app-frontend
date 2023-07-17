@@ -51,8 +51,8 @@ const CreateBooking: FunctionComponent<Props> = ({className}) => {
       <Form
         initialValues={{
           expirationDate: '',
-          clientDni: '',
-          licensePlate: '',
+          clientDni: null,
+          licensePlate: null,
           servicesIds: [0],
           submit: null,
         }}

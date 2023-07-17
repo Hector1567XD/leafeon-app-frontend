@@ -38,7 +38,7 @@ const Form: FunctionComponent<Props> = ({
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
           expirationDate: Yup.string().required("La fecha es requerida"),
-          licensePlate: Yup.string().required("La dirección es requerida"),
+          licensePlate: Yup.string().typeError('La matricula es invalida').required("La matricula es requerida"),
           clientDni: Yup.string()
             .max(8)
             .required("La cédula del cliente es requerida"),
@@ -79,40 +79,44 @@ const Form: FunctionComponent<Props> = ({
                     name="expirationDate"
                   />
                 </FormControl>
-                <SelectField
-                  fullWidth={true}
-                  className="field-form"
-                  name="clientDni"
-                  onChange={(e) => {
-                    handleChange(e);
-                    setClientDni(e.target.value as string);
-                    handleChange({
-                      target: { name: 'clientDni', value: null }
-                    });
-                  }}
-                  onBlur={handleBlur}
-                  label="Cédula del cliente"
-                  options={clientOptions}
-                  helperText={touched.clientDni ? errors.clientDni : ""}
-                  error={touched.clientDni && !!errors.clientDni}
-                  isAutocomplete={USE_AUTOCOMPLETES}
-                  value={values.clientDni}
-                />
-                {(!!values.clientDni) && (
+                <FormControl className="field-form" fullWidth>
                   <SelectField
-                    fullWidth={true}
-                    disabled={!!clientDni}
                     className="field-form"
-                    name="licensePlate"
-                    onChange={handleChange}
+                    name="clientDni"
+                    onChange={(e) => {
+                      handleChange(e);
+                      setClientDni(e.target.value as string);
+                      handleChange({
+                        target: { name: "licensePlate", value: null },
+                      });
+                    }}
+                    label="Cliente"
                     onBlur={handleBlur}
-                    label="Matrícula"
-                    options={vehicleOptions}
-                    helperText={touched.licensePlate ? errors.licensePlate : ""}
-                    error={touched.licensePlate && !!errors.licensePlate}
+                    options={clientOptions}
+                    helperText={touched.clientDni ? errors.clientDni : ""}
+                    error={touched.clientDni && !!errors.clientDni}
                     isAutocomplete={USE_AUTOCOMPLETES}
-                    value={values.licensePlate}
+                    value={clientDni}
                   />
+                </FormControl>
+                {(!!clientDni || !!touched.licensePlate) && (
+                  <FormControl className="field-form" fullWidth>
+                    <SelectField
+                      disabled={!clientDni && !touched.licensePlate}
+                      className="field-form"
+                      name="licensePlate"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      label="Matriicula"
+                      options={vehicleOptions}
+                      helperText={
+                        touched.licensePlate ? errors.licensePlate : ""
+                      }
+                      error={touched.licensePlate && !!errors.licensePlate}
+                      isAutocomplete={USE_AUTOCOMPLETES}
+                      value={values.licensePlate}
+                    />
+                  </FormControl>
                 )}
                 {/* <FormControl className="field-form" fullWidth>
                   <TextField
@@ -217,8 +221,8 @@ interface Props {
 
 export type FormValues = {
   expirationDate: string;
-  clientDni: string;
-  licensePlate: string;
+  clientDni: string | null;
+  licensePlate: string | null;
   servicesIds: number[];
   submit: string | null;
 };
