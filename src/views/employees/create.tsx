@@ -25,7 +25,7 @@ const CreateEmployee: FunctionComponent<Props> = ({className}) => {
       setSubmitting(true);
       await createEmployee(values);
       navigate('/employees');
-      dispatch(setSuccessMessage(`Employeee ${values.name} creado correctamente`));
+      dispatch(setSuccessMessage(`Empleado ${values.name} creado correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
         setErrors({
@@ -45,7 +45,7 @@ const CreateEmployee: FunctionComponent<Props> = ({className}) => {
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Employeees
+          Empleados
         </Typography>
       </MainCard>
 
