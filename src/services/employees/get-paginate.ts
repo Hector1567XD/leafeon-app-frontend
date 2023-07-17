@@ -9,11 +9,10 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/employees`;
 
-export default async function getPaginate(body: PaginateBody): Promise<EmployeesPaginated> {
+export default async function getPaginate(body: PaginateBody, params: EmployeesPaginatorPayload): Promise<EmployeesPaginated> {
   try {
-    const urlPaginated = addQueryParams(URL, body);
     const response = await axios.get<EmployeesPaginated>(
-      urlPaginated, {
+      addQueryParams(URL, { ...body, ...params }), {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -26,4 +25,5 @@ export default async function getPaginate(body: PaginateBody): Promise<Employees
   }
 }
 
-type EmployeesPaginated = PaginatedResponse<Employee>;
+export type EmployeesPaginatorPayload = { onlyForAgencyRif: string | null };
+export type EmployeesPaginated = PaginatedResponse<Employee>;

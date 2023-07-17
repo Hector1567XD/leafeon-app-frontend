@@ -7,7 +7,7 @@ import BackendError from 'exceptions/backend-error';
 import createManager from 'services/managers/create-manager';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../store/index';
+import { useAppDispatch } from 'store';
 import Form, { FormValues } from './form';
 import { FormikHelpers } from 'formik';
 

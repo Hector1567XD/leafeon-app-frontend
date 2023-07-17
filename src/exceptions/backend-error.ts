@@ -9,6 +9,7 @@ export default class BackendError extends Error implements IBackendError {
   public details?: BackendErrorItem[];
 
   constructor(error: unknown) {
+    console.log('Building backend error with', error);
     super();
     if (error instanceof AxiosError) {
       if ((error.response?.data?.message) && (typeof error.response?.data?.message === 'string')) {

@@ -9,3 +9,4 @@ export interface InputActivity extends Omit<Activity, 'createdAt' | 'activityId'
   activityId: number | null;
   serviceId: number | null
 }
+

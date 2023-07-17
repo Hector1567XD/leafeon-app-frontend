@@ -19,21 +19,20 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
     const [open, setOpen] = useState<boolean>(false)
     const [managerDni, setManagerDni] = useState<string>('')
 
-    const handleOpen = (managerDni: string) => {
+    const handleOpen = useCallback((managerDni: string) => {
         setOpen(true);
-        setManagerDni(managerDni); 
-    }
+        setManagerDni(managerDni);
+    }, []);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-        setManagerDni(''); 
-    }
+        setManagerDni('');
+    }, []);
 
     const onDelete = useCallback(async (managerDni: string) => {
         try {
             dispatch(setIsLoading(true));
             await deleteManager(managerDni!);
-            navigate('/managers');
             dispatch(setSuccessMessage(`Encargado eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
@@ -44,20 +43,21 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+    }, [dispatch, fetchItems, handleClose]);
 
     return (
         <div className={className}>
             <DynamicTable
                 headers={[
-                { columnLabel: 'Id', fieldName: 'managerDni', cellAlignment: 'left' },
-                { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
-                { columnLabel: 'Teléfono', fieldName: 'mainPhone', cellAlignment: 'left' },
-                { columnLabel: 'Teléfono secundario', fieldName: 'secondaryPhone', cellAlignment: 'left' },
-                { columnLabel: 'Dirección', fieldName: 'address', cellAlignment: 'left' },
-                { columnLabel: 'Email', fieldName: 'email', cellAlignment: 'left' }
+                    { columnLabel: 'Id', fieldName: 'managerDni', cellAlignment: 'left' },
+                    { columnLabel: 'Nombre', fieldName: 'name', cellAlignment: 'left' },
+                    { columnLabel: 'Teléfono', fieldName: 'mainPhone', cellAlignment: 'left' },
+                    { columnLabel: 'Teléfono secundario', fieldName: 'secondaryPhone', cellAlignment: 'left' },
+                    { columnLabel: 'Dirección', fieldName: 'address', cellAlignment: 'left' },
+                    { columnLabel: 'Email', fieldName: 'email', cellAlignment: 'left' }
                 ]}
-                rows={items} components={[
+                rows={items}
+                components={[
                     (row: Manager) =>
                         <Button
                             color="primary"

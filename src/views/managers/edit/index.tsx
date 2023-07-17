@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import BackendError from 'exceptions/backend-error';
 import { useNavigate } from 'react-router';
 import { setErrorMessage, setIsLoading, setSuccessMessage } from 'store/customizationSlice';
-import { useAppDispatch } from '../../../store/index';
+import { useAppDispatch } from 'store';
 import Form, { FormValues } from '../form';
 import editManager from 'services/managers/edit-manager';
 import useManagerByDni from './use-manager-by-dni';

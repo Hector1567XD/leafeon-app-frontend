@@ -1,7 +1,6 @@
 // project imports
 import { RouteObject } from 'react-router';
 
-// pages
 // State
 import States from 'views/states';
 import CreateState from 'views/states/create';
@@ -14,6 +13,12 @@ import EditCity from 'views/cities/edit';
 import Agencies from 'views/agencies';
 import CreateAgency from 'views/agencies/create';
 import EditAgency from 'views/agencies/edit';
+import DetailAgency from 'views/agencies/detail';
+//Models
+import Models from 'views/models';
+import CreateModel from 'views/models/create';
+import EditModel from 'views/models/edit';
+import DetailModel from 'views/models/detail';
 //Job
 import Jobs from 'views/jobs';
 import CreateJob from 'views/jobs/create';
@@ -34,6 +39,10 @@ import EditEmployee from 'views/employees/edit';
 import Bookings from 'views/bookings';
 import CreateBooking from 'views/bookings/create';
 import EditBooking from 'views/bookings/edit';
+//Coordinadores
+import Coordinators from 'views/coordinators';
+//Stocks / Inventarios
+import Stocks from 'views/stocks';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -74,6 +83,27 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'agencies/edit/:id',
     element: <EditAgency />
+  },
+  {
+    path: 'agencies/detail/:id',
+    element: <DetailAgency />
+  },
+  // Modelos
+  {
+    path: 'models',
+    element: <Models />
+  },
+  {
+    path: 'models/create',
+    element: <CreateModel />
+  },
+  {
+    path: 'models/edit/:id',
+    element: <EditModel />
+  },
+  {
+    path: 'models/detail/:id',
+    element: <DetailModel />
   },
   //Cargos
   {
@@ -140,6 +170,16 @@ const GeneralRoutes: RouteObject[] = [
     path: 'Bookings/edit/:id',
     element: <EditBooking/>
   },
+  //Coordinadores
+  {
+    path: 'coordinators',
+    element: <Coordinators />
+  },
+  //Inventario
+  {
+    path: 'inventory',
+    element: <Stocks />
+  }
 ];
 
 export default GeneralRoutes;

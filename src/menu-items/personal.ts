@@ -1,5 +1,5 @@
 // assets
-import { IconBriefcase, IconFriends, IconMan } from '@tabler/icons';
+import { IconBriefcase, IconUser, IconFriends, IconMan } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -76,6 +76,15 @@ const other: MenuItem = {
           breadcrumbs: false,
         }
       ]
+    },
+    {
+    
+      id: 'coordinators',
+      url: 'coordinators',
+      title: 'Coordinadores',
+      type: MenuItemType.Item,
+      icon: IconUser,
+      breadcrumbs: false
     }
   ]
 };

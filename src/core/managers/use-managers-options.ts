@@ -24,7 +24,7 @@ export default function useManagersOptions(body: Body): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [body.onlyAvailable, body.includeManager, dispatch]);
+  }, [dispatch, body.onlyAvailable, body.includeManager]);
 
   useEffect(() => {
     fetchItems();

@@ -21,6 +21,7 @@ const CustomSelect: FunctionComponent<Props> = ({
   fullWidth,
   disabled,
   className,
+  size,
   isAutocomplete,
 }) => {
   const createSyntheticEvent = useCallback((pointerEvent: any): React.ChangeEvent<{ value: number | string }> => {
@@ -39,6 +40,7 @@ const CustomSelect: FunctionComponent<Props> = ({
       <Autocomplete
         disabled={disabled}
         id={name}
+        size={size}
         options={options}
         getOptionLabel={(option: SelectOption) => option.label}
         value={options.find((option: SelectOption) => option.value === value)}
@@ -48,7 +50,7 @@ const CustomSelect: FunctionComponent<Props> = ({
               name,
               id: name,
               value: newValue?.value || null,
-            },
+            } as any,
           } as any);
         }}
         renderInput={(params) =>
@@ -69,6 +71,7 @@ const CustomSelect: FunctionComponent<Props> = ({
     <FormControl className={className} fullWidth={fullWidth} error={error} disabled={disabled}>
       <InputLabel>{label}</InputLabel>
       <Select
+        size={size}
         id={name}
         value={(value || '') as any}
         onChange={(e) => { onChange(createSyntheticEvent(e)) }}
@@ -105,6 +108,7 @@ export interface Props {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   helperText?: string;
   error?: boolean;
+  size?: "small" | "medium";
   label?: string;
   disabled?: boolean;
   name: string;
