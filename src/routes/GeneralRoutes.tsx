@@ -30,10 +30,14 @@ import EditClient from 'views/clients/edit';
 import Employees from 'views/employees';
 import CreateEmployee from 'views/employees/create';
 import EditEmployee from 'views/employees/edit';
-//Reservas
+//Bookings
 import Bookings from 'views/bookings';
 import CreateBooking from 'views/bookings/create';
 import EditBooking from 'views/bookings/edit';
+//Vehicles
+import Vehicles from 'views/vehicles';
+import CreateVehicle from 'views/vehicles/create';
+import EditVehicle from 'views/vehicles/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -129,16 +133,29 @@ const GeneralRoutes: RouteObject[] = [
   },
   //Reservas
   {
-    path: 'Bookings',
+    path: 'bookings',
     element: <Bookings />
   },
   {
-    path: 'Bookings/create',
+    path: 'bookings/create',
     element: <CreateBooking/>
   },
   {
-    path: 'Bookings/edit/:id',
+    path: 'bookings/edit/:id',
     element: <EditBooking/>
+  },
+  //Vehículos
+  {
+    path: 'vehicles',
+    element: <Vehicles />
+  },
+  {
+    path: 'vehicles/create',
+    element: <CreateVehicle/>
+  },
+  {
+    path: 'vehicles/edit/:id',
+    element: <EditVehicle/>
   },
 ];
 
