@@ -55,7 +55,7 @@ const Form: FunctionComponent<Props> = ({
           phone: Yup.string()
             .max(11)
             .required("El teléfono principal del empleado es requerido"),
-          address: Yup.number().required("La dirección es requerida"),
+          address: Yup.string().required("La dirección es requerida"),
           salary: Yup.number().required("El salario es requerido"),
           servicesIds: Yup.array().of(
             Yup.number().test(
@@ -211,11 +211,6 @@ const Form: FunctionComponent<Props> = ({
                                   value={values.servicesIds[index]}
                                   options={serviceOptions}
                                 />
-                                <ErrorMessage
-                                  name={`servicesIds.${index}`}
-                                  component="div"
-                                  className="field-error"
-                                />
                                 <Button
                                   color="secondary"
                                   size="small"
@@ -225,6 +220,11 @@ const Form: FunctionComponent<Props> = ({
                                   Eliminar
                                 </Button>
                               </FormControl>
+                              <ErrorMessage
+                                name={`servicesIds.${index}`}
+                                component="div"
+                                className="field-error"
+                              />
                             </div>
                           ))}
                         <Button
