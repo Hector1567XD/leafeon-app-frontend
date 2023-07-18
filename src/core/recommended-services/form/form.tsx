@@ -13,7 +13,9 @@ const ActivitiesForm: FunctionComponent<Props> = ({
   className, onSubmit, initialValues, isUpdate, isParentUpdate
 }) => {
   const isCreated = !isUpdate;
-  const servicesOptions = useServicesOptions();
+  const servicesOptions = useServicesOptions({
+    onlyForAgencyRif: null,
+  });
   
   return (
     <div className={className}>

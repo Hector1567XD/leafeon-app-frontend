@@ -6,14 +6,22 @@ import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 import { PaginatedService } from "./types";
 
-export default function useServicesOptions(): SelectOption[] {
+export default function useServicesOptions({ onlyForAgencyRif, includeServicesIds }: {
+  onlyForAgencyRif: string | null;
+  includeServicesIds?: number[] | null;
+}): SelectOption[] {
   const [items, setItems] = useState<PaginatedService[]>([]);
   const dispatch = useAppDispatch();
+
+  const includeServicesIdsText: string | null = includeServicesIds?.join(',') ?? null;
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllServices();
+      const response = await getAllServices({
+        onlyForAgencyRif,
+        includeServicesIds: includeServicesIdsText,
+      });
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -21,7 +29,7 @@ export default function useServicesOptions(): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch]);
+  }, [dispatch, onlyForAgencyRif, includeServicesIdsText]);
 
   useEffect(() => {
     fetchItems();

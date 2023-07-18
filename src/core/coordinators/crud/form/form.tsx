@@ -18,7 +18,9 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
   const isCreated = !isUpdate;
   const validationSchema = useValidationSchema();
   const agenciesOptions = useAgenciesOptions();
-  const servicesOptions = useServicesOptions();
+  const servicesOptions = useServicesOptions({
+    onlyForAgencyRif: null,
+  });
   const employeesOptions = useEmployeesOptions({
     onlyForAgencyRif: fixedAgencyRif || agencyRif
   });
@@ -57,6 +59,9 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
                 isAutocomplete={USE_AUTOCOMPLETES}
                 value={values.agencyRif}
               />
+              <br />
+              { JSON.stringify(agenciesOptions) }
+              { values.agencyRif }
             </FormControl>
             {
               values.agencyRif && 

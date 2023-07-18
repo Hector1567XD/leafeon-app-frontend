@@ -11,3 +11,5 @@ export interface Service {
 }
 
 export interface PaginatedService extends Omit<Service, 'bookings' | 'activities'> {}
+
+export interface ShortService extends Omit<Service, 'bookings' | 'activities' | 'totalCost' | 'createdAt'> {}

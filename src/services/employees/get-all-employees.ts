@@ -24,6 +24,4 @@ export default async function getAllEmployees(body?: Body): Promise<Employee[]> 
   }
 }
 
-export type Body = {
-  onlyForAgencyRif: string | null,
-}
+export type Body = { employeeDni?: number; onlyForAgencyRif: string | null, };

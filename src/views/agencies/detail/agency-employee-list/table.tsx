@@ -2,7 +2,7 @@ import { Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
 // Own
 import { FunctionComponent } from 'react';
-import { EmployeesPaginatedResponse } from 'services/employees/get-paginate';
+import { EmployeesPaginated } from 'services/employees/get-paginate';
 import styled from 'styled-components';
 
 const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange, fetchItems }) => {
@@ -30,7 +30,7 @@ const Table: FunctionComponent<Props> = ({ items, paginate, className, onChange,
     );
 }
 
-type Props = EmployeesPaginatedResponse & { 
+type Props = EmployeesPaginated & { 
     className?: string, 
     onChange: (page: number) => void,
     fetchItems: () => void

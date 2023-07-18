@@ -18,6 +18,7 @@ export default async function getAllAgencies(): Promise<Agency[]> {
         }
       }
     );
+    console.log('get-all-agencies', response.data);
     return response.data;
   } catch (error: unknown) {
     throw new BackendError(error);

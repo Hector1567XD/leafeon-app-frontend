@@ -1,5 +1,5 @@
 // assets
-import { IconBriefcase, IconMan, IconUser } from '@tabler/icons';
+import { IconBriefcase, IconUser, IconFriends, IconMan } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -27,6 +27,29 @@ const other: MenuItem = {
           title: 'Crear cargo',
           type: MenuItemType.Item,
           url: '/jobs/create',
+          breadcrumbs: false,
+        }
+      ]
+    },
+    {
+      id: 'employees',
+      title: 'Empleados',
+      type: MenuItemType.Collapse,
+      icon: IconFriends,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-employees',
+          title: 'Lista de empleados',
+          type: MenuItemType.Item,
+          url: '/employees',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-employees',
+          title: 'Crear empleado',
+          type: MenuItemType.Item,
+          url: '/employees/create',
           breadcrumbs: false,
         }
       ]

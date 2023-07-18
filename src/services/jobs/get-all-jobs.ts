@@ -3,17 +3,14 @@ import axios from 'axios';
 import { API_BASE_URL } from 'config/constants';
 import { Job } from 'core/jobs/types';
 import BackendError from 'exceptions/backend-error';
-import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/jobs`;
+const URL = `${API_BASE_URL}/jobs/all`;
 
-export default async function getAllJobs(body?: Body): Promise<Job[]> {
+export default async function getAllJobs(): Promise<Job[]> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
-    console.log('hola '+urlPaginated)
     const response = await axios.get<Job[]>(
-      urlPaginated, {
+      URL, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -25,5 +22,3 @@ export default async function getAllJobs(body?: Body): Promise<Job[]> {
     throw new BackendError(error);
   }
 }
-
-export type Body = { jobId?: number; };
