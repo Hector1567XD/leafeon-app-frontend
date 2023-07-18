@@ -1,5 +1,5 @@
 // assets
-import { IconUsers, IconCalendarEvent, IconCreditCard } from '@tabler/icons';
+import { IconUsers, IconCreditCard, IconWallet, IconCalendarEvent } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -72,6 +72,29 @@ const other: MenuItem = {
           title: 'Crear tarjeta',
           type: MenuItemType.Item,
           url: '/bankCards/create',
+          breadcrumbs: false,
+        }
+      ]
+    },
+    {
+      id: 'payment',
+      title: 'Pagos',
+      type: MenuItemType.Collapse,
+      icon: IconWallet,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-payment',
+          title: 'Lista de pagos',
+          type: MenuItemType.Item,
+          url: '/payments',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-payment',
+          title: 'Crear pago',
+          type: MenuItemType.Item,
+          url: '/payments/create',
           breadcrumbs: false,
         }
       ]

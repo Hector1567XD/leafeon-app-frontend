@@ -1,17 +1,18 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { BankCard } from 'core/bankCards/types';
+import { Payment } from 'core/payments/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
+import { PaginateBody, PaginatedResponse } from 'services/types';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/card-banks`;
+const URL = `${API_BASE_URL}/payments`;
 
-export default async function getAllBankCards(body?: Body): Promise<BankCard[]> {
+export default async function getPaginate(body: PaginateBody): Promise<PaymentsPaginated> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
-    const response = await axios.get<BankCard[]>(
+    const urlPaginated = addQueryParams(URL, body);
+    const response = await axios.get<PaymentsPaginated>(
       urlPaginated, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
@@ -25,4 +26,4 @@ export default async function getAllBankCards(body?: Body): Promise<BankCard[]> 
   }
 }
 
-export type Body = { bankCardId?: number; };
+type PaymentsPaginated = PaginatedResponse<Payment>;

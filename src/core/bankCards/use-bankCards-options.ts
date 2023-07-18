@@ -6,7 +6,7 @@ import getAllBankCards from "services/bankCards/get-all-bankCards";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 
-export default function useBankCardsOptions(cardNumber: string | null): SelectOption[] {
+export default function useBankCardsOptions(): SelectOption[] {
   const [bankCards, setBankCards] = useState<BankCard[]>([]);
   const dispatch = useAppDispatch();
 
