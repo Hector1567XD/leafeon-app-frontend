@@ -57,6 +57,9 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
                 isAutocomplete={USE_AUTOCOMPLETES}
                 value={values.agencyRif}
               />
+              <br />
+              { JSON.stringify(agenciesOptions) }
+              { values.agencyRif }
             </FormControl>
             {
               values.agencyRif && 

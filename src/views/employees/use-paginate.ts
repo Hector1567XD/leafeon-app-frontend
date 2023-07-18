@@ -21,7 +21,10 @@ export default function usePaginate() {
   const fetchEmployees = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getPaginate({ page, size: paginate.perPage });
+      const response = await getPaginate(
+        { page, size: paginate.perPage },
+        { onlyForAgencyRif: null }
+      );
       setEmployees(response.items);
       setPaginate(response.paginate);
     } catch (error) {

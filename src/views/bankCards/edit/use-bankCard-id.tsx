@@ -7,7 +7,7 @@ export default function useBankCardId() {
 
   const [cardNumber, setCardNumber] = useState<string | null>(null);
   useEffect(() => {
-    if (!params.id || isNaN(params.id as any)) {
+    if (!params.id) {
       navigate('/bankCards');
     }
 
