@@ -1,18 +1,16 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { BankCard } from 'core/bankCards/types';
+import { Payment } from 'core/payments/types';
 import BackendError from 'exceptions/backend-error';
-import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/card-banks`;
+const URL = `${API_BASE_URL}/payments`;
 
-export default async function getAllBankCards(body?: Body): Promise<BankCard[]> {
+export default async function createPayment(body: PaymentPayload): Promise<Payment> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
-    const response = await axios.get<BankCard[]>(
-      urlPaginated, {
+    const response = await axios.post<Payment>(
+        URL, body, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -25,4 +23,4 @@ export default async function getAllBankCards(body?: Body): Promise<BankCard[]> 
   }
 }
 
-export type Body = { bankCardId?: number; };
+export type PaymentPayload = Omit<Payment, 'PaymentId' | 'createdAt'>;

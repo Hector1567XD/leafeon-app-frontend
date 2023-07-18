@@ -30,6 +30,10 @@ import EditClient from 'views/clients/edit';
 import BankCards from 'views/bankCards';
 import CreateBankCard from 'views/bankCards/create';
 import EditBankCard from 'views/bankCards/edit';
+//Payments
+import Payments from 'views/payments';
+import CreatePayments from 'views/payments/create';
+import EditPayments from 'views/payments/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -122,6 +126,19 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'bankCards/edit/:id',
     element: <EditBankCard />
+  },
+  //Pagos
+  {
+    path: 'payments',
+    element: <Payments />
+  },
+  {
+    path: 'payments/create',
+    element: <CreatePayments />
+  },
+  {
+    path: 'payments/edit/:id',
+    element: <EditPayments />
   },
 ];
 
