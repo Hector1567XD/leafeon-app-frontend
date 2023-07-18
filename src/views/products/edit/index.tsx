@@ -32,7 +32,10 @@ const EditProduct: FunctionComponent<Props> = ({ className }) => {
         setErrors({});
         setStatus({});
         setSubmitting(true);
-        await editProduct(productId!, values);
+        await editProduct(productId!, {
+          ...values,
+          price: +values.price,
+        });
         navigate("/products");
         dispatch(
           setSuccessMessage(`Producto ${values.shortNameProduct} editado correctamente`)

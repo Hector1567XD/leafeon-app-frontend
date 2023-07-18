@@ -29,7 +29,7 @@ const Form: FunctionComponent<Props> = ({
   const extraValidations: any = isCreate
     ? {
         productId: Yup.string()
-          .max(8)
+          .max(32)
           .required("El ID de producto es requerido"),
       }
     : {};
@@ -44,11 +44,20 @@ const Form: FunctionComponent<Props> = ({
         validationSchema={Yup.object().shape({
           ...extraValidations,
           shortNameProduct: Yup.string()
-            .max(30)
+            .max(255)
             .required("El nombre es requerido"),
+          description: Yup.string()
+          .required('Es necesario indicar una descripción del servicio')
+          .max(255, 'La descripción del servicio es muy larga'),
           price: Yup.number()
             .typeError("El precio es invalido")
             .required("El precio es requerido"),
+          provider: Yup.string()
+            .required("Es necesario indicar una descripción del servicio")
+            .max(64, "La descripción del servicio es muy larga"),
+          isEcological: Yup.boolean(),
+          supplyLineId: Yup.number()
+            .min(1, "La cantidad de asientos debe ser mayor o igual a 1"),
         })}
         onSubmit={onSubmit as any}
       >
