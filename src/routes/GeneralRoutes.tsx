@@ -13,6 +13,7 @@ import EditCity from 'views/cities/edit';
 import Agencies from 'views/agencies';
 import CreateAgency from 'views/agencies/create';
 import EditAgency from 'views/agencies/edit';
+import DetailAgency from 'views/agencies/detail';
 //Models
 import Models from 'views/models';
 import CreateModel from 'views/models/create';
@@ -30,6 +31,8 @@ import EditManager from 'views/managers/edit';
 import Clients from 'views/clients';
 import CreateClient from 'views/clients/create';
 import EditClient from 'views/clients/edit';
+//Coordinadores
+import Coordinators from 'views/coordinators';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -70,6 +73,10 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'agencies/edit/:id',
     element: <EditAgency />
+  },
+  {
+    path: 'agencies/detail/:id',
+    element: <DetailAgency />
   },
   // Modelos
   {
@@ -127,6 +134,11 @@ const GeneralRoutes: RouteObject[] = [
     path: 'clients/edit/:id',
     element: <EditClient />
   },
+  //Coordinadores
+  {
+    path: 'coordinators',
+    element: <Coordinators />
+  }
 ];
 
 export default GeneralRoutes;

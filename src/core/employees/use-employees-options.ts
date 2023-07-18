@@ -1,21 +1,20 @@
 import { SelectOption } from "components/SelectField";
-import { Manager } from "core/managers/types";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllManagers, { Body } from "services/managers/get-all-managers";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
+import { Employee } from "./types";
+import getAllEmployees, { Body } from "services/employees/get-all-employees";
 
-export default function useManagersOptions(body: Body): SelectOption[] {
-  const [items, setItems] = useState<Manager[]>([]);
+export default function useEmployeesOptions(body: Body): SelectOption[] {
+  const [items, setItems] = useState<Employee[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllManagers({
-        onlyAvailable: body.onlyAvailable,
-        includeManager: body.includeManager,
+      const response = await getAllEmployees({
+        onlyForAgencyRif: body.onlyForAgencyRif,
       });
       setItems(response);
     } catch (error) {
@@ -24,7 +23,7 @@ export default function useManagersOptions(body: Body): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch, body.onlyAvailable, body.includeManager]);
+  }, [dispatch, body.onlyForAgencyRif]);
 
   useEffect(() => {
     fetchItems();
@@ -32,7 +31,6 @@ export default function useManagersOptions(body: Body): SelectOption[] {
 
   return items.map(item => ({
     label: item.name,
-    value: item.managerDni,
+    value: item.employeeDni,
   }));
 }
-

@@ -8,7 +8,7 @@ import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customiz
 import BackendError from 'exceptions/backend-error';
 import { FunctionComponent, useState, useCallback } from 'react';
 import { PaginateData } from 'services/types';
-import { IconEdit, IconTrash } from '@tabler/icons';
+import { IconEdit, IconTrash, IconEye } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 import deleteAgency from 'services/agencies/delete-agency';
 import DialogDelete from 'components/dialogDelete';
@@ -52,8 +52,9 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
                     { columnLabel: 'RIF', fieldName: 'agencyRif', cellAlignment: 'left' },
                     { columnLabel: 'Nombre', fieldName: 'businessName', cellAlignment: 'left' },
                     { columnLabel: 'Manager DNI', fieldName: 'managerDni', cellAlignment: 'left' },
-                    { columnLabel: 'Ciudad', fieldName: 'cityId', cellAlignment: 'left' },
-                    { columnLabel: 'Creación', fieldName: 'createdAt', cellAlignment: 'left' }
+                    { columnLabel: 'Ciudad', fieldName: 'cityName', cellAlignment: 'left' },
+                    { columnLabel: 'Estado', fieldName: 'stateName', cellAlignment: 'left' },
+                    { columnLabel: 'Creación', fieldName: 'createdAtFormatted', cellAlignment: 'left' }
                 ]}
                 rows={items} components={[
                     (row: Agency) =>
@@ -63,6 +64,14 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
                             startIcon={<IconEdit />}
                         >
                             Editar
+                        </Button>,
+                    (row: Agency) =>
+                        <Button
+                            color="secondary"
+                            onClick={() => { navigate('/agencies/detail/'+row.agencyRif) }}
+                            startIcon={<IconEye />}
+                        >
+                            Detalle
                         </Button>,
                     (row: Agency) =>
                         <Button 

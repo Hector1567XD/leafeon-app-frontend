@@ -1,22 +1,19 @@
 import { SelectOption } from "components/SelectField";
-import { Manager } from "core/managers/types";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllManagers, { Body } from "services/managers/get-all-managers";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
+import { Agency } from "./types";
+import getAllAgencies from "services/agencies/get-all-agencies";
 
-export default function useManagersOptions(body: Body): SelectOption[] {
-  const [items, setItems] = useState<Manager[]>([]);
+export default function useAgenciesOptions(): SelectOption[] {
+  const [items, setItems] = useState<Agency[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllManagers({
-        onlyAvailable: body.onlyAvailable,
-        includeManager: body.includeManager,
-      });
+      const response = await getAllAgencies();
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -24,15 +21,14 @@ export default function useManagersOptions(body: Body): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch, body.onlyAvailable, body.includeManager]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
   return items.map(item => ({
-    label: item.name,
-    value: item.managerDni,
+    label: item.businessName,
+    value: item.agencyRif,
   }));
 }
-
