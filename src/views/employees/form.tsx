@@ -240,6 +240,15 @@ const Form: FunctionComponent<Props> = ({
                       </div>
                     )}
                   </FieldArray>
+                  <FormControl
+                    className="field-form2"
+                    error={!!touched.servicesIds && !!errors.servicesIds}
+                  >
+                    {
+                      !!touched.servicesIds && !!errors.servicesIds &&
+                      <FormHelperText error>{errors.servicesIds}</FormHelperText>
+                    }
+                  </FormControl>
                 </div>
               </MainCard>
             </div>
