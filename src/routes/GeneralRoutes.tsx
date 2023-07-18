@@ -43,6 +43,10 @@ import EditBooking from 'views/bookings/edit';
 import Coordinators from 'views/coordinators';
 //Stocks / Inventarios
 import Stocks from 'views/stocks';
+//BankCards
+import BankCards from 'views/bankCards';
+import CreateBankCard from 'views/bankCards/create';
+import EditBankCard from 'views/bankCards/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -179,7 +183,20 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'inventory',
     element: <Stocks />
-  }
+  },
+  //Tarjeta
+  {
+    path: 'bankCards',
+    element: <BankCards />
+  },
+  {
+    path: 'bankCards/create',
+    element: <CreateBankCard />
+  },
+  {
+    path: 'bankCards/edit/:id',
+    element: <EditBankCard />
+  },
 ];
 
 export default GeneralRoutes;
