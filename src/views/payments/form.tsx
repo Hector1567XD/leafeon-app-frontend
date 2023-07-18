@@ -8,7 +8,6 @@ import styled from "styled-components";
 import SelectField from "components/SelectField";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import useBankCardsOptions from "core/bankCards/use-bankCards-options";
-import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import useBillsOptions from "core/bills/use-bills-options";
 

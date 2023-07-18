@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useMemo } from "react";
 import * as Yup from "yup";
 import { Formik, FormikHelpers } from "formik";
 // material-ui
@@ -10,7 +10,7 @@ import SelectField from "components/SelectField";
 import useModelsOptions from "core/models/use-models-options";
 import useClientsOptions from "core/clients/use-clients-options";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 const USE_AUTOCOMPLETES = false;
 
@@ -25,13 +25,8 @@ const Form: FunctionComponent<Props> = ({
   const isCreated = !isUpdate;
   const clientOptions = useClientsOptions();
   const modelOptions = useModelsOptions();
-  const extraValidations: any = isCreated
-    ? {
-        licensePlate: Yup.string()
-          .max(8)
-          .required("La matricula del empleado es requerida"),
-      }
-    : {};
+
+  const validationSchema = useSchemaValidations(isCreated);
 
   return (
     <div className={className}>
@@ -40,11 +35,7 @@ const Form: FunctionComponent<Props> = ({
         validateOnBlur={false}
         validateOnMount={false}
         initialValues={initialValues}
-        validationSchema={Yup.object().shape({
-          ...extraValidations,
-          nroMotor: Yup.string().required("El numero de motor es requerido"),
-          nroSerial: Yup.string().required("El numero de serial es requerido"),
-        })}
+        validationSchema={validationSchema}
         onSubmit={onSubmit as any}
       >
         {({
@@ -109,19 +100,33 @@ const Form: FunctionComponent<Props> = ({
                       onChange={(value) => setDate(value)}
                     />
                   </FormControl> */}
-                <FormControl className="field-form" fullWidth>
-                  <TextField
-                    id="saleDate"
-                    label="Fecha de venta"
-                    variant="outlined"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.saleDate}
-                    helperText={touched.saleDate ? errors.saleDate : ""}
-                    error={touched.saleDate && !!errors.saleDate}
-                    name="saleDate"
+
+                <FormControl className="field-form"
+                  error={touched.saleDate && !!errors.saleDate}
+                  fullWidth
+                >
+                  <DatePicker
+                    label="Fecha de compra"
+                    value={
+                      dayjs(values.saleDate)
+                    }
+                    onChange={(newValue: any) => {
+                      const newValueFormatted = newValue.format("DD-MM-YYYY");//'DD-MM-AAAA HH:MM:SS'
+                      console.log("FECHA VEHICULO FORMATED", newValueFormatted);
+                      handleChange({
+                        target: {
+                          name: "saleDate",
+                          id: "saleDate",
+                          value: newValueFormatted || null,
+                        } as any,
+                      } as any);
+                    }}
                   />
+                  {(touched.saleDate && !!errors.saleDate) && (
+                    <FormHelperText error>{touched.saleDate ? errors.saleDate : ""}</FormHelperText>
+                  )}
                 </FormControl>
+
                 <FormControl className="field-form" fullWidth>
                   <TextField
                     id="color"
@@ -255,6 +260,55 @@ export type OnSubmit = (
   values: FormValues,
   helpers: FormikHelpers<FormValues>
 ) => void | Promise<any>;
+
+function useSchemaValidations(isCreated: boolean) {
+  return useMemo(() => {
+
+    const extraValidations: any = isCreated
+    ? {
+        licensePlate: Yup.string()
+          .max(16)
+          .required("La matricula del vehiculo es requerida"),
+      }
+    : {};
+
+    return Yup.object().shape({
+          ...extraValidations,
+          nroSerial: Yup
+            .string()
+            .required('Es necesario indicar una numero de serial del vehiculo')
+            .max(64, 'El serial debe ser menor a 64 carácteres'),
+          nroMotor: Yup
+            .string()
+            .required('Es necesario indicar una numero de motor del vehiculo')
+            .max(64, 'El numero de motor debe ser menor a 64 carácteres'),
+          color: Yup
+            .string()
+            .required('Es necesario indicar un color del vehiculo')
+            .max(32, 'El color debe ser menor de 32 carácteres'),
+          extraDescriptions: Yup
+            .string()
+            .required('Debe indicar una descripcion extra')
+            .max(255, 'La descripcion extra debe ser menor a 255 carácteres'),
+          maintenanceSummary: Yup
+            .string()
+            .required('Es necesario indicar el tiempo de mantenimiento')
+            .max(255, 'El tiempo de mantenimiento debe ser menor a 255 carácteres'),
+          agencySeller: Yup
+            .string()
+            .required('Es necesario indicar la agencia donde esta el vehiculo')
+            .max(64, 'La agencia donde esta el vehiculo debe ser menor a 64 carácteres'),
+          modelId: Yup
+            .string()
+            .required('Es necesario indicar el modelo del vehiculo')
+            .max(64, 'El modelo del vehiculo debe ser menor a 64 carácteres'),
+          clientDni: Yup
+            .string()
+            .required('Es necesario indicar el dni del cliente')
+            .max(16, 'El dni del cliente debe ser menor a 16 caracteres'),
+        });
+  }, [isCreated]);
+}
 
 export default styled(Form)`
   display: flex;
