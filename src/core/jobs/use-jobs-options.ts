@@ -6,14 +6,14 @@ import getAllJobs from "services/jobs/get-all-jobs";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 
-export default function useJobsOptions(jobId: number | null): SelectOption[] {
+export default function useJobsOptions(): SelectOption[] {
   const [jobs, setJobs] = useState<Job[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchJobs = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllJobs(jobId ? { jobId } : {});
+      const response = await getAllJobs();
       setJobs(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -21,7 +21,7 @@ export default function useJobsOptions(jobId: number | null): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [jobId, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchJobs();

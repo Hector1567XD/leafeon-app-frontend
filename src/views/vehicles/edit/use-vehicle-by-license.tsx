@@ -3,17 +3,17 @@ import { useCallback, useEffect, useState } from 'react';
 import BackendError from 'exceptions/backend-error';
 import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
 import { useAppDispatch } from '../../../store/index';
-import { Agency } from 'core/agencies/types';
-import getAgency from 'services/agencies/get-agency';
+import { Vehicle } from 'core/vehicles/types';
+import getVehicle from 'services/vehicles/get-vehicle';
 
-export default function useAgencyByRif(agencyRif: string | null) {
+export default function useVehicleByLicense(licensePlate: string | null) {
   const dispatch = useAppDispatch();
-  const [state, setState] = useState<Agency | null>(null);
+  const [state, setState] = useState<Vehicle | null>(null);
 
-  const fetchAgency = useCallback(async (agencyRif: string) => {
+  const fetchVehicle = useCallback(async (licensePlate: string) => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAgency(agencyRif);
+      const response = await getVehicle(licensePlate);
       setState(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -24,8 +24,8 @@ export default function useAgencyByRif(agencyRif: string | null) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (agencyRif) fetchAgency(agencyRif);
-  }, [fetchAgency, agencyRif]);
+    if (licensePlate) fetchVehicle(licensePlate);
+  }, [fetchVehicle, licensePlate]);
 
   return state;
 };

@@ -3,16 +3,14 @@ import axios from 'axios';
 import { API_BASE_URL } from 'config/constants';
 import { Client } from 'core/clients/types';
 import BackendError from 'exceptions/backend-error';
-import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/clients`;
+const URL = `${API_BASE_URL}/clients/all`;
 
-export default async function getAllClients(body?: Body): Promise<Client[]> {
+export default async function getAllClients(): Promise<Client[]> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
     const response = await axios.get<Client[]>(
-      urlPaginated, {
+      URL, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -24,5 +22,3 @@ export default async function getAllClients(body?: Body): Promise<Client[]> {
     throw new BackendError(error);
   }
 }
-
-export type Body = { clientDni?: number; };

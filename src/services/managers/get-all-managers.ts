@@ -26,6 +26,6 @@ export default async function getAllManagers(body?: Body): Promise<Manager[]> {
 }
 
 export type Body = {
-  onlyAvailable: true,
+  onlyAvailable: boolean,
   includeManager: string | null,
 }

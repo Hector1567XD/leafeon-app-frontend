@@ -1,18 +1,17 @@
 import { FunctionComponent } from 'react';
 import * as Yup from 'yup';
-import { Formik, FormikErrors } from 'formik';
+import { Formik } from 'formik';
 // material-ui
 import MainCard from 'components/cards/MainCard';
 import { Button, FormControl, FormHelperText, TextField } from '@mui/material';
 import ActivitiesCrudWrapper from './activities/activities-crud-wrapper';
 import { Props } from './types';
-import { Activity } from 'core/activities/types';
+import getErrorOnArrayOrText from 'helpers/get-error-on-array-or-text';
 
 const Form: FunctionComponent<Props> = ({
   className, title, onSubmit, initialValues, isUpdate, initialActivities, serviceId
 }) => {
-  const isCreated = !isUpdate;
-
+  //const isCreated = !isUpdate;
   return (
     <div className={className}>
       <Formik
@@ -71,26 +70,5 @@ const Form: FunctionComponent<Props> = ({
     </div>
   );
 };
-
-function getErrorOnArrayOrText(
-  errors: string | string[] | FormikErrors<Activity>[] | undefined
-): string {
-  if (errors === undefined) {
-    return '';
-  }
-
-  if (typeof errors === 'string') {
-    return errors;
-  }
-
-  if (errors instanceof Array && errors.length >= 1) {
-    if (typeof errors[0] === 'string')
-      return errors[0];
-    
-    return '';
-  }
-
-  return '';
-}
 
 export default Form;

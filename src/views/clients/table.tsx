@@ -33,7 +33,8 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
         try {
             dispatch(setIsLoading(true));
             await deleteClient(clientDni!);
-            dispatch(setSuccessMessage(`Cargo eliminado correctamente`));
+            //navigate('/clients');
+            dispatch(setSuccessMessage(`Cliente eliminado correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
                 dispatch(setErrorMessage(error.getMessage()));
@@ -43,7 +44,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems]);
+      }, [dispatch, fetchItems, handleClose]);
 
     return (
         <div className={className}>
