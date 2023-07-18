@@ -1,5 +1,5 @@
 // assets
-import { IconUsers, IconCalendarEvent, IconReceipt2, IconCreditCard, IconWallet } from '@tabler/icons';
+import { IconUsers, IconCalendarEvent, IconCar, IconReceipt2, IconCreditCard, IconWallet } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -119,6 +119,29 @@ const other: MenuItem = {
           title: 'Crear facturas',
           type: MenuItemType.Item,
           url: '/bills/create',
+          breadcrumbs: false,
+        }
+      ]
+    }, 
+    {
+      id: 'vehicles',
+      title: 'Vehículos',
+      type: MenuItemType.Collapse,
+      icon: IconCar,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-vehicles',
+          title: 'Lista de vehículos',
+          type: MenuItemType.Item,
+          url: '/vehicles',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-vehicles',
+          title: 'Crear vehículo',
+          type: MenuItemType.Item,
+          url: '/vehicles/create',
           breadcrumbs: false,
         }
       ]

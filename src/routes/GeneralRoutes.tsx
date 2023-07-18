@@ -69,6 +69,10 @@ import EditDiscount from "views/discounts/edit";
 import Bills from "views/bills";
 import CreateBill from "views/bills/create";
 import EditBill from "views/bills/edit";
+//Vehicles
+import Vehicles from 'views/vehicles';
+import CreateVehicle from 'views/vehicles/create';
+import EditVehicle from 'views/vehicles/edit';
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -283,6 +287,19 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: "bills/edit/:id",
     element: <EditBill />,
+  },
+  //Vehículos
+  {
+    path: 'vehicles',
+    element: <Vehicles />
+  },
+  {
+    path: 'vehicles/create',
+    element: <CreateVehicle/>
+  },
+  {
+    path: 'vehicles/edit/:id',
+    element: <EditVehicle/>
   },
 ];
 
