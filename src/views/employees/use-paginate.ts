@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 // Own
-import { Employee } from 'core/employees/types';
-import getPaginate from 'services/employees/get-paginate';
-import { PaginateData } from 'services/types';
-import { useAppDispatch } from 'store';
-import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
-import BackendError from 'exceptions/backend-error';
+import { Employee } from "core/employees/types";
+import getPaginate from "services/employees/get-paginate";
+import { PaginateData } from "services/types";
+import { useAppDispatch } from "store";
+import { setIsLoading, setErrorMessage } from "store/customizationSlice";
+import BackendError from "exceptions/backend-error";
 
 export default function usePaginate() {
   const dispatch = useAppDispatch();
