@@ -4,6 +4,7 @@ import {
   IconArchive,
   IconShoppingCart,
   IconChecklist,
+  IconDiscount,
 } from "@tabler/icons";
 import { MenuItem, MenuItemType } from "./types";
 // constant
@@ -42,6 +43,14 @@ const business: MenuItem = {
       url: "/inventory",
       type: MenuItemType.Item,
       icon: IconArchive,
+      breadcrumbs: false,
+    },
+    {
+      id: "discounts",
+      title: "Descuentos",
+      url: "/discounts",
+      type: MenuItemType.Item,
+      icon: IconDiscount,
       breadcrumbs: false,
     },
     {

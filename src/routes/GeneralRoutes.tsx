@@ -60,6 +60,16 @@ import SupplyLines from "views/supply-lines";
 import CreateSupplyLine from "views/supply-lines/create";
 import EditSupplyLine from "views/supply-lines/edit";
 
+//Discounts
+import Discounts from "views/discounts";
+import CreateDiscount from "views/discounts/create";
+import EditDiscount from "views/discounts/edit";
+
+//Bills
+import Bills from "views/bills";
+import CreateBill from "views/bills/create";
+import EditBill from "views/bills/edit";
+
 const GeneralRoutes: RouteObject[] = [
   // Estados
   {
@@ -247,6 +257,32 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: "supply-lines/edit/:id",
     element: <EditSupplyLine />,
+  },
+  //Discounts
+  {
+    path: "discounts",
+    element: <Discounts />,
+  },
+  {
+    path: "discounts/create",
+    element: <CreateDiscount />,
+  },
+  {
+    path: "discounts/edit/:id",
+    element: <EditDiscount />,
+  },
+  //Bills
+  {
+    path: "bills",
+    element: <Bills />,
+  },
+  {
+    path: "bills/create",
+    element: <CreateBill />,
+  },
+  {
+    path: "bills/edit/:id",
+    element: <EditBill />,
   },
 ];
 

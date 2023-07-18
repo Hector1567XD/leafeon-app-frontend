@@ -1,5 +1,7 @@
 import { useAppSelector } from 'store';
 import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 // Own
 import Routes from 'routes';
@@ -14,10 +16,12 @@ const App = () => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
-        <CssBaseline />
-        <NavigationScroll>
-          <Routes />
-        </NavigationScroll>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CssBaseline />
+          <NavigationScroll>
+            <Routes />
+          </NavigationScroll>
+        </LocalizationProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

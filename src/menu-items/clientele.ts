@@ -1,5 +1,5 @@
 // assets
-import { IconUsers, IconCreditCard, IconWallet, IconCalendarEvent } from '@tabler/icons';
+import { IconUsers, IconCalendarEvent, IconReceipt2, IconCreditCard, IconWallet } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -98,6 +98,14 @@ const other: MenuItem = {
           breadcrumbs: false,
         }
       ]
+    },
+    {
+      id: 'bills',
+      title: 'Facturas (pagos)',
+      type: MenuItemType.Item,
+      icon: IconReceipt2,
+      url: "/bills",
+      breadcrumbs: false,
     }
   ]
 };
