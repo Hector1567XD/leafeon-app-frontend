@@ -229,7 +229,7 @@ const GeneralRoutes: RouteObject[] = [
     element: <CreatePayments />
   },
   {
-    path: 'payments/edit/:id',
+    path: 'payments/edit/billId/:billId/payment/:paymentId',
     element: <EditPayments />
   },
   //Productos

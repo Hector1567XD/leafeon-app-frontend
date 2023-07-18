@@ -1,20 +1,20 @@
 import { SelectOption } from "components/SelectField";
-import { BankCard } from "core/bankCards/types";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllBankCards from "services/bankCards/get-all-bankCards";
+import getAllBills from "services/bills/get-all-bills";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
+import { BillAlled } from "./types";
 
-export default function useBankCardsOptions(): SelectOption[] {
-  const [bankCards, setBankCards] = useState<BankCard[]>([]);
+export default function useBillsOptions(): SelectOption[] {
+  const [items, setItems] = useState<BillAlled[]>([]);
   const dispatch = useAppDispatch();
 
-  const fetchBankCards = useCallback(async () => {
+  const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllBankCards();
-      setBankCards(response);
+      const response = await getAllBills();
+      setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
         dispatch(setErrorMessage(error.getMessage()));
@@ -24,11 +24,11 @@ export default function useBankCardsOptions(): SelectOption[] {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchBankCards();
-  }, [fetchBankCards]);
+    fetchItems();
+  }, [fetchItems]);
 
-  return bankCards.map(bankCard => ({
-    label: bankCard.cardNumber,
-    value: bankCard.cardNumber,
+  return items.map(item => ({
+    label: ''+item.billId+' - '+item.name+' - '+(item.totalCost ?? 0)+' $',
+    value: item.billId,
   }));
 }

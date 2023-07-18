@@ -59,8 +59,7 @@ const CreateBill: FunctionComponent<Props> = ({ className }) => {
 
       <Form
         initialValues={{
-          billDate: "",
-          orderId: 0,
+          orderId: null,
           submit: null,
         }}
         title={"Crear factura"}

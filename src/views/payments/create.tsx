@@ -16,13 +16,15 @@ const CreatePayment: FunctionComponent<Props> = ({className}) => {
   const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
-    console.log(values)
     try {
       dispatch(setIsLoading(true));
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await createPayment(values);
+      await createPayment({
+          ...values,
+          amount: +values.amount,
+      });
       navigate('/payments');
       dispatch(setSuccessMessage(`Pago creado correctamente`));
     } catch (error) {

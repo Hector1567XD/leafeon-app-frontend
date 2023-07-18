@@ -12,6 +12,8 @@ import useClientsOptions from "core/clients/use-clients-options";
 import useVehiclesOptions from "core/vehicles/use-vehicles-options";
 import { IconCirclePlus } from "@tabler/icons";
 import useAgenciesOptions from "core/agencies/use-agencies-options";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 const USE_AUTOCOMPLETES = false;
 
@@ -33,6 +35,7 @@ const Form: FunctionComponent<Props> = ({
   const agenciesOptions = useAgenciesOptions();
   const serviceOptions = useServicesOptions({
     onlyForAgencyRif: agencyRif,
+    includeServicesIds: initialValues.servicesIds,
   });
   const vehicleOptions = useVehiclesOptions(clientDni);
 
@@ -60,21 +63,33 @@ const Form: FunctionComponent<Props> = ({
           <form noValidate onSubmit={handleSubmit}>
             <div className="container-form-employees">
               <MainCard className={"form-data"} title={title}>
-                <FormControl className="field-form" fullWidth>
-                  <TextField
-                    id="expirationDate"
-                    label="Fecha de expiración"
-                    variant="outlined"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.expirationDate}
-                    helperText={
-                      touched.expirationDate ? errors.expirationDate : ""
-                    }
-                    error={touched.expirationDate && !!errors.expirationDate}
-                    name="expirationDate"
-                  />
-                </FormControl>
+
+              <FormControl className="form-data field-form"
+              error={touched.expirationDate && !!errors.expirationDate}
+              fullWidth
+              >
+                <DateTimePicker
+                  label="Fecha de expiración"
+                  value={
+                    dayjs(values.expirationDate)
+                  }
+                  onChange={(newValue: any) => {
+                    const newValueFormatted = newValue.format("DD-MM-YYYY HH:mm:ss");//'DD-MM-AAAA HH:MM:SS'
+                    console.log(newValueFormatted);
+                    handleChange({
+                      target: {
+                        name: "expirationDate",
+                        id: "expirationDate",
+                        value: newValueFormatted || null,
+                      } as any,
+                    } as any);
+                  }}
+                />
+                {(touched.expirationDate && !!errors.expirationDate) && (
+                  <FormHelperText error>{touched.expirationDate ? errors.expirationDate : ""}</FormHelperText>
+                )}
+              </FormControl>
+                
                 <FormControl className="field-form" fullWidth>
                   <SelectField
                     className="field-form"

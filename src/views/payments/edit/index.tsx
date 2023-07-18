@@ -20,7 +20,7 @@ import usePaymentId from "./use-payment-id";
 const EditState: FunctionComponent<Props> = ({ className }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {billId, paymentId} = usePaymentId();
+  const { billId, paymentId } = usePaymentId();
   const payment = usePaymentById(billId, paymentId);
 
   const onSubmit = useCallback(
@@ -34,7 +34,10 @@ const EditState: FunctionComponent<Props> = ({ className }) => {
         setErrors({});
         setStatus({});
         setSubmitting(true);
-        await editPayment(billId!, paymentId!, values);
+        await editPayment(billId!, paymentId!, {
+          ...values,
+          amount: +values.amount,
+        });
         navigate("/payments");
         dispatch(
           setSuccessMessage(
@@ -55,7 +58,7 @@ const EditState: FunctionComponent<Props> = ({ className }) => {
         setSubmitting(false);
       }
     },
-    [dispatch, navigate, paymentId]
+    [billId, dispatch, navigate, paymentId]
   );
 
   return (

@@ -1,19 +1,27 @@
 import { SelectOption } from "components/SelectField";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllServices, { BodyAllServices } from "services/services/get-all-services";
+import getAllServices from "services/services/get-all-services";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 import { PaginatedService } from "./types";
 
-export default function useServicesOptions({ onlyForAgencyRif }: BodyAllServices): SelectOption[] {
+export default function useServicesOptions({ onlyForAgencyRif, includeServicesIds }: {
+  onlyForAgencyRif: string | null;
+  includeServicesIds?: number[] | null;
+}): SelectOption[] {
   const [items, setItems] = useState<PaginatedService[]>([]);
   const dispatch = useAppDispatch();
+
+  const includeServicesIdsText: string | null = includeServicesIds?.join(',') ?? null;
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllServices({ onlyForAgencyRif });
+      const response = await getAllServices({
+        onlyForAgencyRif,
+        includeServicesIds: includeServicesIdsText,
+      });
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -21,7 +29,7 @@ export default function useServicesOptions({ onlyForAgencyRif }: BodyAllServices
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch, onlyForAgencyRif]);
+  }, [dispatch, onlyForAgencyRif, includeServicesIdsText]);
 
   useEffect(() => {
     fetchItems();

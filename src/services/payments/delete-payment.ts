@@ -9,7 +9,7 @@ const URL = `${API_BASE_URL}/payments`;
 export default async function deletePayment(billId: number, paymentId: number): Promise<void> {
   try {
     await axios.delete(
-      `${URL}/${billId}/${paymentId}`, {
+      `${URL}/bill/${billId}/payment/${paymentId}`, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }

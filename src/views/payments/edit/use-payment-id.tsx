@@ -7,6 +7,7 @@ export default function usePaymentId() {
 
   const [billId, setBillId] = useState<number | null>(null);
   const [paymentId, setPaymentId] = useState<number | null>(null);
+
   useEffect(() => {
     if (!params.billId || !params.paymentId) {
       navigate("/payments");

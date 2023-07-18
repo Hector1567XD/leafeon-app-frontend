@@ -60,7 +60,7 @@ const EditBooking: FunctionComponent<Props> = ({className}) => {
               expirationDate: booking.expirationDate,
               clientDni: booking.clientDni,
               licensePlate: booking.licensePlate,
-              servicesIds: [0],
+              servicesIds: booking.services.map((booking) => booking.serviceId),
               submit: null,
             }}
             title={'Editar reserva'}

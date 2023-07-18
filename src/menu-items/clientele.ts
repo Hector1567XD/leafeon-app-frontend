@@ -102,7 +102,7 @@ const other: MenuItem = {
     {
       id: 'bills',
       title: 'Facturas',
-      type: MenuItemType.Item,
+      type: MenuItemType.Collapse,
       icon: IconReceipt2,
       url: "/bills",
       breadcrumbs: false,

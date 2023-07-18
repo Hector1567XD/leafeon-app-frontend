@@ -10,7 +10,7 @@ const URL = `${API_BASE_URL}/payments`;
 export default async function editPayment(billId: number, paymentId: number, body: PaymentPayload): Promise<Payment> {
   try {
     const response = await axios.put<Payment>(
-      `${URL}/${billId}/${paymentId}`, body, {
+      `${URL}/bill/${billId}/payment/${paymentId}`, body, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }

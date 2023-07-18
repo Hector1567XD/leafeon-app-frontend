@@ -64,7 +64,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
                     (row: Payment) =>
                         <Button
                             color="primary"
-                            onClick={() => { navigate('/payments/edit/'+row.billId+'/'+row.paymentId) }}
+                            onClick={() => { navigate('/payments/edit/billId/'+row.billId+'/payment/'+row.paymentId) }}
                             startIcon={<IconEdit />}
                         >
                             Editar

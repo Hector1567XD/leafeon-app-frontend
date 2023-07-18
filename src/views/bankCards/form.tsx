@@ -43,9 +43,9 @@ const Form: FunctionComponent<Props> = ({
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <MainCard className={"form-data"} title={title}>
-              <FormControl className="field-form" fullWidth>
-                {isCreated && (
+              <FormControl className="field-form" disabled={isUpdate} fullWidth>
                   <TextField
+                    disabled={isUpdate}
                     id="cardNumber"
                     label="Numero de tarjeta"
                     variant="outlined"
@@ -56,7 +56,6 @@ const Form: FunctionComponent<Props> = ({
                     error={touched.cardNumber && !!errors.cardNumber}
                     name="cardNumber"
                   />
-                )}
               </FormControl>
               <FormControl className="field-form" fullWidth>
                 <TextField

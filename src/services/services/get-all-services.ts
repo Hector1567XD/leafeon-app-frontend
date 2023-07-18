@@ -24,4 +24,5 @@ export default async function getAllServices(body: BodyAllServices): Promise<Pag
 
 export type BodyAllServices = {
   onlyForAgencyRif: string | null;
+  includeServicesIds: string | null;
 }

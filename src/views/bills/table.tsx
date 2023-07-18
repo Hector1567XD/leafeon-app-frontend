@@ -97,17 +97,6 @@ const Table: FunctionComponent<Prop> = ({
         components={[
           (row: Bill) => (
             <Button
-              color="primary"
-              onClick={() => {
-                navigate("/bills/edit/" + row.billId);
-              }}
-              startIcon={<IconEdit />}
-            >
-              Editar
-            </Button>
-          ),
-          (row: Bill) => (
-            <Button
               color="secondary"
               onClick={() => handleOpen(row.billId)}
               startIcon={<IconTrash />}

@@ -6,7 +6,7 @@ import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/card-banks`;
+const URL = `${API_BASE_URL}/card-banks/all`;
 
 export default async function getAllBankCards(body?: Body): Promise<BankCard[]> {
   try {
@@ -20,7 +20,6 @@ export default async function getAllBankCards(body?: Body): Promise<BankCard[]> 
     );
     return response.data;
   } catch (error: unknown) {
-    console.log(error);
     throw new BackendError(error);
   }
 }

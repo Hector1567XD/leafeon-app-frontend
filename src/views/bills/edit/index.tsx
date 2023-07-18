@@ -62,7 +62,6 @@ const EditBill: FunctionComponent<Props> = ({ className }) => {
       {bill && (
         <Form
           initialValues={{
-            billDate: bill.billDate,
             orderId: bill.orderId,
             submit: null,
           }}

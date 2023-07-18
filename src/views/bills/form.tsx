@@ -7,8 +7,9 @@ import SelectField from "components/SelectField";
 import { Button, FormHelperText } from "@mui/material";
 import useOrderOptions from "core/orders/use-orders-options";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import * as Yup from 'yup';
 
-const USE_AUTOCOMPLETE = true;
+const USE_AUTOCOMPLETE = false;
 
 const Form: FunctionComponent<Props> = ({
   className,
@@ -26,6 +27,11 @@ const Form: FunctionComponent<Props> = ({
         validateOnBlur={false}
         validateOnMount={false}
         onSubmit={onSubmit as any}
+        validationSchema={
+          Yup.object().shape({
+            orderId: Yup.number().typeError('La orden es invalida').required('La orden es requerida'),
+          })
+        }
       >
         {({
           errors,
@@ -37,20 +43,6 @@ const Form: FunctionComponent<Props> = ({
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <MainCard className={"form-data"} title={title}>
-              <DateTimePicker
-                label="Fecha de factura"
-                value={values.billDate}
-                onChange={(newValue) => {
-                  console.log(newValue);
-                  handleChange({
-                    target: {
-                      name: "billDate",
-                      id: "billDate",
-                      value: newValue || null,
-                    } as any,
-                  } as any);
-                }}
-              />
               <SelectField
                 fullWidth={true}
                 className="field-form"
@@ -88,8 +80,7 @@ interface Props {
 }
 
 export type FormValues = {
-  billDate: string;
-  orderId: number;
+  orderId: number | null;
   submit: string | null;
 };
 

@@ -6,3 +6,8 @@ export interface Bill {
   orderId: number;
   createdAt: string;
 }
+
+export interface BillAlled extends Bill {
+  name: string;
+  clientDni: string;
+}

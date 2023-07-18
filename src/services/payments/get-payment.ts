@@ -10,10 +10,8 @@ const URL = `${API_BASE_URL}/payments`;
 export default async function getPayment(billId: number, paymentId: number): Promise<Payment> {
   try {
     const response = await axios.get<Payment>(
-        `${URL}/${billId}/${paymentId}`, {
-        headers: {
-          Authorization: `Bearer ${store.getState().auth.token}`,
-        }
+        `${URL}/bill/${billId}/payment/${paymentId}`, {
+        headers: { Authorization: `Bearer ${store.getState().auth.token}` }
       }
     );
     return response.data;
