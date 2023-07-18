@@ -101,11 +101,27 @@ const other: MenuItem = {
     },
     {
       id: 'bills',
-      title: 'Facturas (pagos)',
+      title: 'Facturas',
       type: MenuItemType.Item,
       icon: IconReceipt2,
       url: "/bills",
       breadcrumbs: false,
+      children: [
+        {
+          id: 'list-bills',
+          title: 'Lista de facturas',
+          type: MenuItemType.Item,
+          url: '/bills',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-bills',
+          title: 'Crear facturas',
+          type: MenuItemType.Item,
+          url: '/bills/create',
+          breadcrumbs: false,
+        }
+      ]
     }
   ]
 };
