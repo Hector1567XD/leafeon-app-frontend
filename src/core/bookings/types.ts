@@ -1,3 +1,5 @@
+import { ShortService } from "core/services/types"
+
 export interface Booking {
   bookingId: number
   expeditionDate: string
@@ -5,4 +7,6 @@ export interface Booking {
   clientDni: string
   licensePlate: string
   createdAt: string
+  agencyRif: string
+  services: ShortService[]
 }

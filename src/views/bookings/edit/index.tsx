@@ -56,9 +56,11 @@ const EditBooking: FunctionComponent<Props> = ({className}) => {
           <Form
             isUpdate={true}
             initialValues={{
+              agencyRif: booking.agencyRif,
+              expirationDate: booking.expirationDate,
               clientDni: booking.clientDni,
               licensePlate: booking.licensePlate,
-              servicesId: 0,
+              servicesIds: booking.services.map((booking) => booking.serviceId),
               submit: null,
             }}
             title={'Editar reserva'}
