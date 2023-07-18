@@ -110,9 +110,9 @@ const Form: FunctionComponent<Props> = ({
                       label="Matriicula"
                       options={vehicleOptions}
                       helperText={
-                        touched.licensePlate ? errors.licensePlate : ""
+                        (!vehicleOptions.length) ? "Este cliente no tiene vehiculos" : (touched.licensePlate ? errors.licensePlate : "")
                       }
-                      error={touched.licensePlate && !!errors.licensePlate}
+                      error={(!vehicleOptions.length) ? true : (touched.licensePlate && !!errors.licensePlate)}
                       isAutocomplete={USE_AUTOCOMPLETES}
                       value={values.licensePlate}
                     />

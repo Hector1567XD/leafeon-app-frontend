@@ -10,11 +10,10 @@ export default function useVehiclesOptions(clientDni: string | null): SelectOpti
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const dispatch = useAppDispatch();
 
-  const fetchVehicles = useCallback(async () => {
+  const fetchVehicles = useCallback(async (clientDni: string) => {
     try {
       dispatch(setIsLoading(true));
       const response = await getVehiclesByClient(clientDni);
-      console.log(JSON.stringify(response))
       setVehicles(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -22,11 +21,11 @@ export default function useVehiclesOptions(clientDni: string | null): SelectOpti
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [clientDni, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchVehicles();
-  }, [fetchVehicles]);
+    if (clientDni) fetchVehicles(clientDni);
+  }, [clientDni, fetchVehicles]);
 
   return vehicles.map(vehicle => ({
     label: (vehicle.licensePlate+' -- '+vehicle.modelId),

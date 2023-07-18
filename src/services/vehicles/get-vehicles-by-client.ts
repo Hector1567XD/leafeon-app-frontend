@@ -18,7 +18,6 @@ export default async function getVehicleByClient(clietnDni: string | null): Prom
     );
     return response.data;
   } catch (error: unknown) {
-    console.log(error);
     throw new BackendError(error);
   }
 }
