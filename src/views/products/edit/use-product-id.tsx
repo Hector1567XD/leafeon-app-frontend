@@ -7,7 +7,7 @@ export default function useProductId() {
 
   const [productId, setProductId] = useState<number | null>(null);
   useEffect(() => {
-    if (!params.id || isNaN(params.id as any)) {
+    if (!params.id) {
       navigate("/products");
     }
 

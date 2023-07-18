@@ -2,25 +2,22 @@ import axios from "axios";
 // Own
 import store from "store";
 import { API_BASE_URL } from "config/constants";
+import { Discount } from "core/discounts/types";
 import BackendError from "exceptions/backend-error";
-import { SupplyLine } from "core/supply-lines/types";
+import addQueryParams from "services/add-query-params";
 
-const URL = `${API_BASE_URL}/supply-lines`;
+const URL = `${API_BASE_URL}/discounts/all`;
 
-export default async function createSupplyLine(
-  body: SupplyLinePayload
-): Promise<SupplyLine> {
+export default async function getAllDiscounts(): Promise<Discount[]> {
   try {
-    const response = await axios.post<SupplyLine>(URL, body, {
+    const urlParametrized = addQueryParams(URL, {});
+    const response = await axios.get<Discount[]>(urlParametrized, {
       headers: {
         Authorization: `Bearer ${store.getState().auth.token}`,
       },
     });
     return response.data;
   } catch (error: unknown) {
-    console.log(error);
     throw new BackendError(error);
   }
 }
-
-export type SupplyLinePayload = Omit<SupplyLine, "supplyLineId" | "createdAt">;
