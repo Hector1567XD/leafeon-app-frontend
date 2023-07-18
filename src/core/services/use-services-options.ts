@@ -1,19 +1,19 @@
 import { SelectOption } from "components/SelectField";
 import BackendError from "exceptions/backend-error";
 import { useCallback, useEffect, useState } from "react";
-import getAllServices from "services/services/get-all-services";
+import getAllServices, { BodyAllServices } from "services/services/get-all-services";
 import { useAppDispatch } from "store";
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
 import { PaginatedService } from "./types";
 
-export default function useServicesOptions(): SelectOption[] {
+export default function useServicesOptions({ onlyForAgencyRif }: BodyAllServices): SelectOption[] {
   const [items, setItems] = useState<PaginatedService[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllServices();
+      const response = await getAllServices({ onlyForAgencyRif });
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -21,7 +21,7 @@ export default function useServicesOptions(): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch]);
+  }, [dispatch, onlyForAgencyRif]);
 
   useEffect(() => {
     fetchItems();

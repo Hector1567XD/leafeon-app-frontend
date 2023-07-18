@@ -18,7 +18,9 @@ const CoordinatorsForm: FunctionComponent<Props> = ({
   const isCreated = !isUpdate;
   const validationSchema = useValidationSchema();
   const agenciesOptions = useAgenciesOptions();
-  const servicesOptions = useServicesOptions();
+  const servicesOptions = useServicesOptions({
+    onlyForAgencyRif: null,
+  });
   const employeesOptions = useEmployeesOptions({
     onlyForAgencyRif: fixedAgencyRif || agencyRif
   });

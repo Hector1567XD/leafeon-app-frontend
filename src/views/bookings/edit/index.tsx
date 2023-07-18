@@ -56,6 +56,7 @@ const EditBooking: FunctionComponent<Props> = ({className}) => {
           <Form
             isUpdate={true}
             initialValues={{
+              agencyRif: booking.agencyRif,
               expirationDate: booking.expirationDate,
               clientDni: booking.clientDni,
               licensePlate: booking.licensePlate,

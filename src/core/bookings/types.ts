@@ -7,5 +7,6 @@ export interface Booking {
   clientDni: string
   licensePlate: string
   createdAt: string
+  agencyRif: string
   services: ShortService[]
 }

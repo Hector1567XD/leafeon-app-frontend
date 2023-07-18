@@ -30,7 +30,9 @@ const Form: FunctionComponent<Props> = ({
   const isCreated = !isUpdate;
   const agencyOptions = useAgencyOptions();
   const jobOptions = useJobOptions();
-  const serviceOptions = useServicesOptions();
+  const serviceOptions = useServicesOptions({
+    onlyForAgencyRif: null,
+  });
 
   const extraValidations: any = isCreated
     ? {

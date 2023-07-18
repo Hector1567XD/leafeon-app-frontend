@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useMemo, useState } from "react";
 import * as Yup from "yup";
 import { ErrorMessage, Field, FieldArray, Formik, FormikHelpers } from "formik";
 import { IconEdit, IconTrash } from "@tabler/icons";
@@ -11,6 +11,7 @@ import useServicesOptions from "core/services/use-services-options";
 import useClientsOptions from "core/clients/use-clients-options";
 import useVehiclesOptions from "core/vehicles/use-vehicles-options";
 import { IconCirclePlus } from "@tabler/icons";
+import useAgenciesOptions from "core/agencies/use-agencies-options";
 
 const USE_AUTOCOMPLETES = false;
 
@@ -24,10 +25,18 @@ const Form: FunctionComponent<Props> = ({
   const [clientDni, setClientDni] = useState<string | null>(
     initialValues.clientDni
   );
+  const [agencyRif, setAgencyRif] = useState<string | null>(
+    initialValues.agencyRif
+  );
 
-  const serviceOptions = useServicesOptions();
   const clientOptions = useClientsOptions();
+  const agenciesOptions = useAgenciesOptions();
+  const serviceOptions = useServicesOptions({
+    onlyForAgencyRif: agencyRif,
+  });
   const vehicleOptions = useVehiclesOptions(clientDni);
+
+  const useValidationSchema = useValidationScheme();
 
   return (
     <div className={className}>
@@ -36,20 +45,7 @@ const Form: FunctionComponent<Props> = ({
         validateOnBlur={false}
         validateOnMount={false}
         initialValues={initialValues}
-        validationSchema={Yup.object().shape({
-          expirationDate: Yup.string().required("La fecha es requerida"),
-          licensePlate: Yup.string().typeError('La matricula es invalida').required("La matricula es requerida"),
-          clientDni: Yup.string()
-            .max(8)
-            .required("La cédula del cliente es requerida"),
-          servicesIds: Yup.array().of(
-            Yup.number().test(
-              "not-zero",
-              "Seleccione un servicio o elimine este campo",
-              (value) => value !== 0
-            )
-          ),
-        })}
+        validationSchema={useValidationSchema}
         onSubmit={onSubmit as any}
       >
         {({
@@ -86,9 +82,6 @@ const Form: FunctionComponent<Props> = ({
                     onChange={(e) => {
                       handleChange(e);
                       setClientDni(e.target.value as string);
-                      handleChange({
-                        target: { name: "licensePlate", value: null },
-                      });
                     }}
                     label="Cliente"
                     onBlur={handleBlur}
@@ -131,7 +124,25 @@ const Form: FunctionComponent<Props> = ({
                     name="licensePlate"
                   />
                 </FormControl> */}
+                <FormControl className="field-form" fullWidth>
+                  <SelectField
+                    className="field-form"
+                    name="agencyRif"
+                    onChange={(e) => {
+                      handleChange(e);
+                      setAgencyRif(e.target.value as string);
+                    }}
+                    label="Agencia"
+                    onBlur={handleBlur}
+                    options={agenciesOptions}
+                    helperText={touched.agencyRif ? errors.agencyRif : ""}
+                    error={touched.agencyRif && !!errors.agencyRif}
+                    isAutocomplete={USE_AUTOCOMPLETES}
+                    value={agencyRif}
+                  />
+                </FormControl>
               </MainCard>
+
               <MainCard
                 className={"form-data"}
                 headerClass={"page-header-container"}
@@ -142,57 +153,71 @@ const Form: FunctionComponent<Props> = ({
                 }
               >
                 <div className={"a"}>
-                  <FieldArray name="servicesIds">
-                    {({ insert, remove, push }) => (
-                      <div>
-                        {values.servicesIds.length > 0 &&
-                          values.servicesIds.map((speciality, index) => (
-                            <div
-                              key={`service-${index}`}
-                              className={"service-list"}
-                            >
-                              <FormControl className="field-form2" fullWidth>
-                                <Field
-                                  name={`servicesIds.${index}`}
-                                  as={SelectField}
-                                  type="text"
-                                  label={`Servicio ${index + 1}`}
-                                  fullWidth
-                                  isAutocomplete={USE_AUTOCOMPLETES}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.servicesIds[index]}
-                                  options={serviceOptions}
-                                />
-                                <ErrorMessage
-                                  name={`servicesIds.${index}`}
-                                  component="div"
-                                  className="field-error"
-                                />
-                                <Button
-                                  color="secondary"
-                                  size="small"
-                                  startIcon={<IconTrash />}
-                                  onClick={() => remove(index)}
+                  {
+                    (agencyRif && serviceOptions.length) ? (
+                      <FieldArray name="servicesIds">
+                        {({ insert, remove, push }) => (
+                          <div>
+                            {values.servicesIds.length > 0 &&
+                              values.servicesIds.map((speciality, index) => (
+                                <div
+                                  key={`service-${index}`}
+                                  className={"service-list"}
                                 >
-                                  Eliminar
-                                </Button>
-                              </FormControl>
-                            </div>
-                          ))}
-                        <Button
-                          type="button"
-                          color="primary"
-                          size="small"
-                          variant={"outlined"}
-                          onClick={() => push(0)}
-                          startIcon={<IconCirclePlus />}
-                        >
-                          Añadir
-                        </Button>
-                      </div>
-                    )}
-                  </FieldArray>
+                                  <FormControl className="field-form2"
+                                    error={!!touched.servicesIds && !!errors.servicesIds?.[index]}
+                                    fullWidth>
+                                    <div className="field-form2-with-error">
+                                      <Field
+                                        name={`servicesIds.${index}`}
+                                        as={SelectField}
+                                        type="text"
+                                        className="field-form2-field"
+                                        label={`Servicio ${index + 1}`}
+                                        fullWidth
+                                        isAutocomplete={USE_AUTOCOMPLETES}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.servicesIds[index]}
+                                        options={serviceOptions}
+                                      />
+                                      <ErrorMessage
+                                        name={`servicesIds.${index}`}
+                                        component="div"
+                                        className="field-error"
+                                      />
+                                    </div>
+                                    <Button
+                                      color="secondary"
+                                      size="small"
+                                      startIcon={<IconTrash />}
+                                      onClick={() => remove(index)}
+                                    >
+                                      Eliminar
+                                    </Button>
+                                  </FormControl>
+                                </div>
+                              ))}
+                            <Button
+                              type="button"
+                              color="primary"
+                              size="small"
+                              variant={"outlined"}
+                              onClick={() => push(0)}
+                              startIcon={<IconCirclePlus />}
+                            >
+                              Añadir
+                            </Button>
+                          </div>
+                        )}
+                      </FieldArray>
+                    ) : (
+                        (!serviceOptions.length) ?
+                          <span>La agencia seleccionada no presta ningun servicio</span>
+                          : <span>Seleccione una agencia para poder ver los servicios disponibles</span>
+                    )
+                  }
+
                   <FormControl
                     className="field-form2"
                     error={!!touched.servicesIds && !!errors.servicesIds}
@@ -231,6 +256,7 @@ interface Props {
 export type FormValues = {
   expirationDate: string;
   clientDni: string | null;
+  agencyRif: string | null;
   licensePlate: string | null;
   servicesIds: number[];
   submit: string | null;
@@ -240,6 +266,28 @@ export type OnSubmit = (
   values: FormValues,
   helpers: FormikHelpers<FormValues>
 ) => void | Promise<any>;
+
+function useValidationScheme() {
+  return useMemo(() => {
+    return Yup.object().shape({
+      expirationDate: Yup.string().required("La fecha es requerida"),
+      licensePlate: Yup.string().typeError('La matricula es invalida').required("La matricula es requerida"),
+      clientDni: Yup.string()
+        .max(16)
+        .required("La cédula del cliente es requerida"),
+      agencyRif: Yup.string()
+        .max(32)
+        .required("La agencia es requerida"),
+      servicesIds: Yup.array().of(
+        Yup.number().test(
+          "not-zero",
+          "Seleccione un servicio o elimine este campo",
+          (value) => value !== 0
+        )
+      ),
+    })
+  }, []);
+}
 
 export default styled(Form)`
   display: flex;
@@ -284,12 +332,28 @@ export default styled(Form)`
     grid-column-gap: 20px;
   }
 
+  .field-form2-field {
+    flex: 1;
+    width: 100%;
+  }
+
   .field-form2 {
     margin: 12px 0px;
     grid-column-gap: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
+  }
+
+  .field-error {
+    color: red;
+  }
+
+  .field-form2-with-error {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   @media screen and (max-width: 768px) {
