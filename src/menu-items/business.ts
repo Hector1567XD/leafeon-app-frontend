@@ -1,5 +1,5 @@
 // assets
-import { IconGasStation } from '@tabler/icons';
+import { IconGasStation, IconArchive } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -30,6 +30,14 @@ const business: MenuItem = {
           breadcrumbs: false,
         }
       ]
+    },
+    {
+      id: 'inventory',
+      title: 'Inventario',
+      url: '/inventory',
+      type: MenuItemType.Item,
+      icon: IconArchive,
+      breadcrumbs: false
     }
   ]
 };
