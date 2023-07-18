@@ -6,7 +6,6 @@ import MainCard from "components/cards/MainCard";
 import SelectField from "components/SelectField";
 import { Button, FormHelperText } from "@mui/material";
 import useOrderOptions from "core/orders/use-orders-options";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import * as Yup from 'yup';
 
 const USE_AUTOCOMPLETE = false;
@@ -17,7 +16,9 @@ const Form: FunctionComponent<Props> = ({
   onSubmit,
   initialValues,
 }) => {
-  const ordersOptions = useOrderOptions();
+  const ordersOptions = useOrderOptions({
+    onlyWithoutBill: true, includeOrderId: null,
+  });
 
   return (
     <div className={className}>

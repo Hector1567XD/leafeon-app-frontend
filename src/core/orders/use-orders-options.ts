@@ -1,19 +1,22 @@
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
-import getAllOrders from "services/orders/get-all-orders";
+import getAllOrders, { Body } from "services/orders/get-all-orders";
 import { useCallback, useEffect, useState } from "react";
 import { SelectOption } from "components/SelectField";
 import BackendError from "exceptions/backend-error";
 import { useAppDispatch } from "store";
 import { Order } from "./types";
 
-export default function useOrderOptions(): SelectOption[] {
+export default function useOrderOptions({ onlyWithoutBill, includeOrderId }: Body): SelectOption[] {
   const [items, setItems] = useState<Order[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllOrders(true);
+      const response = await getAllOrders({
+        onlyWithoutBill,
+        includeOrderId,
+      });
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -21,7 +24,7 @@ export default function useOrderOptions(): SelectOption[] {
     } finally {
       dispatch(setIsLoading(false));
     }
-  }, [dispatch]);
+  }, [dispatch, onlyWithoutBill, includeOrderId]);
 
   useEffect(() => {
     fetchItems();
