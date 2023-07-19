@@ -42,15 +42,15 @@ import EditBooking from "views/bookings/edit";
 //Coordinadores
 import Coordinators from "views/coordinators";
 //Stocks / Inventarios
-import Stocks from 'views/stocks';
+import Stocks from "views/stocks";
 //BankCards
-import BankCards from 'views/bankCards';
-import CreateBankCard from 'views/bankCards/create';
-import EditBankCard from 'views/bankCards/edit';
+import BankCards from "views/bankCards";
+import CreateBankCard from "views/bankCards/create";
+import EditBankCard from "views/bankCards/edit";
 //Payments
-import Payments from 'views/payments';
-import CreatePayments from 'views/payments/create';
-import EditPayments from 'views/payments/edit';
+import Payments from "views/payments";
+import CreatePayments from "views/payments/create";
+import EditPayments from "views/payments/edit";
 //Productos
 import Products from "views/products";
 import CreateProduct from "views/products/create";
@@ -70,9 +70,13 @@ import Bills from "views/bills";
 import CreateBill from "views/bills/create";
 import EditBill from "views/bills/edit";
 //Vehicles
-import Vehicles from 'views/vehicles';
-import CreateVehicle from 'views/vehicles/create';
-import EditVehicle from 'views/vehicles/edit';
+import Vehicles from "views/vehicles";
+import CreateVehicle from "views/vehicles/create";
+import EditVehicle from "views/vehicles/edit";
+
+//Stadistics
+import NoEcoProducts from "views/stadistics/no-eco-products";
+import FakeClients from "views/stadistics/fake-clients";
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -207,34 +211,34 @@ const GeneralRoutes: RouteObject[] = [
   },
   //Inventario
   {
-    path: 'inventory',
-    element: <Stocks />
+    path: "inventory",
+    element: <Stocks />,
   },
   //Tarjeta
   {
-    path: 'bankCards',
-    element: <BankCards />
+    path: "bankCards",
+    element: <BankCards />,
   },
   {
-    path: 'bankCards/create',
-    element: <CreateBankCard />
+    path: "bankCards/create",
+    element: <CreateBankCard />,
   },
   {
-    path: 'bankCards/edit/:id',
-    element: <EditBankCard />
+    path: "bankCards/edit/:id",
+    element: <EditBankCard />,
   },
   //Pagos
   {
-    path: 'payments',
-    element: <Payments />
+    path: "payments",
+    element: <Payments />,
   },
   {
-    path: 'payments/create',
-    element: <CreatePayments />
+    path: "payments/create",
+    element: <CreatePayments />,
   },
   {
-    path: 'payments/edit/billId/:billId/payment/:paymentId',
-    element: <EditPayments />
+    path: "payments/edit/billId/:billId/payment/:paymentId",
+    element: <EditPayments />,
   },
   //Productos
   {
@@ -290,16 +294,25 @@ const GeneralRoutes: RouteObject[] = [
   },
   //Vehículos
   {
-    path: 'vehicles',
-    element: <Vehicles />
+    path: "vehicles",
+    element: <Vehicles />,
   },
   {
-    path: 'vehicles/create',
-    element: <CreateVehicle/>
+    path: "vehicles/create",
+    element: <CreateVehicle />,
   },
   {
-    path: 'vehicles/edit/:id',
-    element: <EditVehicle/>
+    path: "vehicles/edit/:id",
+    element: <EditVehicle />,
+  },
+  //Stadistics
+  {
+    path: "eco-products",
+    element: <NoEcoProducts />,
+  },
+  {
+    path: "fake-clients",
+    element: <FakeClients />,
   },
 ];
 
