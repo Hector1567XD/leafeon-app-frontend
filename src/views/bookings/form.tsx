@@ -33,14 +33,6 @@ const Form: FunctionComponent<Props> = ({
     initialValues.agencyRif
   );
 
-  const {
-    recommendations,
-    setLicensePlate,
-    setMileage,
-    mileage,
-    fetchRecommendations,
-  } = useRecomendations();
-
   const clientOptions = useClientsOptions();
   const agenciesOptions = useAgenciesOptions();
   const serviceOptions = useServicesOptions({
@@ -48,7 +40,7 @@ const Form: FunctionComponent<Props> = ({
     includeServicesIds: initialValues.servicesIds,
   });
   const vehicleOptions = useVehiclesOptions(clientDni);
-
+  const [licensePlate, setLicensePlate] = useState<string | null>();
   const useValidationSchema = useValidationScheme();
 
   return (
@@ -123,7 +115,10 @@ const Form: FunctionComponent<Props> = ({
                       disabled={!clientDni && !touched.licensePlate}
                       className="field-form"
                       name="licensePlate"
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        handleChange(e);
+                        setLicensePlate(e.target.value as string);
+                      }}
                       onBlur={handleBlur}
                       label="Matricula"
                       options={vehicleOptions}
@@ -254,6 +249,19 @@ const Form: FunctionComponent<Props> = ({
                   </FormControl>
                 </div>
               </MainCard>
+              <div className="form-data">
+                <RecommendedServices
+                  className={""}
+                  agencyRif={agencyRif || ''}
+                  onSubmit={() => {}}
+                  licensePlate={licensePlate || ''}
+                  initialValues={{
+                    licensePlate: "",
+                    mileage: 0,
+                    submit: null,
+                  }}
+                />
+              </div>
             </div>
             <MainCard className={"form-data flex-column"}>
               {errors.submit && (
@@ -266,15 +274,6 @@ const Form: FunctionComponent<Props> = ({
           </form>
         )}
       </Formik>
-      <RecommendedServices
-        onSubmit={() => {}}
-        licensePlate={""}
-        initialValues={{
-          licensePlate: "",
-          mileage: 0,
-          submit: null,
-        }}
-      />
     </div>
   );
 };

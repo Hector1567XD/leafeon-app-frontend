@@ -7,16 +7,17 @@ import store from 'store';
 
 const URL = `${API_BASE_URL}/vehicles`;
 
-export default async function getReccomendations(licensePlate: string, mileage: number): Promise<Recommendation[]> {
+export default async function getReccomendations(licensePlate: string , mileage: number, agencyRif: string): Promise<Recommendation[]> {
   try {
-    console.log(`${URL}/license-plate/${licensePlate}/mileage/${mileage}`)
+    const finalUrl = `${URL}/license-plate/${(!!licensePlate && licensePlate !== '') ? licensePlate : 'dumm'}/mileage/${mileage}/agencyRif/${agencyRif}`
     const response = await axios.get<Recommendation[]>(
-        `${URL}/license-plate/${licensePlate}/mileage/${mileage}`, {
+      finalUrl, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
       }
     );
+    console.log('respuesta recomendados', response.data)
     return response.data;
   } catch (error: unknown) {
     console.log(error);

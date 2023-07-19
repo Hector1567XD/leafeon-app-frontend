@@ -6,16 +6,16 @@ import { useAppDispatch } from 'store';
 import { setIsLoading, setErrorMessage } from 'store/customizationSlice';
 import BackendError from 'exceptions/backend-error';
 
-export default function useRecomendations() {
+export default function useRecomendations(licensePlate: string | null, agencyRif: string | null) {
   const dispatch = useAppDispatch();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-  const [licensePlate, setLicensePlate] = useState<string>("");
   const [mileage, setMileage] = useState<number>(0);
-
+  
   const fetchRecommendations = useCallback(async () => {
+    console.log('really licence plate', licensePlate);
     try {
       dispatch(setIsLoading(true));
-      const response = await getRecommendations( licensePlate, mileage );
+      const response = await getRecommendations( licensePlate || '', mileage, agencyRif || '');
       setRecommendations(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -30,5 +30,5 @@ export default function useRecomendations() {
     fetchRecommendations();
   }, [fetchRecommendations]);
 
-  return { recommendations, setLicensePlate, setMileage, mileage, fetchRecommendations };
+  return { recommendations, setMileage, mileage, fetchRecommendations };
 }

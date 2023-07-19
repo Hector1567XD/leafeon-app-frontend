@@ -24,13 +24,16 @@ const USE_AUTOCOMPLETES = false;
 
 const RecommendedServices: FunctionComponent<Props> = ({
   className,
+  licensePlate,
+  agencyRif,
   initialValues,
 }) => {
   const dispatch = useAppDispatch();
-  const { recommendations, setLicensePlate, setMileage, fetchRecommendations } =
-    useRecomendations();
+  
+  const { recommendations, setMileage, mileage, fetchRecommendations } =
+    useRecomendations(licensePlate, agencyRif);
 
-  const a = [
+  const dummyServices = [
     {
       serviceId: 1,
       description: "string",
@@ -54,106 +57,26 @@ const RecommendedServices: FunctionComponent<Props> = ({
     },
   ];
 
-  const onSubmit = useCallback(
-    async (
-      values: any,
-      { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>
-    ) => {
-      try {
-        console.log("as" + JSON.stringify(values));
-        dispatch(setIsLoading(true));
-        setErrors({});
-        setStatus({});
-        setSubmitting(true);
-        setLicensePlate(values.licensePlate);
-        setMileage(values.mileage);
-        await fetchRecommendations();
-        dispatch(setSuccessMessage(`Servicios buscados correctamente`));
-      } catch (error) {
-        if (error instanceof BackendError) {
-          setErrors({
-            ...error.getFieldErrorsMessages(),
-            submit: error.getMessage(),
-          });
-          dispatch(setErrorMessage(error.getMessage()));
-        }
-        setStatus({ success: "false" });
-      } finally {
-        dispatch(setIsLoading(false));
-        setSubmitting(false);
-      }
-    },
-    [dispatch, fetchRecommendations, setLicensePlate, setMileage]
-  );
-
   return (
     <div className={className}>
-      <Formik
-        validateOnChange={true}
-        validateOnBlur={false}
-        validateOnMount={false}
-        initialValues={initialValues}
-        validationSchema={Yup.object().shape({
-          mileage: Yup.number().required("El kilometraje es requerido"),
-          licensePlate: Yup.string().required("La matricula es requerida"),
-        })}
-        onSubmit={onSubmit as any}
-      >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values,
-        }) => (
-          <form noValidate onSubmit={handleSubmit}>
-            <div className="container-form-employees">
               <MainCard className="form-data"
                 title={"Buscar servicios recomendados"}
               >
                 <div className="form-data2" >
                   <FormControl className="field-form" fullWidth>
                     <TextField
-                      id="licensePlate"
-                      label="Matricula"
-                      variant="outlined"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.licensePlate}
-                      helperText={
-                        touched.licensePlate ? errors.licensePlate : ""
-                      }
-                      error={touched.licensePlate && !!errors.licensePlate}
-                      name="licensePlate"
-                    />
-                  </FormControl>
-                  <FormControl className="field-form" fullWidth>
-                    <TextField
                       id="mileage"
                       label="Kilometraje"
                       variant="outlined"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.mileage}
-                      helperText={touched.mileage ? errors.mileage : ""}
-                      error={touched.mileage && !!errors.mileage}
+                      onBlur={() => {}}
+                      onChange={(e) => {
+                        setMileage(e.target.value as any);
+                      }}
+                      value={mileage}
                       name="mileage"
                     />
                   </FormControl>
                 </div>
-                {errors.submit && (
-                  <FormHelperText error>{errors.submit}</FormHelperText>
-                )}
-                <Button
-                  variant="outlined"
-                  type="submit"
-                  color="primary"
-                  className="button"
-                >
-                  Buscar
-                </Button>
                 <hr />
                 {recommendations.length ? <DynamicTable
                   headers={[
@@ -176,10 +99,6 @@ const RecommendedServices: FunctionComponent<Props> = ({
                   rows={recommendations}
                 /> : "No hay servicios recomendados"}
               </MainCard>
-            </div>
-          </form>
-        )}
-      </Formik>
     </div>
   );
 };
@@ -189,6 +108,7 @@ interface Props {
   className?: string;
   onSubmit: OnSubmit;
   licensePlate: string | null;
+  agencyRif: string | null;
   initialValues: FormValues;
 }
 
@@ -246,9 +166,8 @@ export default styled(RecommendedServices)`
   }
 
   .container-form-employees {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr); /* dos columnas de ancho igual */
-    grid-column-gap: 20px; /* espacio entre las columnas */
+    width: 100%;
+    flex: 1;
   }
 
   . {

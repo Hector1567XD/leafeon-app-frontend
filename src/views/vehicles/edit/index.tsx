@@ -31,8 +31,10 @@ const EditVehicle: FunctionComponent<Props> = ({ className }) => {
       values: any,
       { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>
     ) => {
+      console.log('onSubmit edit vehicles')
       try {
-        values.saleDate = values.saleDate.format('YYYY-MM-DD');
+        console.log('values edit vehicles', { ...values })
+        values.saleDate = dayjs(values.saleDate).format('DD-MM-YYYY');
         console.log("asss" + JSON.stringify(values));
         dispatch(setIsLoading(true));
         setErrors({});
