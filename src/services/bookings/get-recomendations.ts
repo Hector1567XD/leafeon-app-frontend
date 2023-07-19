@@ -9,7 +9,9 @@ const URL = `${API_BASE_URL}/vehicles`;
 
 export default async function getReccomendations(licensePlate: string , mileage: number, agencyRif: string): Promise<Recommendation[]> {
   try {
-    const finalUrl = `${URL}/license-plate/${(!!licensePlate && licensePlate !== '') ? licensePlate : 'dumm'}/mileage/${mileage}/agencyRif/${agencyRif}`
+    const _agencyRif = (!!agencyRif && agencyRif !== '') ? agencyRif : 'dumm';
+    const finalUrl = `${URL}/license-plate/${(!!licensePlate && licensePlate !== '') ? licensePlate : 'dumm'}/mileage/${mileage}/agencyRif/${_agencyRif}`
+    console.log('finalUrl recomendados', finalUrl)
     const response = await axios.get<Recommendation[]>(
       finalUrl, {
         headers: {
