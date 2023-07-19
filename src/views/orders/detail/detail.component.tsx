@@ -5,6 +5,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@m
 import { Props } from './types';
 import OrderActivitiesCrud from 'core/order-activities/crud';
 import useBookingById from 'core/bookings/use-booking-by-id';
+import OrderProductsListWrapper from 'core/order-products/order-products-list-wrapper';
 
 const Detail: FunctionComponent<Props> = ({ className, order, onRefresh }) => {
 
@@ -63,6 +64,9 @@ const Detail: FunctionComponent<Props> = ({ className, order, onRefresh }) => {
             onRefresh={onRefresh}
             booking={booking}
             items={order.orderActivities}
+          />
+          <OrderProductsListWrapper
+            items={order.orderProducts}
           />
         </div>
       </div>
