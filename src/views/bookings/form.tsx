@@ -11,6 +11,8 @@ import useServicesOptions from "core/services/use-services-options";
 import useClientsOptions from "core/clients/use-clients-options";
 import useVehiclesOptions from "core/vehicles/use-vehicles-options";
 import { IconCirclePlus } from "@tabler/icons";
+import useRecomendations from "./use-recommendations";
+import RecommendedServices from "./recommendedServices";
 
 const USE_AUTOCOMPLETES = false;
 
@@ -25,6 +27,14 @@ const Form: FunctionComponent<Props> = ({
     initialValues.clientDni
   );
 
+  const {
+    recommendations,
+    setLicensePlate,
+    setMileage,
+    mileage,
+    fetchRecommendations,
+  } = useRecomendations();
+
   const serviceOptions = useServicesOptions();
   const clientOptions = useClientsOptions();
   const vehicleOptions = useVehiclesOptions(clientDni);
@@ -38,7 +48,9 @@ const Form: FunctionComponent<Props> = ({
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
           expirationDate: Yup.string().required("La fecha es requerida"),
-          licensePlate: Yup.string().typeError('La matricula es invalida').required("La matricula es requerida"),
+          licensePlate: Yup.string()
+            .typeError("La matricula es invalida")
+            .required("La matricula es requerida"),
           clientDni: Yup.string()
             .max(8)
             .required("La cédula del cliente es requerida"),
@@ -107,7 +119,7 @@ const Form: FunctionComponent<Props> = ({
                       name="licensePlate"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      label="Matriicula"
+                      label="Matricula"
                       options={vehicleOptions}
                       helperText={
                         touched.licensePlate ? errors.licensePlate : ""
@@ -207,6 +219,15 @@ const Form: FunctionComponent<Props> = ({
           </form>
         )}
       </Formik>
+      <RecommendedServices
+        onSubmit={() => {}}
+        licensePlate={""}
+        initialValues={{
+          licensePlate: "",
+          mileage: 0,
+          submit: null,
+        }}
+      />
     </div>
   );
 };
