@@ -4,14 +4,15 @@ import { API_BASE_URL } from 'config/constants';
 import { Order } from 'core/orders/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
+import { PaginateBody, PaginatedResponse } from 'services/types';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/orders/all`;
+const URL = `${API_BASE_URL}/orders`;
 
-export default async function getAllOrders(body?: Body): Promise<Order[]> {
+export default async function getPaginate(body: PaginateBody): Promise<OrdersPaginated> {
   try {
-    const urlPaginated = addQueryParams(URL, body || {});
-    const response = await axios.get<Order[]>(
+    const urlPaginated = addQueryParams(URL, body);
+    const response = await axios.get<OrdersPaginated>(
       urlPaginated, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
@@ -24,7 +25,4 @@ export default async function getAllOrders(body?: Body): Promise<Order[]> {
   }
 }
 
-export type Body = {
-  onlyWithoutBill: boolean,
-  includeOrderId: number | null,
-}
+export type OrdersPaginated = PaginatedResponse<Order>;

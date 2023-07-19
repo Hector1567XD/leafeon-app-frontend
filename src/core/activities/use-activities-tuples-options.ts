@@ -1,22 +1,19 @@
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
-import getAllOrders, { Body } from "services/orders/get-all-orders";
+import getAllActivities, { Body } from "services/activities/get-all-activities";
 import { useCallback, useEffect, useState } from "react";
 import { SelectOption } from "components/SelectField";
 import BackendError from "exceptions/backend-error";
 import { useAppDispatch } from "store";
-import { Order } from "./types";
+import { Activity } from "./types";
 
-export default function useOrderOptions({ onlyWithoutBill, includeOrderId }: Body): SelectOption[] {
-  const [items, setItems] = useState<Order[]>([]);
+export default function useActivitiesTuplesOptions({ onlyForAgencyRif }: Body): SelectOption[] {
+  const [items, setItems] = useState<Activity[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllOrders({
-        onlyWithoutBill,
-        includeOrderId,
-      });
+      const response = await getAllActivities({ onlyForAgencyRif });
       setItems(response);
     } catch (error) {
       if (error instanceof BackendError)
@@ -24,14 +21,14 @@ export default function useOrderOptions({ onlyWithoutBill, includeOrderId }: Bod
     } finally {
       dispatch(setIsLoading(false));
     }
-  }, [dispatch, onlyWithoutBill, includeOrderId]);
+  }, [dispatch, onlyForAgencyRif]);
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
   return items.map((item) => ({
-    label: String(item.orderId),
-    value: item.orderId,
+    label: item.description,
+    value: JSON.stringify({ serviceId: item.serviceId, activityId: item.activityId }),
   }));
 }

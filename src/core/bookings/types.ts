@@ -10,3 +10,13 @@ export interface Booking {
   agencyRif: string
   services: ShortService[]
 }
+
+export interface SlimBooking {
+  bookingId: number
+  expeditionDate: string
+  expirationDate: string
+  clientDni: string
+  licensePlate: string
+  createdAt: string
+  agencyRif: string
+}

@@ -1,21 +1,21 @@
 import { setErrorMessage, setIsLoading } from "store/customizationSlice";
-import getAllOrders, { Body } from "services/orders/get-all-orders";
+import getAllBookings, { Body } from "services/bookings/get-all-bookings";
 import { useCallback, useEffect, useState } from "react";
 import { SelectOption } from "components/SelectField";
 import BackendError from "exceptions/backend-error";
 import { useAppDispatch } from "store";
-import { Order } from "./types";
+import { SlimBooking } from "./types";
 
-export default function useOrderOptions({ onlyWithoutBill, includeOrderId }: Body): SelectOption[] {
-  const [items, setItems] = useState<Order[]>([]);
+export default function useBookingsOptions({ onlyWithoutOrder, includeBookingId }: Body): SelectOption[] {
+  const [items, setItems] = useState<SlimBooking[]>([]);
   const dispatch = useAppDispatch();
 
   const fetchItems = useCallback(async () => {
     try {
       dispatch(setIsLoading(true));
-      const response = await getAllOrders({
-        onlyWithoutBill,
-        includeOrderId,
+      const response = await getAllBookings({
+        onlyWithoutOrder,
+        includeBookingId,
       });
       setItems(response);
     } catch (error) {
@@ -24,14 +24,14 @@ export default function useOrderOptions({ onlyWithoutBill, includeOrderId }: Bod
     } finally {
       dispatch(setIsLoading(false));
     }
-  }, [dispatch, onlyWithoutBill, includeOrderId]);
+  }, [dispatch, onlyWithoutOrder, includeBookingId]);
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
   return items.map((item) => ({
-    label: String(item.orderId),
-    value: item.orderId,
+    label: String(item.bookingId) + ' - ' + item.clientDni,
+    value: item.bookingId,
   }));
 }

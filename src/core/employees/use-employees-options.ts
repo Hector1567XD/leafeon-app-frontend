@@ -15,6 +15,7 @@ export default function useEmployeesOptions(body: Body): SelectOption[] {
       dispatch(setIsLoading(true));
       const response = await getAllEmployees({
         onlyForAgencyRif: body.onlyForAgencyRif,
+        employeeDni: body.employeeDni,
       });
       setItems(response);
     } catch (error) {
@@ -23,7 +24,7 @@ export default function useEmployeesOptions(body: Body): SelectOption[] {
     } finally {
      dispatch(setIsLoading(false));
     }
-  }, [dispatch, body.onlyForAgencyRif]);
+  }, [dispatch, body.onlyForAgencyRif, body.employeeDni]);
 
   useEffect(() => {
     fetchItems();

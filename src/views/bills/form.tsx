@@ -1,13 +1,14 @@
 import { Formik, FormikHelpers } from "formik";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 // material-ui
 import styled from "styled-components";
 import MainCard from "components/cards/MainCard";
 import SelectField from "components/SelectField";
 import { Button, FormHelperText } from "@mui/material";
 import useOrderOptions from "core/orders/use-orders-options";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import * as Yup from 'yup';
+import useOrderById from "core/orders/use-order-by-id";
+import InvoiceTable from "components/InvoiceTable";
 
 const USE_AUTOCOMPLETE = false;
 
@@ -17,7 +18,11 @@ const Form: FunctionComponent<Props> = ({
   onSubmit,
   initialValues,
 }) => {
-  const ordersOptions = useOrderOptions();
+  const [orderId, setOrderId] = useState<number | null>(null);
+  const ordersOptions = useOrderOptions({
+    onlyWithoutBill: true, includeOrderId: null,
+  });
+  const order = useOrderById(orderId);
 
   return (
     <div className={className}>
@@ -42,21 +47,37 @@ const Form: FunctionComponent<Props> = ({
           values,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <MainCard className={"form-data"} title={title}>
-              <SelectField
-                fullWidth={true}
-                className="field-form"
-                name="orderId"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                label="Orden"
-                options={ordersOptions}
-                helperText={touched.orderId ? errors.orderId : ""}
-                error={touched.orderId && !!errors.orderId}
-                isAutocomplete={USE_AUTOCOMPLETE}
-                value={values.orderId}
-              />
-            </MainCard>
+            <div className="container-form-bills">
+              <MainCard className={"form-data"} title={title}>
+                <SelectField
+                  fullWidth={true}
+                  className="field-form"
+                  name="orderId"
+                  onChange={(e) => {
+                    handleChange(e);
+                    setOrderId(e.target.value as number);
+                  }}
+                  onBlur={handleBlur}
+                  label="Orden"
+                  options={ordersOptions}
+                  helperText={touched.orderId ? errors.orderId : ""}
+                  error={touched.orderId && !!errors.orderId}
+                  isAutocomplete={USE_AUTOCOMPLETE}
+                  value={values.orderId}
+                />
+              </MainCard>
+              <MainCard className={"form-data"} title={'Preview'}>
+                {
+                  (!order) ?
+                  <span>
+                    Seleccione una orden para previsualizar la factura
+                    </span> :
+                    (
+                      <InvoiceTable items={order.items} discountPercentage={null}  />
+                    )
+                }
+              </MainCard>
+            </div>
             <MainCard className={"form-data flex-column"}>
               {errors.submit && (
                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -114,5 +135,20 @@ export default styled(Form)`
     width: 100%;
     display: flex;
     flex-direction: row;
+  }
+
+  .container-form-bills {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* dos columnas de ancho igual */
+    grid-column-gap: 20px; /* espacio entre las columnas */
+  }
+
+  @media screen and (max-width: 768px) {
+    /* media query para dispositivos móviles */
+    .container-form-bills {
+      grid-template-columns: 1fr; /* una sola columna */
+      grid-column-gap: 0; /* sin espacio entre columnas */
+      padding: 0; /* sin padding */
+    }
   }
 `;

@@ -1,5 +1,5 @@
 // assets
-import { IconUsers, IconCalendarEvent, IconCar, IconReceipt2, IconCreditCard, IconWallet } from '@tabler/icons';
+import { IconUsers, IconCalendarEvent, IconCar, IconReceipt2, IconCreditCard, IconWallet, IconListCheck } from '@tabler/icons';
 import { MenuItem, MenuItemType } from './types';
 // constant
 
@@ -50,6 +50,28 @@ const other: MenuItem = {
           title: 'Crear reserva',
           type: MenuItemType.Item,
           url: '/bookings/create',
+        }
+      ]
+    },
+    {
+      id: 'orders',
+      title: 'Ordenes',
+      type: MenuItemType.Collapse,
+      icon: IconListCheck,
+      breadcrumbs: false,
+      children: [
+        {
+          id: 'list-orders',
+          title: 'Lista de ordenes',
+          type: MenuItemType.Item,
+          url: '/orders',
+          breadcrumbs: false,
+        },
+        {
+          id: 'create-orders',
+          title: 'Crear reserva',
+          type: MenuItemType.Item,
+          url: '/orders/create',
         }
       ]
     },

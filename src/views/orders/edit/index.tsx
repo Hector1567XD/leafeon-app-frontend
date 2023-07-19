@@ -8,17 +8,18 @@ import { useNavigate } from 'react-router';
 import BackendError from 'exceptions/backend-error';
 import { useAppDispatch } from 'store/index';
 import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customizationSlice';
-import Form, { FormValues } from '../form';
-import editBooking from 'services/bookings/edit-booking';
-import useBookingById from '../../../core/bookings/use-booking-by-id';
-import useBookingId from './use-booking-dni';
+import Form from '../form';
+import editOrder from 'services/orders/edit-order';
+import useOrderById from 'core/orders/use-order-by-id';
+import useOrderId from 'core/orders/use-order-id';
 import { FormikHelpers } from 'formik';
+import { FormValues } from '../form/types';
 
-const EditBooking: FunctionComponent<Props> = ({className}) => {
+const EditOrder: FunctionComponent<Props> = ({className}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const bookingId = useBookingId();
-  const booking = useBookingById(bookingId);
+  const orderId = useOrderId();
+  const order = useOrderById(orderId);
 
   const onSubmit = useCallback(async (values: any, { setErrors, setStatus, setSubmitting }: FormikHelpers<FormValues>) => {
     try {
@@ -26,8 +27,16 @@ const EditBooking: FunctionComponent<Props> = ({className}) => {
       setErrors({});
       setStatus({});
       setSubmitting(true);
-      await editBooking(bookingId!, values);
-      navigate('/bookings');
+      await editOrder(orderId!, {
+        entryTime: values.entryTime,
+        estimatedDeparture: values.estimatedDeparture,
+        bookingId: values.bookingId,
+        employeeDni: values.employeeDni,
+        responsibleDni: values.responsibleDni,
+        responsibleName: values.responsibleName,
+        realDeparture: values.realDeparture,
+      });
+      navigate('/orders');
       dispatch(setSuccessMessage(`Reserva editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
@@ -42,25 +51,28 @@ const EditBooking: FunctionComponent<Props> = ({className}) => {
       dispatch(setIsLoading(false));
       setSubmitting(false);
     }
-  }, [bookingId, navigate, dispatch]);
+  }, [dispatch, orderId, navigate]);
 
   return (
     <div className={className}>
       <MainCard>
         <Typography variant="h3" component="h3">
-          Reservas
+          Ordenes
         </Typography>
       </MainCard>
       {
-        booking && (
+        order && (
           <Form
             isUpdate={true}
             initialValues={{
-              agencyRif: booking.agencyRif,
-              expirationDate: booking.expirationDate,
-              clientDni: booking.clientDni,
-              licensePlate: booking.licensePlate,
-              servicesIds: booking.services.map((booking) => booking.serviceId),
+              entryTime: order.entryTime,
+              estimatedDeparture: order.estimatedDeparture,
+              bookingId: order.bookingId,
+              employeeDni: order.employeeDni,
+              responsibleDni: order.responsibleDni,
+              responsibleName: order.responsibleName,
+              activities: order.orderActivities,
+              realDeparture: order.realDeparture,
               submit: null,
             }}
             title={'Editar reserva'}
@@ -76,7 +88,7 @@ interface Props {
   className?: string;
 }
 
-export default styled(EditBooking)`
+export default styled(EditOrder)`
   display: flex;
   flex-direction: column;
 

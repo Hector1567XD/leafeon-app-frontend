@@ -1,17 +1,17 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Order } from 'core/orders/types';
+import { SlimBooking } from 'core/bookings/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/orders/all`;
+const URL = `${API_BASE_URL}/bookings/all`;
 
-export default async function getAllOrders(body?: Body): Promise<Order[]> {
+export default async function getAllBookings(body?: Body): Promise<SlimBooking[]> {
   try {
     const urlPaginated = addQueryParams(URL, body || {});
-    const response = await axios.get<Order[]>(
+    const response = await axios.get<SlimBooking[]>(
       urlPaginated, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
@@ -25,6 +25,6 @@ export default async function getAllOrders(body?: Body): Promise<Order[]> {
 }
 
 export type Body = {
-  onlyWithoutBill: boolean,
-  includeOrderId: number | null,
+  onlyWithoutOrder: boolean,
+  includeBookingId: number | null,
 }

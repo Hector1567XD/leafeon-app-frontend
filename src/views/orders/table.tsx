@@ -1,6 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Pagination } from '@mui/material';
+import { Button, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
-import { Vehicle } from 'core/vehicles/types';
 import styled from 'styled-components';
 // Own
 import { useAppDispatch } from 'store/index';
@@ -8,33 +7,34 @@ import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customiz
 import BackendError from 'exceptions/backend-error';
 import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
-import { IconEdit, IconTrash } from '@tabler/icons';
+import { IconEdit, IconTrash, IconEye } from '@tabler/icons';
 import { useNavigate } from 'react-router';
-import deleteVehicle from 'services/vehicles/delete-vehicle';
+import deleteOrder from 'services/orders/delete-order';
 import DialogDelete from 'components/dialogDelete';
+import { Order } from 'core/orders/types';
 
 const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, fetchItems }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState<boolean>(false)
-    const [licensePlate, setVehicleDni] = useState<string>('')
+    const [orderId, setBookingId] = useState<number>(0)
 
-    const handleOpen = (licensePlate: string) => {
+    const handleOpen = (orderId: number) => {
         setOpen(true);
-        setVehicleDni(licensePlate); 
+        setBookingId(orderId); 
     }
 
     const handleClose = () => {
         setOpen(false);
-        setVehicleDni(''); 
+        setBookingId(0); 
     }
 
-    const onDelete = useCallback(async (licensePlate: string) => {
+    const onDelete = useCallback(async (orderId: number) => {
         try {
             dispatch(setIsLoading(true));
-            await deleteVehicle(licensePlate!);
-            navigate('/vehicles');
-            dispatch(setSuccessMessage(`Empleado eliminado correctamente`));
+            await deleteOrder(orderId!);
+            //navigate('/orders');
+            dispatch(setSuccessMessage(`Reserva eliminada correctamente`));
         } catch (error) {
             if (error instanceof BackendError) {
                 dispatch(setErrorMessage(error.getMessage()));
@@ -44,36 +44,39 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             handleClose();
             fetchItems();
         }
-      }, [dispatch, fetchItems, navigate]);
+      }, [dispatch, fetchItems]);
 
     return (
         <div className={className}>
             <DynamicTable
                 headers={[
-                    { columnLabel: 'Matrícula', fieldName: 'licensePlate', cellAlignment: 'left' },
-                    { columnLabel: 'Cliente', fieldName: 'clientDni', cellAlignment: 'left' },
-                    { columnLabel: 'Nro serial', fieldName: 'nroSerial', cellAlignment: 'left' },
-                    { columnLabel: 'Nro motor', fieldName: 'nroMotor', cellAlignment: 'left' },
-                    { columnLabel: 'Modelo', fieldName: 'modelId', cellAlignment: 'left' },
-                    { columnLabel: 'color', fieldName: 'color', cellAlignment: 'left' },
-                    /*{ columnLabel: 'Descripción', fieldName: 'extraDescriptions', cellAlignment: 'left' },
-                    { columnLabel: 'Resumen Mantenimiento', fieldName: 'maintenanceSummary', cellAlignment: 'left' },*/
-                    { columnLabel: 'Agencia vendedora', fieldName: 'agencySeller', cellAlignment: 'left' },
-                    //{ columnLabel: 'Fecha venta', fieldName: 'saleDate', cellAlignment: 'left' },
+                    { columnLabel: 'Id', fieldName: 'orderId', cellAlignment: 'left' },
+                    { columnLabel: 'Analista', fieldName: 'employeeDni', cellAlignment: 'left' },
+                    { columnLabel: 'Entrada', fieldName: 'entryTime', cellAlignment: 'left' },
+                    { columnLabel: 'Salida estimada', fieldName: 'estimatedDeparture', cellAlignment: 'left' },
+                    { columnLabel: 'Salida real', fieldName: 'realDeparture', cellAlignment: 'left' },
                 ]}
                 rows={items} components={[
-                    (row: Vehicle) =>
+                    (row: Order) =>
                         <Button
                             color="primary"
-                            onClick={() => { navigate('/vehicles/edit/'+row.licensePlate) }}
+                            onClick={() => { navigate('/orders/edit/'+row.orderId) }}
                             startIcon={<IconEdit />}
                         >
                             Editar
                         </Button>,
-                    (row: Vehicle) =>
+                    (row: Order) =>
+                    <Button
+                        color="secondary"
+                        onClick={() => { navigate('/orders/detail/'+row.orderId) }}
+                        startIcon={<IconEye />}
+                    >
+                        Detalle
+                    </Button>,
+                    (row: Order) =>
                         <Button 
                             color="secondary" 
-                            onClick={ () => handleOpen(row.licensePlate) }
+                            onClick={ () => handleOpen(row.orderId) }
                             startIcon={<IconTrash />}
                         >
                             Eliminar
@@ -82,7 +85,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
             />
             <DialogDelete 
                 handleClose={handleClose} 
-                onDelete={() => { onDelete(licensePlate) }} 
+                onDelete={() => { onDelete(orderId) }} 
                 open={open}
             />
 
@@ -101,7 +104,7 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
 }
 
 interface Prop {
-  items: Vehicle[];
+  items: Order[];
   paginate: PaginateData;
   className?: string;
   onChange: (page: number) => void;
