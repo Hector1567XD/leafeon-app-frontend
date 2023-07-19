@@ -11,9 +11,12 @@ import { Props } from "./types";
 import useBookingsOptions from "core/bookings/use-bookings-options";
 import useEmployeesOptions from "core/employees/use-employees-options";
 import useBookingById from "core/bookings/use-booking-by-id";
-import DummyTableComponent from "./dummytable";
+import OrderActivitiesCrudField from "core/order-activities/create-field/order-activities-crud-field";
+import getErrorOnArrayOrText from "helpers/get-error-on-array-or-text";
 
 const USE_AUTOCOMPLETES = false;
+
+const INPUT_ACTIVITIES: any = [];
 
 const Form: FunctionComponent<Props> = ({
   className,
@@ -32,9 +35,12 @@ const Form: FunctionComponent<Props> = ({
   });
   const employeesOptions = useEmployeesOptions({
     onlyForAgencyRif: booking?.agencyRif || null,
+    employeeDni: initialValues.employeeDni,
   })
 
-  const useValidationSchema = useValidationScheme();
+  const useValidationSchema = useValidationScheme(!!isUpdate);
+
+  const isCreated = !isUpdate;
 
   return (
     <div className={className}>
@@ -56,7 +62,9 @@ const Form: FunctionComponent<Props> = ({
           values,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
-            <div className="container-form-employees">
+            <div
+              className={`container-form-employees ${isUpdate && 'container-form-employees-full-grid'}`}
+            >
               <MainCard className={"form-data"} title={title}>
               {/*RESERVA*/}
               <FormControl disabled={isUpdate} className="field-form" fullWidth>
@@ -126,7 +134,33 @@ const Form: FunctionComponent<Props> = ({
                 {(touched.estimatedDeparture && !!errors.estimatedDeparture) && (
                   <FormHelperText error>{touched.estimatedDeparture ? errors.estimatedDeparture : ""}</FormHelperText>
                 )}
-              </FormControl>
+                </FormControl>
+            {/*FECHA REAL DE SALIDA*/}
+                {isUpdate && <FormControl className="form-data field-form"
+                  error={touched.realDeparture && !!errors.realDeparture}
+                  fullWidth
+                >
+                  <DateTimePicker
+                    label="Fecha real de salida"
+                    value={
+                      dayjs(values.realDeparture)
+                    }
+                    onChange={(newValue: any) => {
+                      const newValueFormatted = newValue.format("DD-MM-YYYY HH:mm:ss");//'DD-MM-AAAA HH:MM:SS'
+                      handleChange({
+                        target: {
+                          name: "realDeparture",
+                          id: "realDeparture",
+                          value: newValueFormatted || null,
+                        } as any,
+                      } as any);
+                    }}
+                  />
+                  {(touched.realDeparture && !!errors.realDeparture) && (
+                    <FormHelperText error>{touched.realDeparture ? errors.realDeparture : ""}</FormHelperText>
+                  )}
+                </FormControl>
+                }
               {/*EMPLEADO ANALISTA*/}
               {booking && (
                 <FormControl className="field-form" fullWidth>
@@ -174,20 +208,23 @@ const Form: FunctionComponent<Props> = ({
                     />
                 </FormControl>
               </MainCard>
-              <MainCard
-                className={"form-data activites-crud"}
-                headerClass={"page-header-container"}
-                title={
-                  <div className={"page-header"}>
-                    <span>Actividades</span>
-                    <Button variant="outlined" size="small" color="primary">
-                      Añadir
-                    </Button>
+              {
+                isCreated && (
+                  <div className={'form-data activites-crud'}>
+                    <OrderActivitiesCrudField
+                      orderId={0}
+                      isParentUpdate={isUpdate}
+                      //NOT use inputServices={values.services} (for moment)
+                      inputServices={INPUT_ACTIVITIES}
+                      booking={booking}
+                      fieldName={'activities'}
+                      onHandleFormChange={handleChange}
+                      helperText={touched.activities ? (getErrorOnArrayOrText(errors.activities)) : ''}
+                      error={touched.activities && !!errors.activities}
+                    />
                   </div>
-                }
-              >
-                <DummyTableComponent />
-              </MainCard>
+                )
+              }
             </div>
             <MainCard className={"form-data flex-column"}>
               {errors.submit && (
@@ -204,8 +241,15 @@ const Form: FunctionComponent<Props> = ({
   );
 };
 
-function useValidationScheme() {
+function useValidationScheme(isUpdate: boolean) {
   return useMemo(() => {
+    let extra = {};
+    if (!isUpdate) {
+      extra = {
+        activities: Yup.array().min(1, 'Es requerida almenos 1 actividad'),
+      };
+    }
+
     return Yup.object().shape({
       responsibleDni: Yup.string()
         .max(16, 'La cédula debe ser menor a 16 caracteres')
@@ -225,8 +269,9 @@ function useValidationScheme() {
         .max(16, 'La cédula debe ser menor a 16 caracteres')
         .matches(/^\d+$/, 'La cédula debe contener solo números')
         .required('Es necesario indicar una cédula'),
+      ...extra,
     })
-  }, []);
+  }, [isUpdate]);
 }
 
 export default Form;

@@ -79,6 +79,12 @@ export default styled(Form)`
     flex-direction: column;
   }
 
+  .container-form-employees-full-grid {
+    grid-template-columns: 1fr; /* una sola columna */
+    grid-column-gap: 0; /* sin espacio entre columnas */
+    padding: 0; /* sin padding */
+  }
+
   @media screen and (max-width: 768px) {
     /* media query para dispositivos móviles */
     .container-form-employees {

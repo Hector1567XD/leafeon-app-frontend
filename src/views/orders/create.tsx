@@ -17,6 +17,8 @@ const INITIAL_VALUES: any = {
   employeeDni: '',
   responsibleDni: null,
   responsibleName: null,
+  realDeparture: null,
+  activities: [],
   submit: null,
 };
 
@@ -38,10 +40,10 @@ const CreateService: FunctionComponent<Props> = ({ className }) => {
         employeeDni: values.employeeDni,
         responsibleDni: values.responsibleDni,
         responsibleName: values.responsibleName,
-        //activities: [] as any,
+        activities: values.activities,
         realDeparture: null,
       });
-      navigate('/models');
+      navigate('/orders');
       dispatch(setSuccessMessage(`Servicio ${values.description} creada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {

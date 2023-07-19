@@ -1,6 +1,5 @@
 import { Button, Pagination } from '@mui/material';
 import DynamicTable from 'components/DynamicTable';
-import { Booking } from 'core/bookings/types';
 import styled from 'styled-components';
 // Own
 import { useAppDispatch } from 'store/index';
@@ -8,7 +7,7 @@ import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customiz
 import BackendError from 'exceptions/backend-error';
 import { FunctionComponent, useCallback, useState } from 'react';
 import { PaginateData } from 'services/types';
-import { IconEdit, IconTrash } from '@tabler/icons';
+import { IconEdit, IconTrash, IconEye } from '@tabler/icons';
 import { useNavigate } from 'react-router';
 import deleteOrder from 'services/orders/delete-order';
 import DialogDelete from 'components/dialogDelete';
@@ -66,6 +65,14 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
                         >
                             Editar
                         </Button>,
+                    (row: Order) =>
+                    <Button
+                        color="secondary"
+                        onClick={() => { navigate('/orders/detail/'+row.orderId) }}
+                        startIcon={<IconEye />}
+                    >
+                        Detalle
+                    </Button>,
                     (row: Order) =>
                         <Button 
                             color="secondary" 

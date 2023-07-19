@@ -13,9 +13,7 @@ export default async function editOrder(idOrder: number, body: OrderPayload):
   try {
     const response = await axios.put<Order>(
         `${URL}/${idOrder}`, body, {
-        headers: {
-          Authorization: `Bearer ${store.getState().auth.token}`,
-        }
+        headers: { Authorization: `Bearer ${store.getState().auth.token}` }
       }
     );
     return response.data;
@@ -24,4 +22,4 @@ export default async function editOrder(idOrder: number, body: OrderPayload):
   }
 }
 
-export type OrderPayload = Omit<Order, 'orderId' | 'createdAt' | 'items'>;
+export type OrderPayload = Omit<Order, 'orderId' | 'createdAt' | 'items' | 'orderActivities' | 'orderProducts'>;

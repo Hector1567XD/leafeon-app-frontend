@@ -1,3 +1,5 @@
+import { InvoiceItem } from "components/InvoiceTable";
+
 export interface Bill {
   billId: number;
   billDate: string;
@@ -6,6 +8,7 @@ export interface Bill {
   totalCostFinal: number | null;
   orderId: number;
   createdAt: string;
+  items: InvoiceItem[];
 }
 
 export interface BillAlled extends Bill {

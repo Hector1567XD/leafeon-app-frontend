@@ -1,4 +1,5 @@
 import { InvoiceItem } from "components/InvoiceTable";
+import { OrderActivity } from "core/order-activities/types";
 
 export interface Order {
   orderId: number;
@@ -11,4 +12,6 @@ export interface Order {
   employeeDni: string;
   createdAt: string;
   items: InvoiceItem[];
+  orderActivities: OrderActivity[];
+  orderProducts: any[];
 }

@@ -11,7 +11,7 @@ import { setIsLoading, setSuccessMessage, setErrorMessage } from 'store/customiz
 import Form from '../form';
 import editOrder from 'services/orders/edit-order';
 import useOrderById from 'core/orders/use-order-by-id';
-import useOrderId from './use-order-id';
+import useOrderId from 'core/orders/use-order-id';
 import { FormikHelpers } from 'formik';
 import { FormValues } from '../form/types';
 
@@ -34,10 +34,9 @@ const EditOrder: FunctionComponent<Props> = ({className}) => {
         employeeDni: values.employeeDni,
         responsibleDni: values.responsibleDni,
         responsibleName: values.responsibleName,
-        //activities: [] as any,
-        realDeparture: null,
+        realDeparture: values.realDeparture,
       });
-      navigate('/bookings');
+      navigate('/orders');
       dispatch(setSuccessMessage(`Reserva editada correctamente`));
     } catch (error) {
       if (error instanceof BackendError) {
@@ -72,7 +71,8 @@ const EditOrder: FunctionComponent<Props> = ({className}) => {
               employeeDni: order.employeeDni,
               responsibleDni: order.responsibleDni,
               responsibleName: order.responsibleName,
-              activities: [],
+              activities: order.orderActivities,
+              realDeparture: order.realDeparture,
               submit: null,
             }}
             title={'Editar reserva'}

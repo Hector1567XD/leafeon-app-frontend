@@ -13,7 +13,7 @@ import BackendError from "exceptions/backend-error";
 import deleteBill from "services/bills/delete-bill";
 import { FunctionComponent, useCallback, useState } from "react";
 import { PaginateData } from "services/types";
-import { IconEdit, IconTrash } from "@tabler/icons";
+import { IconEye, IconTrash } from "@tabler/icons";
 import { useNavigate } from "react-router";
 import DialogDelete from "components/dialogDelete";
 
@@ -95,6 +95,14 @@ const Table: FunctionComponent<Prop> = ({
         ]}
         rows={items}
         components={[
+          (row: Bill) =>
+          <Button
+              color="secondary"
+              onClick={() => { navigate('/bills/detail/'+row.billId) }}
+              startIcon={<IconEye />}
+          >
+              Detalle
+          </Button>,
           (row: Bill) => (
             <Button
               color="secondary"

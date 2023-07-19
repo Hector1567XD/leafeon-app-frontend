@@ -56,10 +56,10 @@ const Table: FunctionComponent<Prop> = ({ items, paginate, className, onChange, 
                     { columnLabel: 'Nro motor', fieldName: 'nroMotor', cellAlignment: 'left' },
                     { columnLabel: 'Modelo', fieldName: 'modelId', cellAlignment: 'left' },
                     { columnLabel: 'color', fieldName: 'color', cellAlignment: 'left' },
-                    { columnLabel: 'Descripción', fieldName: 'extraDescriptions', cellAlignment: 'left' },
-                    { columnLabel: 'Resumen Mantenimiento', fieldName: 'maintenanceSummary', cellAlignment: 'left' },
+                    /*{ columnLabel: 'Descripción', fieldName: 'extraDescriptions', cellAlignment: 'left' },
+                    { columnLabel: 'Resumen Mantenimiento', fieldName: 'maintenanceSummary', cellAlignment: 'left' },*/
                     { columnLabel: 'Agencia vendedora', fieldName: 'agencySeller', cellAlignment: 'left' },
-                    { columnLabel: 'Fecha venta', fieldName: 'saleDate', cellAlignment: 'left' },
+                    //{ columnLabel: 'Fecha venta', fieldName: 'saleDate', cellAlignment: 'left' },
                 ]}
                 rows={items} components={[
                     (row: Vehicle) =>

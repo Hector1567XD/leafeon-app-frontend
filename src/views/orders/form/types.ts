@@ -1,10 +1,6 @@
+import { OrderActivity } from "core/order-activities/types";
 import { FormikHelpers } from "formik";
 
-export type ActivityOrder = {
-  serviceId: number;
-  activityId: number;
-  employeeDni: string;
-}
 
 export type FormValues = {
   entryTime: string;
@@ -12,8 +8,9 @@ export type FormValues = {
   bookingId: number;
   employeeDni: string;
   responsibleDni: string | null;
+  realDeparture: string | null;
   responsibleName: string | null;
-  activities: ActivityOrder[];
+  activities: OrderActivity[];
   submit: string | null;    
 };
 

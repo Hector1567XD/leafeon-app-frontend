@@ -1,18 +1,18 @@
 import axios from 'axios';
 // Own
 import { API_BASE_URL } from 'config/constants';
-import { Employee } from 'core/employees/types';
+import { Activity } from 'core/activities/types';
 import BackendError from 'exceptions/backend-error';
 import addQueryParams from 'services/add-query-params';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/employees/all`;
+const URL = `${API_BASE_URL}/activities/all`;
 
-export default async function getAllEmployees(body?: Body): Promise<Employee[]> {
+export default async function getAllActivities(body?: Body): Promise<Activity[]> {
   try {
-    const urlParametrized = addQueryParams(URL, body || {});
-    const response = await axios.get<Employee[]>(
-      urlParametrized, {
+    const urlPaginated = addQueryParams(URL, body || {});
+    const response = await axios.get<Activity[]>(
+      urlPaginated, {
         headers: {
           Authorization: `Bearer ${store.getState().auth.token}`,
         }
@@ -24,4 +24,6 @@ export default async function getAllEmployees(body?: Body): Promise<Employee[]> 
   }
 }
 
-export type Body = { employeeDni?: string | null; onlyForAgencyRif: string | null, };
+export type Body = {
+  onlyForAgencyRif: string | null,
+}
