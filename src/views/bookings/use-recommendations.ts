@@ -23,7 +23,7 @@ export default function useRecomendations(licensePlate: string | null, agencyRif
     } finally {
       dispatch(setIsLoading(false));
     }
-  }, [dispatch, licensePlate, mileage]);
+  }, [agencyRif, dispatch, licensePlate, mileage]);
 
   useEffect(() => {
     console.log("buscando")
