@@ -14,6 +14,8 @@ import { IconCirclePlus } from "@tabler/icons";
 import useAgenciesOptions from "core/agencies/use-agencies-options";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import useRecomendations from "./use-recommendations";
+import RecommendedServices from "./recommendedServices";
 
 const USE_AUTOCOMPLETES = false;
 
@@ -30,6 +32,14 @@ const Form: FunctionComponent<Props> = ({
   const [agencyRif, setAgencyRif] = useState<string | null>(
     initialValues.agencyRif
   );
+
+  const {
+    recommendations,
+    setLicensePlate,
+    setMileage,
+    mileage,
+    fetchRecommendations,
+  } = useRecomendations();
 
   const clientOptions = useClientsOptions();
   const agenciesOptions = useAgenciesOptions();
@@ -115,7 +125,7 @@ const Form: FunctionComponent<Props> = ({
                       name="licensePlate"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      label="Matriicula"
+                      label="Matricula"
                       options={vehicleOptions}
                       helperText={
                         (!vehicleOptions.length) ? "Este cliente no tiene vehiculos" : (touched.licensePlate ? errors.licensePlate : "")
@@ -256,6 +266,15 @@ const Form: FunctionComponent<Props> = ({
           </form>
         )}
       </Formik>
+      <RecommendedServices
+        onSubmit={() => {}}
+        licensePlate={""}
+        initialValues={{
+          licensePlate: "",
+          mileage: 0,
+          submit: null,
+        }}
+      />
     </div>
   );
 };
