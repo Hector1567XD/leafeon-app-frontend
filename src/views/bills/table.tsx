@@ -57,7 +57,7 @@ const Table: FunctionComponent<Prop> = ({
     },
     [dispatch, fetchItems, handleClose]
   );
-
+  console.log('aa', items);
   return (
     <div className={className}>
       <DynamicTable
@@ -68,19 +68,19 @@ const Table: FunctionComponent<Prop> = ({
             cellAlignment: "left",
           },
           {
-            columnLabel: "Fecha",
-            fieldName: "billDate",
+            columnLabel: "Coste",
             cellAlignment: "left",
+            onRender: (row: Bill) => row.totalCost ? (+row.totalCost).toFixed(2) + ' $' : ''
           },
           {
             columnLabel: "Descuento",
-            fieldName: "discountValue",
             cellAlignment: "left",
+            onRender: (row: Bill) => (row.discountValue + ' %')
           },
           {
             columnLabel: "Coste total",
-            fieldName: "totalCost",
             cellAlignment: "left",
+            onRender: (row: Bill) => row.totalCostFinal ? (row.totalCostFinal).toFixed(2) + ' $' : ''
           },
           {
             columnLabel: "Orden",
@@ -88,8 +88,8 @@ const Table: FunctionComponent<Prop> = ({
             cellAlignment: "left",
           },
           {
-            columnLabel: "Fecha de creacion",
-            fieldName: "createdAt",
+            columnLabel: "Fecha de emision",
+            fieldName: "billDate",
             cellAlignment: "left",
           },
         ]}

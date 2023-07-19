@@ -11,7 +11,6 @@ const URL = `${API_BASE_URL}/orders/all`;
 export default async function getAllOrders(body?: Body): Promise<Order[]> {
   try {
     const urlPaginated = addQueryParams(URL, body || {});
-    console.log('hola '+urlPaginated)
     const response = await axios.get<Order[]>(
       urlPaginated, {
         headers: {

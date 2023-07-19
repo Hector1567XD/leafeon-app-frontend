@@ -2,7 +2,8 @@ export interface Bill {
   billId: number;
   billDate: string;
   discountValue: number;
-  totalCost: number;
+  totalCost: number | null;
+  totalCostFinal: number | null;
   orderId: number;
   createdAt: string;
 }

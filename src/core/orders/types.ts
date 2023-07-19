@@ -1,3 +1,5 @@
+import { InvoiceItem } from "components/InvoiceTable";
+
 export interface Order {
   orderId: number;
   responsibleDni: string | null;
@@ -8,4 +10,5 @@ export interface Order {
   bookingId: number;
   employeeDni: string;
   createdAt: string;
+  items: InvoiceItem[];
 }
