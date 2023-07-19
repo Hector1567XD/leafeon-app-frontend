@@ -22,4 +22,4 @@ export default async function createOrder(body: OrderPayload): Promise<Order> {
   }
 }
 
-export type OrderPayload = Omit<Order, 'orderId' | 'createdAt'>;
+export type OrderPayload = Omit<Order, 'orderId' | 'createdAt' | 'items'>;

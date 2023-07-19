@@ -24,4 +24,4 @@ export default async function editOrder(idOrder: number, body: OrderPayload):
   }
 }
 
-export type OrderPayload = Omit<Order, 'orderId' | 'createdAt'>;
+export type OrderPayload = Omit<Order, 'orderId' | 'createdAt' | 'items'>;

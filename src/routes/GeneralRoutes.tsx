@@ -59,12 +59,10 @@ import EditProduct from "views/products/edit";
 import SupplyLines from "views/supply-lines";
 import CreateSupplyLine from "views/supply-lines/create";
 import EditSupplyLine from "views/supply-lines/edit";
-
 //Discounts
 import Discounts from "views/discounts";
 import CreateDiscount from "views/discounts/create";
 import EditDiscount from "views/discounts/edit";
-
 //Bills
 import Bills from "views/bills";
 import CreateBill from "views/bills/create";
@@ -73,6 +71,10 @@ import EditBill from "views/bills/edit";
 import Vehicles from 'views/vehicles';
 import CreateVehicle from 'views/vehicles/create';
 import EditVehicle from 'views/vehicles/edit';
+//Orders
+import Orders from "views/orders";
+import CreateOrder from "views/orders/create";
+import EditOrder from "views/orders/edit";
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -300,6 +302,19 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: 'vehicles/edit/:id',
     element: <EditVehicle/>
+  },
+  //Ordenes
+  {
+    path: 'orders',
+    element: <Orders />
+  },
+  {
+    path: 'orders/create',
+    element: <CreateOrder />
+  },
+  {
+    path: 'orders/edit/:id',
+    element: <EditOrder />
   },
 ];
 

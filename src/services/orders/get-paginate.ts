@@ -7,7 +7,7 @@ import addQueryParams from 'services/add-query-params';
 import { PaginateBody, PaginatedResponse } from 'services/types';
 import store from 'store';
 
-const URL = `${API_BASE_URL}/jobs`;
+const URL = `${API_BASE_URL}/orders`;
 
 export default async function getPaginate(body: PaginateBody): Promise<OrdersPaginated> {
   try {
@@ -25,4 +25,4 @@ export default async function getPaginate(body: PaginateBody): Promise<OrdersPag
   }
 }
 
-type OrdersPaginated = PaginatedResponse<Order>;
+export type OrdersPaginated = PaginatedResponse<Order>;
