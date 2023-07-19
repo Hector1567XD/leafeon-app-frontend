@@ -7,3 +7,18 @@ export interface FakeClientsItem {
   name: string;
   quantity: number;
 }
+
+export interface BestSellingProducts {
+  productId: number;
+  shortNameProduct: string;
+  price: number;
+  totalQuantitySold: number;
+}
+
+export interface FrecuentModelsByService {
+  modelId: number;
+  brand: string;
+  description: number;
+  totalOrder: number;
+}
+

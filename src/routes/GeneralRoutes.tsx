@@ -77,6 +77,11 @@ import EditVehicle from "views/vehicles/edit";
 //Stadistics
 import NoEcoProducts from "views/stadistics/no-eco-products";
 import FakeClients from "views/stadistics/fake-clients";
+import BestSellingProducts from "views/stadistics/best-selling-products";
+import FrecuentModelsByService from "views/stadistics/frecuent-models-by-service";
+import AgencyEarnings from "views/stadistics/agency-earnings";
+import EmployeesQuantityServicesPerMonth from "views/stadistics/employees-quantity-services-per-month";
+import FrecuentModelsByDate from "views/stadistics/frecuent-models-by-date";
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -313,6 +318,26 @@ const GeneralRoutes: RouteObject[] = [
   {
     path: "fake-clients",
     element: <FakeClients />,
+  },
+  {
+    path: "best-selling-products",
+    element: <BestSellingProducts />,
+  },
+  {
+    path: "frecuent-models-by-service",
+    element: <FrecuentModelsByService />,
+  },
+  {
+    path: "agency-earnings",
+    element: <AgencyEarnings />,
+  },
+  {
+    path: "employees-eficency",
+    element: <EmployeesQuantityServicesPerMonth />,
+  },
+  {
+    path: "models-date-attendant",
+    element: <FrecuentModelsByDate />,
   },
 ];
 
