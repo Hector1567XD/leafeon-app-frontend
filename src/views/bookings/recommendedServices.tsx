@@ -110,10 +110,10 @@ const RecommendedServices: FunctionComponent<Props> = ({
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <div className="container-form-employees">
-              <MainCard
-                title={"Buscar servicios Recomendados"}
+              <MainCard className="form-data"
+                title={"Buscar servicios recomendados"}
               >
-                <div className="form-data" >
+                <div className="form-data2" >
                   <FormControl className="field-form" fullWidth>
                     <TextField
                       id="licensePlate"
@@ -155,7 +155,7 @@ const RecommendedServices: FunctionComponent<Props> = ({
                   Buscar
                 </Button>
                 <hr />
-                {a.length>1 ? <DynamicTable
+                {recommendations.length ? <DynamicTable
                   headers={[
                     {
                       columnLabel: "Id",
@@ -174,7 +174,7 @@ const RecommendedServices: FunctionComponent<Props> = ({
                     },
                   ]}
                   rows={recommendations}
-                /> : "No hay servicios recomemdados"}
+                /> : "No hay servicios recomendados"}
               </MainCard>
             </div>
           </form>
@@ -223,6 +223,9 @@ export default styled(RecommendedServices)`
 
   .form-data {
     margin-top: 16px;
+  }
+
+  .form-data2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* dos columnas de ancho igual */
     grid-column-gap: 20px; /* espacio entre las columnas */
@@ -277,10 +280,6 @@ export default styled(RecommendedServices)`
 
   .field-form {
     margin: 12px 0px;
-  }
-
-  .form-data {
-    margin-top: 16px;
   }
 
   .form-header-card {
