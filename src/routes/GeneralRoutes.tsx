@@ -42,15 +42,15 @@ import EditBooking from "views/bookings/edit";
 //Coordinadores
 import Coordinators from "views/coordinators";
 //Stocks / Inventarios
-import Stocks from 'views/stocks';
+import Stocks from "views/stocks";
 //BankCards
-import BankCards from 'views/bankCards';
-import CreateBankCard from 'views/bankCards/create';
-import EditBankCard from 'views/bankCards/edit';
+import BankCards from "views/bankCards";
+import CreateBankCard from "views/bankCards/create";
+import EditBankCard from "views/bankCards/edit";
 //Payments
-import Payments from 'views/payments';
-import CreatePayments from 'views/payments/create';
-import EditPayments from 'views/payments/edit';
+import Payments from "views/payments";
+import CreatePayments from "views/payments/create";
+import EditPayments from "views/payments/edit";
 //Productos
 import Products from "views/products";
 import CreateProduct from "views/products/create";
@@ -77,6 +77,14 @@ import Orders from "views/orders";
 import CreateOrder from "views/orders/create";
 import EditOrder from "views/orders/edit";
 import OrderDetail from 'views/orders/detail';
+//Stadistics
+import NoEcoProducts from "views/stadistics/no-eco-products";
+import FakeClients from "views/stadistics/fake-clients";
+import BestSellingProducts from "views/stadistics/best-selling-products";
+import FrecuentModelsByService from "views/stadistics/frecuent-models-by-service";
+import AgencyEarnings from "views/stadistics/agency-earnings";
+import EmployeesQuantityServicesPerMonth from "views/stadistics/employees-quantity-services-per-month";
+import FrecuentModelsByDate from "views/stadistics/frecuent-models-by-date";
 
 const GeneralRoutes: RouteObject[] = [
   // Estados
@@ -211,34 +219,34 @@ const GeneralRoutes: RouteObject[] = [
   },
   //Inventario
   {
-    path: 'inventory',
-    element: <Stocks />
+    path: "inventory",
+    element: <Stocks />,
   },
   //Tarjeta
   {
-    path: 'bankCards',
-    element: <BankCards />
+    path: "bankCards",
+    element: <BankCards />,
   },
   {
-    path: 'bankCards/create',
-    element: <CreateBankCard />
+    path: "bankCards/create",
+    element: <CreateBankCard />,
   },
   {
-    path: 'bankCards/edit/:id',
-    element: <EditBankCard />
+    path: "bankCards/edit/:id",
+    element: <EditBankCard />,
   },
   //Pagos
   {
-    path: 'payments',
-    element: <Payments />
+    path: "payments",
+    element: <Payments />,
   },
   {
-    path: 'payments/create',
-    element: <CreatePayments />
+    path: "payments/create",
+    element: <CreatePayments />,
   },
   {
-    path: 'payments/edit/billId/:billId/payment/:paymentId',
-    element: <EditPayments />
+    path: "payments/edit/billId/:billId/payment/:paymentId",
+    element: <EditPayments />,
   },
   //Productos
   {
@@ -298,16 +306,45 @@ const GeneralRoutes: RouteObject[] = [
   },
   //Vehículos
   {
-    path: 'vehicles',
-    element: <Vehicles />
+    path: "vehicles",
+    element: <Vehicles />,
   },
   {
-    path: 'vehicles/create',
-    element: <CreateVehicle/>
+    path: "vehicles/create",
+    element: <CreateVehicle />,
   },
   {
-    path: 'vehicles/edit/:id',
-    element: <EditVehicle/>
+    path: "vehicles/edit/:id",
+    element: <EditVehicle />,
+  },
+  //Stadistics
+  {
+    path: "eco-products",
+    element: <NoEcoProducts />,
+  },
+  {
+    path: "fake-clients",
+    element: <FakeClients />,
+  },
+  {
+    path: "best-selling-products",
+    element: <BestSellingProducts />,
+  },
+  {
+    path: "frecuent-models-by-service",
+    element: <FrecuentModelsByService />,
+  },
+  {
+    path: "agency-earnings",
+    element: <AgencyEarnings />,
+  },
+  {
+    path: "employees-eficency",
+    element: <EmployeesQuantityServicesPerMonth />,
+  },
+  {
+    path: "models-date-attendant",
+    element: <FrecuentModelsByDate />,
   },
   //Ordenes
   {
